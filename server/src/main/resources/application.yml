@@ -1,1 +1,13 @@
+spring:
+  application:
+    name: sof_server
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
 
+server:
+  port: 8080
+  servlet:
+    encoding:
+      force-response: true
