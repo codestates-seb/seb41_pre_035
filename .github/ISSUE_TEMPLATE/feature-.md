@@ -11,9 +11,9 @@ assignees: ''
 설명을 작성해주세요
 
 ## Todo
-[ ] Job1
-[ ] Job2
-[ ] Job3
+- [ ] Job1
+- [ ] Job2
+- [ ] Job3
 
 ## Duration
 ex) 1h, 3d
