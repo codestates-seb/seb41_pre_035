@@ -11,7 +11,10 @@ public enum ExceptionCode {
 	// 404
 	NOT_FOUND_MEMBER(40401, "Member not found"),
 	NOT_FOUND_QUESTION(40402, "Question not found"),
-	NOT_FOUND_ANSWER(40403, "Answer not found");
+	NOT_FOUND_ANSWER(40403, "Answer not found"),
+
+	// 409
+	MEMBER_EXISTS(40901, "Member already exist");
 
 	// 5xx
 
