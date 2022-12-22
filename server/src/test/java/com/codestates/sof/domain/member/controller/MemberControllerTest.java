@@ -10,7 +10,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -54,19 +55,8 @@ class MemberControllerTest {
 	@Test
 	public void postMemberTest() throws Exception {
 		// given
-		MemberDto.Post post = new MemberDto.Post();
-		post.setEmail("user@hello.com");
-		post.setPassword("1111");
-		post.setName("user");
-
-		long memberId = 1L;
-		MemberDto.Response response = new MemberDto.Response(
-			memberId,
-			"user@hello.com",
-			"user",
-			false,
-			LocalDateTime.now());
-
+		MemberDto.Post post = (MemberDto.Post)StubData.MockMember.getRequestBody(HttpMethod.POST);
+		MemberDto.Response response = StubData.MockMember.getSingleResponseBody();
 		String content = gson.toJson(post);
 
 		given(mapper.memberPostDtoToMember(Mockito.any(MemberDto.Post.class))).willReturn(new Member());
@@ -82,13 +72,13 @@ class MemberControllerTest {
 
 		// then
 		// TODO : 요청값 필수여부, 제한사항 옵션 적용
-		// TODO : SingleResponseDto wrapping
 		actions.andExpect(status().isCreated())
-			.andExpect(jsonPath("$.data.memberId").value(memberId))
+			.andExpect(jsonPath("$.data.memberId").value(1L))
 			.andExpect(jsonPath("$.data.email").value(post.getEmail()))
 			.andExpect(jsonPath("$.data.name").value(post.getName()))
 			.andExpect(jsonPath("$.data.verificationFlag").value(false))
-			.andExpect(jsonPath("$.data.createdAt").exists())
+			.andExpect(jsonPath("$.data.deleteFlag").value(false))
+			.andExpect(jsonPath("$.data.lastActivateAt").exists())
 			.andDo(document("post-member",
 				getRequestPreProcessor(),
 				getResponsePreProcessor(),
@@ -106,7 +96,8 @@ class MemberControllerTest {
 						fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
 						fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
 						fieldWithPath("data.verificationFlag").type(JsonFieldType.BOOLEAN).description("이메일 인증여부"),
-						fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성일자")
+						fieldWithPath("data.deleteFlag").type(JsonFieldType.BOOLEAN).description("탈퇴여부"),
+						fieldWithPath("data.lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자")
 					)
 				)));
 	}
