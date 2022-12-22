@@ -14,7 +14,7 @@ public class QuestionDto {
 	@Setter
 	@NoArgsConstructor
 	public static class Post {
-		@Min(value = 0, message = "WriterId must be equal and more then 0")
+		@Min(value = 0, message = "WriterId must be equal and more than 0")
 		private Long writerId;
 
 		@NotBlank(message = "title must not be null")

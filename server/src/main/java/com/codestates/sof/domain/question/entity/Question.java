@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(indexes = {
+	@Index(name = "idx_member_id", columnList = "member_id"),
 	@Index(name = "idx_question_title", columnList = "title"),
 	@Index(name = "idx_question_created_at", columnList = "created_at")
 })
@@ -28,7 +29,7 @@ public class Question extends BaseEntity {
 	@Column(name = "question_id", nullable = false)
 	private Long questionId;
 
-	@Column(name = "member_id", nullable = false, updatable = false, unique = true)
+	@Column(name = "member_id", nullable = false, updatable = false)
 	private Long writerId;
 
 	@Column(name = "title", nullable = false)
