@@ -2,6 +2,9 @@ package com.codestates.sof.domain.member.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.codestates.sof.domain.member.entity.Member;
@@ -28,8 +31,25 @@ public class MemberService {
 		return saveMember;
 	}
 
+	public Page<Member> findAllMember(int page, int size) {
+		// TODO: 사용자를 불러오는 도메인이 Users페이지일텐데, 기본 정렬이 어떤 것인지 구체적으로 협의된 바가 없어
+		//  mamberId 기준으로 내림차순 정렬(=최신순)해서 리턴합니다.
+		return memberRepository.findAll(PageRequest.of(page, size, Sort.by("memberId").descending()));
+	}
+
+	public Member findMember(long memberId) {
+		Optional<Member> optionalMember = memberRepository.findById(memberId);
+		Member member = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_MEMBER));
+
+		return member;
+
+	}
+
 	private void verifyUserExist(String email) {
 		Optional<Member> optionalMember = memberRepository.findByEmail(email);
-		if (optionalMember.isPresent()) throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+		if (optionalMember.isPresent()) {
+			throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+		}
 	}
+
 }

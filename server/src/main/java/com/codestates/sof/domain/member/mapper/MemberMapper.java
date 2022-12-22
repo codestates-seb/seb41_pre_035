@@ -1,5 +1,7 @@
 package com.codestates.sof.domain.member.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -13,4 +15,6 @@ public interface MemberMapper {
 	Member memberPostDtoToMember(MemberDto.Post requestBody);
 
 	MemberDto.Response memberToMemberResponseDto(Member member);
+
+	List<MemberDto.Response> memberToMemberResponseDto(List<Member> members);
 }
