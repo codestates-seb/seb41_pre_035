@@ -9,6 +9,7 @@ import com.codestates.sof.domain.question.entity.Question;
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
 	Question postToQuestion(QuestionDto.Post post);
+	Question patchToQuestion(QuestionDto.Patch patch);
 
 	@Mapping(target = "isItWriter", expression = "java(question.isItWriter())")
 	@Mapping(target = "hasAlreadyVoted", expression = "java(question.hasAlreadyVoted())")

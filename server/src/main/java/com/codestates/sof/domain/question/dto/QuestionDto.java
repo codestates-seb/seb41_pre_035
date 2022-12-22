@@ -27,6 +27,18 @@ public class QuestionDto {
 	@Getter
 	@Setter
 	@NoArgsConstructor
+	public static class Patch {
+		@Min(value = 0, message = "WriterId must be equal and more than 0")
+		private Long memberId;
+
+		private String title;
+
+		private String content;
+	}
+
+	@Getter
+	@Setter
+	@NoArgsConstructor
 	public static class Response {
 		private Long questionId;
 		private Long writerId;
