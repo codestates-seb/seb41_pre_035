@@ -23,6 +23,7 @@ public class QuestionService {
 		return question;
 	}
 
+	@Transactional
 	public Question findById(Long questionId) {
 		Question question = findExistsQuestion(questionId);
 		question.afterFound();
