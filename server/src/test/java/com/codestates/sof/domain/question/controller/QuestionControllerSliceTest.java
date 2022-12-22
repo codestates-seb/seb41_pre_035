@@ -192,6 +192,23 @@ class QuestionControllerSliceTest {
 			));
 	}
 
+	@Test
+	void testForDelete() throws Exception {
+		// given
+		willDoNothing().given(service).delete(anyLong(), anyLong());
+
+		// when
+		ResultActions actions = mvc.perform(delete("/questions/{question-id}", 1L));
+
+		// then
+		actions
+			.andExpect(status().isNoContent())
+			.andDo(getDefaultDocument(
+				"question-delete",
+				pathParameters(parameterWithName("question-id").description("질문 식별자"))
+			));
+	}
+
 	private Question getDefaultQuestion() {
 		return Question.Builder.aQuestion()
 			.questionId(1L)
