@@ -22,14 +22,11 @@ public class Answer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long answerId;
 
-	@Column(columnDefinition = "TEXT", nullable = false)
-	private String body;
+	@Column(columnDefinition = "MEDIUMTEXT", nullable = false)
+	private String content;
 
 	@Column(length = 8)
-	private int up_vote_count;
-
-	@Column(length = 8)
-	private int down_vote_count;
+	private int voteCount;
 
 	@Column(nullable = false)
 	private LocalDateTime createdAt = LocalDateTime.now();
@@ -38,6 +35,6 @@ public class Answer {
 	private LocalDateTime lastModifiedAt = LocalDateTime.now();
 
 	public Answer(String body) {
-		this.body = body;
+		this.content = body;
 	}
 }
