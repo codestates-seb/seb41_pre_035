@@ -4,6 +4,7 @@ import static com.codestates.sof.global.utils.AsciiUtils.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -115,7 +116,27 @@ class QuestionControllerSliceTest {
 			.andDo(print())
 			.andExpect(jsonPath("$.data.questionId").value(question.getQuestionId()))
 			.andExpect(jsonPath("$.data.writerId").value(question.getWriterId()))
-			.andExpect(jsonPath("$.data.lastModifiedAt").exists());
+			.andExpect(jsonPath("$.data.lastModifiedAt").exists())
+			.andDo(getDefaultDocument(
+				"question-post",
+				pathParameters(
+					parameterWithName("question-id").description("질문 식별자")
+				),
+				responseFields(
+					List.of(
+						fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("질문 식별자"),
+						fieldWithPath("data.writerId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
+						fieldWithPath("data.title").type(JsonFieldType.STRING).description("질문 제목"),
+						fieldWithPath("data.content").type(JsonFieldType.STRING).description("질문 내용"),
+						fieldWithPath("data.viewCount").type(JsonFieldType.NUMBER).description("조회수"),
+						fieldWithPath("data.voteCount").type(JsonFieldType.NUMBER).description("투표수 총합"),
+						fieldWithPath("data.isItWriter").type(JsonFieldType.BOOLEAN).description("작성자여부"),
+						fieldWithPath("data.hasAlreadyVoted").type(JsonFieldType.BOOLEAN).description("투표여부"),
+						fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성일자"),
+						fieldWithPath("data.lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자")
+					)
+				)
+			));
 	}
 
 	private Question getDefaultQuestion() {
