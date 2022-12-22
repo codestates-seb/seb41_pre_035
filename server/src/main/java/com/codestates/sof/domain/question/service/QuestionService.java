@@ -34,7 +34,7 @@ public class QuestionService {
 	public Question patch(Long questionId, Long memberId, Question newQuestion) {
 		Question question = findExistsQuestion(questionId);
 
-		// TODO(AFTER AUTH): if (!question.isItWriter(memberId)) {
+		// TODO(AUTH): if (!question.isItWriter(memberId)) {
 		if (!question.getWriterId().equals(memberId)) {
 			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
 		}
@@ -42,6 +42,17 @@ public class QuestionService {
 		question.update(newQuestion);
 
 		return question;
+	}
+
+	public void delete(Long memberId, Long questionId) {
+		Question question = findExistsQuestion(questionId);
+
+		if (!question.getWriterId().equals(memberId))
+			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
+
+		// TODO(AUTH, COMMENT): 답변이나 댓글이 있을 경우.
+
+		questionRepository.delete(question);
 	}
 
 	private Question findExistsQuestion(Long questionId) {
