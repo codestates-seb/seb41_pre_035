@@ -1,7 +1,8 @@
 package com.codestates.sof.domain.question.controller;
 
 import static com.codestates.sof.global.utils.AsciiUtils.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -9,12 +10,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -43,9 +44,6 @@ class QuestionControllerSliceTest {
 
 	@MockBean
 	QuestionService service;
-
-	@InjectMocks
-	QuestionController controller;
 
 	@Test
 	void testForWrite() throws Exception {
@@ -98,6 +96,26 @@ class QuestionControllerSliceTest {
 					)
 				)
 			));
+	}
+
+	@Test
+	void testForGetByAnonymous() throws Exception {
+		// given
+		Question question = getDefaultQuestion();
+		given(service.findById(any(Long.class))).willReturn(question);
+
+		// when
+		ResultActions actions = mvc.perform(
+			get("/questions/{question-id}", question.getQuestionId())
+				.accept(MediaType.APPLICATION_JSON)
+		);
+
+		// then
+		actions
+			.andDo(print())
+			.andExpect(jsonPath("$.data.questionId").value(question.getQuestionId()))
+			.andExpect(jsonPath("$.data.writerId").value(question.getWriterId()))
+			.andExpect(jsonPath("$.data.lastModifiedAt").exists());
 	}
 
 	private Question getDefaultQuestion() {
