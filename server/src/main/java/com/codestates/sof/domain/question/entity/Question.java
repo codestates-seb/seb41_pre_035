@@ -55,6 +55,11 @@ public class Question extends BaseEntity {
 		// TODO
 	}
 
+	public void afterFound() {
+		this.viewCount++;
+		// TODO
+	}
+
 	public boolean isItWriter() {
 		return false;
 	}
