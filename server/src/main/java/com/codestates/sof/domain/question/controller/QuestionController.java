@@ -5,6 +5,7 @@ import javax.validation.constraints.Min;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,5 +57,14 @@ public class QuestionController {
 		QuestionDto.Response response = mapper.questionToResponse(question);
 
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
+	}
+
+	@DeleteMapping("/{question-id}")
+	public ResponseEntity<?> delete(@PathVariable("question-id") @Min(0) Long questionId) {
+		Long memberId = 0L; // TODO Auth user id
+
+		questionService.delete(memberId, questionId);
+
+		return ResponseEntity.noContent().build();
 	}
 }
