@@ -1,7 +1,5 @@
 package com.codestates.sof.domain.question.entity;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +23,8 @@ import lombok.NoArgsConstructor;
 	@Index(name = "idx_question_created_at", columnList = "created_at")
 })
 public class Question extends BaseEntity {
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "question_id", nullable = false)
 	private Long questionId;
 
@@ -68,6 +67,14 @@ public class Question extends BaseEntity {
 		return false;
 	}
 
+	public void update(Question newQuestion) {
+		if (newQuestion.getTitle() != null)
+			title = newQuestion.getTitle();
+
+		if (newQuestion.getContent() != null)
+			content = newQuestion.getContent();
+	}
+
 	public static final class Builder {
 		private Long questionId;
 		private Long writerId;
@@ -76,7 +83,8 @@ public class Question extends BaseEntity {
 		private int viewCount;
 		private int voteCount;
 
-		private Builder() {}
+		private Builder() {
+		}
 
 		public static Builder aQuestion() {
 			return new Builder();

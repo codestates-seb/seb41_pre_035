@@ -30,6 +30,20 @@ public class QuestionService {
 		return question;
 	}
 
+	@Transactional
+	public Question patch(Long questionId, Long memberId, Question newQuestion) {
+		Question question = findExistsQuestion(questionId);
+
+		// TODO(AFTER AUTH): if (!question.isItWriter(memberId)) {
+		if (!question.getWriterId().equals(memberId)) {
+			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
+		}
+
+		question.update(newQuestion);
+
+		return question;
+	}
+
 	private Question findExistsQuestion(Long questionId) {
 		return questionRepository.findByQuestionId(questionId)
 			.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_QUESTION));
