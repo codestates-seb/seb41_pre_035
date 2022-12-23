@@ -33,11 +33,11 @@ public class QuestionController {
 
 	// TODO: authentication member의 정보가 필요함
 	@PostMapping
-	public ResponseEntity<QuestionDto.Response> post(@Valid @RequestBody QuestionDto.Post post) {
+	public ResponseEntity<SingleResponseDto<QuestionDto.Response>> post(@Valid @RequestBody QuestionDto.Post post) {
 		Question question = mapper.postToQuestion(post);
 		QuestionDto.Response response = mapper.questionToResponse(questionService.write(question));
 		response.setIsItWriter(true);
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResponseDto<>(response));
 	}
 
 	@GetMapping("/{question-id}")
