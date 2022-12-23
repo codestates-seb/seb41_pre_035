@@ -21,6 +21,7 @@ public class StubData {
 	static {
 		stubRequestBody = new HashMap<>();
 		stubRequestBody.put(HttpMethod.POST, new MemberDto.Post("user01@hello.com", "1111", "user01"));
+		stubRequestBody.put(HttpMethod.PATCH, new MemberDto.Patch(0, "user01", null));
 	}
 
 	public static class MockMember {
