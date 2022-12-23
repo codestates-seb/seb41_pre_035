@@ -1,0 +1,50 @@
+/* 배경 */
+.SignUpWraapper {
+  height: 95vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--login-bg);
+}
+
+/*
+  왼쪽
+*/
+/* title */
+.SignUpLeftTitle {
+  font-size: 28px;
+  font-weight: 500;
+  margin-bottom: 32px;
+}
+
+/* title 아래 소개들 */
+.SignUpLeftContainerContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+
+  color: #232629;
+  font-weight: 500;
+}
+
+.SignUpLeftContainerContent > i {
+  color: #0a95ff;
+
+  font-size: 23px;
+}
+
+/* title 아래 소개들 아래 작은 글씨 */
+.SignUpLeftLink {
+  font-size: 13px;
+  color: #6a737c;
+}
+.SignUpLeftLink > div {
+  margin-bottom: 5px;
+}
+
+.SignUpLeftLink > a {
+  color: #0a95ff;
+}
