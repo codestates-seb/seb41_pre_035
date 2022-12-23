@@ -2,6 +2,9 @@ package com.codestates.sof.domain.answer.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -37,6 +40,17 @@ public class AnswerService {
 			.ifPresent(findAnswer::setContent);
 
 		return answerRepository.save(findAnswer);
+	}
+
+	public Page<Answer> findAnswers(int page, int size) {
+		return answerRepository.findAll(PageRequest.of(page, size,
+			Sort.by("answerId").descending()));
+	}
+
+	public void deleteAnswer(long answerId) {
+		Answer findAnswer = findVerifiedAnswer(answerId);
+
+		answerRepository.delete(findAnswer);
 	}
 
 	@Transactional(readOnly = true)
