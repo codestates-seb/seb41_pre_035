@@ -1,5 +1,16 @@
+import { Route, Routes } from "react-router-dom";
+import Questions from "./pages/Questions";
+import AskQuestions from "./pages/AskQuestions";
+
 function App() {
-  return <div className="App"></div>;
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Questions />} />
+        <Route path="/questions" element={<AskQuestions />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;

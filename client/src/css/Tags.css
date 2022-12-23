@@ -1,0 +1,44 @@
+.tagsAutoComplete {
+  border: 1px solid;
+  background-color: white;
+  position: absolute;
+}
+
+.tag {
+  list-style: none;
+  float: left;
+}
+
+.tagTitle {
+  width: fit-content;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #2778b2;
+  padding: 0 8px;
+  font-size: 14px;
+  list-style: none;
+  border-radius: 4px;
+  margin: 0 8px 8px 0;
+  background: #e1ecf4;
+}
+
+.tagClose {
+  display: block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 8px !important;
+  color: #39739d;
+  border-radius: 20%;
+  cursor: pointer;
+}
+
+.tagClose:hover {
+  color: #9ac6e6;
+  background-color: #388fcd;
+}
