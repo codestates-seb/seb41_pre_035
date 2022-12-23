@@ -32,8 +32,8 @@ const HeaderHam = () => {
             <button className="login" onClick={()=>{ navigate('/login') }}>Log in</button>
             <button className="signup" onClick={()=>{ navigate('/signup') }}>Sign up</button>
           </div>
-          {seachmodal === true? <div className="seachmodal">SEACH</div>:null}
-          {menumodal === true?
+          {seachmodal? <div className="seachmodal">SEACH</div>:null}
+          {menumodal?
           
           <div className='navContainer menumodal'>
             <div className='menu'>

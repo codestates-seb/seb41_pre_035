@@ -34,8 +34,8 @@ const HeaderLogin = () => {
               <FontAwesomeIcon className="icon" icon={faRightFromBracket} onClick={()=>{ navigate('/11') }}/>
             </div>
           </div>
-          {seachmodal === true? <div className="seachmodal">SEACH</div>:null}
-          {logoutmodal === true? <div className="logoutmodal">log out</div>:null}
+          {seachmodal? <div className="seachmodal">SEACH</div>:null}
+          {logoutmodal? <div className="logoutmodal">log out</div>:null}
         </div>
     </>
   )

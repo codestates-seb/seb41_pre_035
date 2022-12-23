@@ -13,7 +13,6 @@ function App() {
       {/* <HeaderLogin/> */}
       {/* <HeaderMenumodal/> */}
       <Nav/>
-      <div className="sd">sdsdsdssdsdsd</div>
       <Sidebar/>
       <Footer/>
   </div>;
