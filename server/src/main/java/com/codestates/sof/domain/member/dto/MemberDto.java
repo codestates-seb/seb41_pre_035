@@ -9,6 +9,7 @@ import lombok.Setter;
 public class MemberDto {
 	@Getter
 	@Setter
+	@AllArgsConstructor
 	public static class Post{
 		private String email;
 		private  String password;
@@ -23,6 +24,7 @@ public class MemberDto {
 		private String email;
 		private String name;
 		private boolean verificationFlag;
-		private LocalDateTime createdAt;
+		private boolean deleteFlag;
+		private LocalDateTime lastActivateAt;
 	}
 }

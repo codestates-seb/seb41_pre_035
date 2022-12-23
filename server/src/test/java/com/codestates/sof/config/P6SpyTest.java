@@ -6,7 +6,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.codestates.sof.domain.member.Member;
+import com.codestates.sof.domain.member.entity.Member;
 
 @DataJpaTest
 @EnableQueryLog
@@ -19,11 +19,13 @@ public class P6SpyTest {
 	void test() {
 		Member member = new Member();
 		member.setName("MemberA");
+		member.setEncryptedPassword("1111");
+		member.setEmail("MemberA@hello.com");
 
 		member = em.persistAndFlush(member);
 
 		em.clear();
 
-		Member findMember = em.find(Member.class, member.getId());
+		Member findMember = em.find(Member.class, member.getMemberId());
 	}
 }
