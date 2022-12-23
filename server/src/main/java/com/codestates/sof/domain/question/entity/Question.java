@@ -2,20 +2,23 @@ package com.codestates.sof.domain.question.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.common.BaseEntity;
-import com.codestates.sof.domain.tag.entity.Tag;
+import com.codestates.sof.domain.member.entity.Member;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,7 +28,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(indexes = {
-	@Index(name = "idx_member_id", columnList = "member_id"),
 	@Index(name = "idx_question_title", columnList = "title"),
 	@Index(name = "idx_question_created_at", columnList = "created_at")
 })
@@ -35,8 +37,9 @@ public class Question extends BaseEntity {
 	@Column(name = "question_id", nullable = false)
 	private Long questionId;
 
-	@Column(name = "member_id", nullable = false, updatable = false)
-	private Long writerId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", updatable = false)
+	private Member writer;
 
 	@Column(name = "title", nullable = false)
 	private String title;
@@ -50,11 +53,17 @@ public class Question extends BaseEntity {
 	@Column(name = "vote_count", nullable = false)
 	private int voteCount;
 
+	@Column(name = "has_adopted_answer")
+	private boolean hasAdoptedAnswer;
+
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+	private List<Answer> answers = new ArrayList<>();
+
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 	private List<QuestionTag> tags = new ArrayList<>();
 
-	public Question(Long writerId, String title, String content) {
-		this.writerId = writerId;
+	public Question(Member writer, String title, String content) {
+		this.writer = writer;
 		this.title = title;
 		this.content = content;
 		this.viewCount = this.voteCount = 0;
@@ -87,7 +96,7 @@ public class Question extends BaseEntity {
 
 	public static final class Builder {
 		private Long questionId;
-		private Long writerId;
+		private Member writer;
 		private String title;
 		private String content;
 		private int viewCount;
@@ -106,8 +115,8 @@ public class Question extends BaseEntity {
 			return this;
 		}
 
-		public Builder writerId(Long writerId) {
-			this.writerId = writerId;
+		public Builder writer(Member writer) {
+			this.writer = writer;
 			return this;
 		}
 
@@ -137,7 +146,7 @@ public class Question extends BaseEntity {
 		}
 
 		public Question build() {
-			Question question = new Question(writerId, title, content);
+			Question question = new Question(writer, title, content);
 			question.questionId = this.questionId;
 			question.viewCount = this.viewCount;
 			question.voteCount = this.voteCount;
