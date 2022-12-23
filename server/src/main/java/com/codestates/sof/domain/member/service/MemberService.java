@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.codestates.sof.domain.common.CustomBeanUtils;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.member.repository.MemberRepository;
 import com.codestates.sof.global.error.dto.ExceptionCode;
@@ -18,6 +19,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MemberService {
 	private final MemberRepository memberRepository;
+	private final CustomBeanUtils<Member> beanUtils;
 
 	public Member createMember(Member member) {
 		verifyUserExist(member.getEmail());
@@ -43,6 +45,19 @@ public class MemberService {
 
 		return member;
 
+	}
+
+	public Member updateMember(Member member) {
+		Member findMember = findMember(member.getMemberId());
+
+		// TODO: 비밀번호 변경이 있으면 암호화를 해주어야 합니다. -> aop로 가능할 듯?
+		Optional.ofNullable(member.getEncryptedPassword()).ifPresent(pass -> {
+			member.setBeforeEncryptedPassword(findMember.getEncryptedPassword());
+			member.setEncryptedPassword(pass);
+		});
+		beanUtils.copyNonNullProperties(member, findMember);
+
+		return memberRepository.save(findMember);
 	}
 
 	private void verifyUserExist(String email) {
