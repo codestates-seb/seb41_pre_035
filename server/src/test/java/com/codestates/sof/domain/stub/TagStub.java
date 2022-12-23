@@ -1,0 +1,55 @@
+package com.codestates.sof.domain.stub;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import com.codestates.sof.domain.tag.dto.TagDto;
+
+public class TagStub {
+	public enum Type {
+		SIMPLE_RESPONSE(simpleResponses()),
+		RESPONSE(responses());
+
+		private final Object data;
+
+		Type(Object data) {
+			this.data = data;
+		}
+
+		public Object getData() {
+			return data;
+		}
+	}
+
+	public static List<TagDto.Response> simpleResponses() {
+		List<String> tags = List.of("java", "javascript", "python");
+
+		return IntStream.range(0, tags.size())
+			.mapToObj(i -> {
+				TagDto.Response response = new TagDto.Response();
+				response.setTagId((long)i);
+				response.setName(tags.get(i));
+				return response;
+			}).collect(Collectors.toList());
+	}
+
+	public static List<TagDto.Response> responses() {
+		List<String> tags = List.of("java", "javascript", "python");
+		List<String> desc = List.of(
+			"Java is a high-level object-oriented programming language.",
+			"For questions about programming in ECMAScript (JavaScript/JS) and its different dialects/implementations (except for ActionScript).",
+			"Python is a multi-paradigm, dynamically typed, multi-purpose programming language."
+		);
+
+		return IntStream.range(0, tags.size())
+			.mapToObj(i -> {
+				TagDto.Response response = new TagDto.Response();
+				response.setTagId((long)i);
+				response.setName(tags.get(i));
+				response.setDescription(desc.get(i));
+				response.setTaggedCount((long)i);
+				return response;
+			}).collect(Collectors.toList());
+	}
+}
