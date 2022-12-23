@@ -36,4 +36,9 @@ public class QuestionTag {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "question_id")
 	private Question question;
+
+	public QuestionTag(Tag tag, Question question) {
+		this.tag = tag;
+		this.question = question;
+	}
 }

@@ -23,14 +23,14 @@ public class QuestionService {
 	public Question write(Question question) {
 		replaceTagNameToTag(question);
 		question = save(question);
-		question.afterWrote();
+		question.increaseTaggedCountForAllTags();
 		return question;
 	}
 
 	@Transactional
 	public Question findById(Long questionId) {
 		Question question = findExistsQuestion(questionId);
-		question.afterFound();
+		question.increaseViewCount();
 		return question;
 	}
 
@@ -39,7 +39,7 @@ public class QuestionService {
 		Question question = findExistsQuestion(questionId);
 
 		// TODO(AUTH): if (!question.isItWriter(memberId)) {
-		if (question.getWriter().getMemberId() != memberId) {
+		if (question.getMember().getMemberId() != memberId) {
 			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
 		}
 
@@ -51,7 +51,7 @@ public class QuestionService {
 	public void delete(Long memberId, Long questionId) {
 		Question question = findExistsQuestion(questionId);
 
-		if (question.getWriter().getMemberId() != memberId)
+		if (question.getMember().getMemberId() != memberId)
 			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
 
 		// TODO(AUTH, COMMENT): 답변이나 댓글이 있을 경우.

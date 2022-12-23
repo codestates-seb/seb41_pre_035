@@ -10,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import com.codestates.sof.domain.question.entity.QuestionTag;
 
 import lombok.AccessLevel;
@@ -32,9 +30,8 @@ public class Tag {
 	@Column(name = "description", nullable = false)
 	private String description;
 
-	@ColumnDefault("0")
 	@Column(name = "tagged_count", nullable = false)
-	private Long taggedCount;
+	private long taggedCount;
 
 	@OneToMany(mappedBy = "tag")
 	private List<QuestionTag> questions = new ArrayList<>();
@@ -45,5 +42,58 @@ public class Tag {
 
 	public void increaseTaggedCount() {
 		this.taggedCount++;
+	}
+
+	public void beforeSave() {
+		this.name = name.toLowerCase();
+	}
+
+	public static final class Builder {
+		private Long tagId;
+		private String name;
+		private String description;
+		private long taggedCount;
+		private List<QuestionTag> questions;
+
+		private Builder() {
+		}
+
+		public static Builder aTag() {
+			return new Builder();
+		}
+
+		public Builder tagId(Long tagId) {
+			this.tagId = tagId;
+			return this;
+		}
+
+		public Builder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Builder description(String description) {
+			this.description = description;
+			return this;
+		}
+
+		public Builder taggedCount(long taggedCount) {
+			this.taggedCount = taggedCount;
+			return this;
+		}
+
+		public Builder questions(List<QuestionTag> questions) {
+			this.questions = questions;
+			return this;
+		}
+
+		public Tag build() {
+			Tag tag = new Tag(name);
+			tag.taggedCount = this.taggedCount;
+			tag.questions = this.questions;
+			tag.tagId = this.tagId;
+			tag.description = this.description;
+			return tag;
+		}
 	}
 }

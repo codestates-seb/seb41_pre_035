@@ -49,6 +49,6 @@ public class Member extends BaseEntity {
 	@Column(nullable = false)
 	private LocalDateTime lastActivateAt = LocalDateTime.now();
 
-	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<Question> questions = new ArrayList<>();
 }

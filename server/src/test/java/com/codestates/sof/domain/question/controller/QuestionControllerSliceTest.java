@@ -121,7 +121,7 @@ class QuestionControllerSliceTest {
 		actions
 			.andDo(print())
 			.andExpect(jsonPath("$.data.questionId").value(question.getQuestionId()))
-			.andExpect(jsonPath("$.data.writerId").value(question.getWriter().getMemberId()))
+			.andExpect(jsonPath("$.data.writerId").value(question.getMember().getMemberId()))
 			.andExpect(jsonPath("$.data.lastModifiedAt").exists())
 			.andDo(getDefaultDocument(
 				"question-get",

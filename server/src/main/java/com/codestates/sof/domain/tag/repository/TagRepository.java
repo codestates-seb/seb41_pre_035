@@ -10,5 +10,5 @@ import com.codestates.sof.domain.tag.entity.Tag;
 public interface TagRepository extends JpaRepository<Tag, Long> {
 	Optional<Tag> findByName(String tagName);
 
-	List<Tag> findAllByName(List<String> tagNames);
+	List<Tag> findAllByNameIn(List<String> tagNames);
 }

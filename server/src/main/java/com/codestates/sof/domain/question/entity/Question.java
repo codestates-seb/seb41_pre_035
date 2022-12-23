@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.common.BaseEntity;
 import com.codestates.sof.domain.member.entity.Member;
+import com.codestates.sof.domain.tag.entity.Tag;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class Question extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", updatable = false)
-	private Member writer;
+	private Member member;
 
 	@Column(name = "title", nullable = false)
 	private String title;
@@ -57,7 +58,7 @@ public class Question extends BaseEntity {
 	@Column(name = "has_adopted_answer")
 	private boolean hasAdoptedAnswer;
 
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Answer> answers = new ArrayList<>();
 
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
@@ -68,19 +69,18 @@ public class Question extends BaseEntity {
 	}
 
 	public Question(Member writer, String title, String content, List<QuestionTag> tags) {
-		this.writer = writer;
+		this.member = writer;
 		this.title = title;
 		this.content = content;
 		this.tags = tags;
 	}
 
-	public void afterWrote() {
+	public void increaseTaggedCountForAllTags() {
 		tags.forEach(tag -> tag.getTag().increaseTaggedCount());
 	}
 
-	public void afterFound() {
+	public void increaseViewCount() {
 		this.viewCount++;
-		// TODO
 	}
 
 	public boolean isItWriter() {
@@ -97,6 +97,10 @@ public class Question extends BaseEntity {
 
 		if (newQuestion.getContent() != null)
 			content = newQuestion.getContent();
+	}
+
+	public void addTag(String tagName) {
+		this.tags.add(new QuestionTag(new Tag(tagName), this));
 	}
 
 	public void setTags(List<QuestionTag> tags) {

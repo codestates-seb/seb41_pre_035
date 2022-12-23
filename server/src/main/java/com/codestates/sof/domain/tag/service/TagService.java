@@ -18,12 +18,17 @@ import lombok.RequiredArgsConstructor;
 public class TagService {
 	private final TagRepository tagRepository;
 
+	public Tag create(Tag tag) {
+		tag.beforeSave();
+		return tagRepository.save(tag);
+	}
+
 	public Tag findBy(String tagName) {
 		return findExistsTagBy(tagName);
 	}
 
 	public List<Tag> findAllBy(List<String> tagNames) {
-		return tagRepository.findAllByName(tagNames);
+		return tagRepository.findAllByNameIn(tagNames);
 	}
 
 	private Tag findExistsTagBy(String tagName) {
