@@ -60,6 +60,12 @@ public class MemberService {
 		return memberRepository.save(findMember);
 	}
 
+	public void deleteMember(long memberId) {
+		Member member = findMember(memberId);
+		member.setDeleteFlag(true);
+		memberRepository.save(member);
+	}
+
 	private void verifyUserExist(String email) {
 		Optional<Member> optionalMember = memberRepository.findByEmail(email);
 		if (optionalMember.isPresent()) {

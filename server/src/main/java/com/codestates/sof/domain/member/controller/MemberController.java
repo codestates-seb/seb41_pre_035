@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,5 +66,12 @@ public class MemberController {
 		MemberDto.Response response = mapper.memberToMemberResponseDto(member);
 
 		return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{member-id}")
+	public ResponseEntity<?> deleteMember(@PathVariable("member-id") long memberId) {
+		memberService.deleteMember(memberId);
+
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
