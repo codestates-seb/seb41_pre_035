@@ -29,7 +29,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(indexes = {
 	@Index(name = "idx_question_title", columnList = "title"),
-	@Index(name = "idx_question_created_at", columnList = "created_at")
+	@Index(name = "idx_question_created_at", columnList = "created_at"),
+	@Index(name = "idx_question_view_count", columnList = "view_count")
 })
 public class Question extends BaseEntity {
 	@Id
@@ -74,7 +75,7 @@ public class Question extends BaseEntity {
 	}
 
 	public void afterWrote() {
-		// TODO
+		tags.forEach(tag -> tag.getTag().increaseTaggedCount());
 	}
 
 	public void afterFound() {
