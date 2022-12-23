@@ -1,14 +1,21 @@
 package com.codestates.sof.domain.question.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.codestates.sof.domain.common.BaseEntity;
+import com.codestates.sof.domain.tag.entity.Tag;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -43,6 +50,9 @@ public class Question extends BaseEntity {
 	@Column(name = "vote_count", nullable = false)
 	private int voteCount;
 
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+	private List<QuestionTag> tags = new ArrayList<>();
+
 	public Question(Long writerId, String title, String content) {
 		this.writerId = writerId;
 		this.title = title;
@@ -50,7 +60,7 @@ public class Question extends BaseEntity {
 		this.viewCount = this.voteCount = 0;
 	}
 
-	public void postWrote() {
+	public void afterWrote() {
 		// TODO
 	}
 
@@ -82,6 +92,7 @@ public class Question extends BaseEntity {
 		private String content;
 		private int viewCount;
 		private int voteCount;
+		private List<QuestionTag> tags;
 
 		private Builder() {
 		}
@@ -120,11 +131,17 @@ public class Question extends BaseEntity {
 			return this;
 		}
 
+		public Builder tags(List<QuestionTag> tags) {
+			this.tags = tags;
+			return this;
+		}
+
 		public Question build() {
 			Question question = new Question(writerId, title, content);
 			question.questionId = this.questionId;
 			question.viewCount = this.viewCount;
 			question.voteCount = this.voteCount;
+			question.tags = this.tags;
 			return question;
 		}
 	}
