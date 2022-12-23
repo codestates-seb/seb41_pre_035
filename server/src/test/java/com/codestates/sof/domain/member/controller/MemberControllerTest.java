@@ -36,6 +36,7 @@ import com.codestates.sof.domain.member.service.MemberService;
 import com.google.gson.Gson;
 import com.jayway.jsonpath.JsonPath;
 
+// TODO: 공통기능 메서드화
 @WebMvcTest(MemberController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
@@ -200,6 +201,75 @@ class MemberControllerTest {
 						fieldWithPath("data.lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자")
 					)
 				)
+			));
+	}
+
+	@Test
+	void patchMemberTest() throws Exception {
+		// given
+		long memberId = 1L;
+		MemberDto.Patch requestBody = (MemberDto.Patch)StubData.MockMember.getRequestBody(HttpMethod.PATCH);
+		requestBody.setMemberId(memberId);
+		MemberDto.Response responseDto = StubData.MockMember.getSingleResponseBody();
+		String content = gson.toJson(requestBody);
+
+		given(mapper.memberPatchDtoToMember(Mockito.any(MemberDto.Patch.class))).willReturn(new Member());
+		given(memberService.updateMember(Mockito.any(Member.class))).willReturn(new Member());
+		given(mapper.memberToMemberResponseDto(Mockito.any(Member.class))).willReturn(responseDto);
+
+		// when
+		ResultActions actions = mockMvc.perform(
+			patch("/members/{member-id}", memberId)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(content));
+
+		// then
+		actions.andExpect(status().isOk())
+			.andExpect(jsonPath("$.data.memberId").value(requestBody.getMemberId()))
+			.andExpect(jsonPath("$.data.name").value(requestBody.getName()))
+			.andDo(document("patch-member",
+				getRequestPreProcessor(),
+				getResponsePreProcessor(),
+				pathParameters(List.of(
+					parameterWithName("member-id").description("회원 식별자"))),
+				requestFields(
+					// TODO : 프로필 객체 생성에 따른 수정 필요
+					List.of(
+						fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자").ignored(),
+						fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호").optional(),
+						fieldWithPath("name").type(JsonFieldType.STRING).description("이름").optional()
+					)
+				),
+				responseFields(
+					List.of(
+						fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+						fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("고유 식별자"),
+						fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
+						fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
+						fieldWithPath("data.verificationFlag").type(JsonFieldType.BOOLEAN).description("이메일 인증여부"),
+						fieldWithPath("data.deleteFlag").type(JsonFieldType.BOOLEAN).description("탈퇴여부"),
+						fieldWithPath("data.lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자")
+					)
+				)));
+	}
+
+	@Test
+	public void deleteMemberTest() throws Exception {
+		// given
+		long memberId = 1L;
+		doNothing().when(memberService).deleteMember(Mockito.anyLong());
+
+		// when
+		ResultActions actions = mockMvc.perform(
+			delete("/members/{member-id}", memberId));
+
+		// then
+		actions.andExpect(status().isNoContent())
+			.andDo(document("delete-member",
+				getRequestPreProcessor(),
+				getResponsePreProcessor(),
+				pathParameters(List.of(parameterWithName("member-id").description("회원 식별자")))
 			));
 	}
 }

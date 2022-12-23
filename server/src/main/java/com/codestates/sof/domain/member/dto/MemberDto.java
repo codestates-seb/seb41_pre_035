@@ -19,6 +19,7 @@ public class MemberDto {
 
 	@Getter
 	@Setter
+	@AllArgsConstructor
 	public static class Patch {
 		private long memberId;
 		private String name;
