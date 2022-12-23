@@ -3,6 +3,7 @@ plugins {
 	id 'war'
 	id 'org.springframework.boot' version '2.7.6'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.codestates'
@@ -13,19 +14,74 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	asciidoctorExtensions
 }
 
 repositories {
 	mavenCentral()
 }
 
+ext {
+	set('snippetsDir', file("build/generated-snippets"))
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'com.google.code.gson:gson'
+	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+
+	// sql 쿼리 파라미터에 실제 값을 넣기 위한 라이브러리
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
+
+	// 인증 관련
+	// implementation 'org.springframework.boot:spring-boot-starter-security'
+	// implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	// implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	// runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	// runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	// testImplementation 'org.springframework.security:spring-security-test'
+
 	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.mysql:mysql-connector-j:8.0.31'
+
 	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 }
 
 tasks.named('test') {
+	outputs.dir snippetsDir
 	useJUnitPlatform()
+}
+
+tasks.named('asciidoctor') {
+	configurations "asciidoctorExtensions"
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from file("${asciidoctor.outputDir}")
+	into file("src/main/resources/static/docs")
+}
+
+build {
+	dependsOn copyDocument
+}
+
+bootJar {
+	dependsOn copyDocument
+	from("${asciidoctor.outputDir}") {
+		into 'static/docs'
+	}
 }
