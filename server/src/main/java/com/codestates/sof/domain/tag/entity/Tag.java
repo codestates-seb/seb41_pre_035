@@ -33,9 +33,13 @@ public class Tag {
 	private String description;
 
 	@ColumnDefault("0")
-	@Column(name = "query_count", nullable = false)
-	private Long queryCount;
+	@Column(name = "tagged_count", nullable = false)
+	private Long taggedCount;
 
 	@OneToMany(mappedBy = "tag")
 	private List<QuestionTag> questions = new ArrayList<>();
+
+	public Tag(String name) {
+		this.name = name;
+	}
 }

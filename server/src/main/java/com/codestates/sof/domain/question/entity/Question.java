@@ -63,10 +63,14 @@ public class Question extends BaseEntity {
 	private List<QuestionTag> tags = new ArrayList<>();
 
 	public Question(Member writer, String title, String content) {
+		this(writer, title, content, new ArrayList<>());
+	}
+
+	public Question(Member writer, String title, String content, List<QuestionTag> tags) {
 		this.writer = writer;
 		this.title = title;
 		this.content = content;
-		this.viewCount = this.voteCount = 0;
+		this.tags = tags;
 	}
 
 	public void afterWrote() {
@@ -92,6 +96,10 @@ public class Question extends BaseEntity {
 
 		if (newQuestion.getContent() != null)
 			content = newQuestion.getContent();
+	}
+
+	public void setTags(List<QuestionTag> tags) {
+		this.tags = tags;
 	}
 
 	public static final class Builder {

@@ -13,13 +13,14 @@ import javax.persistence.UniqueConstraint;
 
 import com.codestates.sof.domain.tag.entity.Tag;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(
 	uniqueConstraints = @UniqueConstraint(name = "unq_question_tag", columnNames = {"tag_id", "question_id"})
 )
