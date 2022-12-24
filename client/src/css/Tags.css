@@ -42,3 +42,19 @@
   color: #9ac6e6;
   background-color: #388fcd;
 }
+
+.tagsOverlay {
+  padding: 24px 8px;
+}
+
+.tagsOverlay p:nth-child(1) {
+  font-size: 15px;
+  font-weight: bold;
+  padding: 0px 2px;
+  line-height: 17px;
+}
+.tagsOverlay p:nth-child(2) {
+  font-size: 12px;
+  margin: 2px 0px 6px;
+  line-height: 15px;
+}

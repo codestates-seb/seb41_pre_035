@@ -1,0 +1,18 @@
+.btn {
+  display: block;
+  background-color: #0a95ff;
+  color: white;
+  margin: 8px 0px 0px;
+  text-align: center;
+  padding: 10.4px;
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+}
+.inlineBtn {
+  display: inline;
+}
+.redBtn {
+  color: #c22e32;
+  background-color: white;
+}
