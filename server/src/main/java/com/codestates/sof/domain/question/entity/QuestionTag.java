@@ -1,5 +1,7 @@
 package com.codestates.sof.domain.question.entity;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,7 +27,8 @@ import lombok.Setter;
 	uniqueConstraints = @UniqueConstraint(name = "unq_question_tag", columnNames = {"tag_id", "question_id"})
 )
 public class QuestionTag {
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "question_tag_id")
 	private Long questionTagId;
 
@@ -40,5 +43,23 @@ public class QuestionTag {
 	public QuestionTag(Tag tag, Question question) {
 		this.tag = tag;
 		this.question = question;
+	}
+
+	public String getTagName() {
+		return tag.getName();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		return Objects.equals(questionTagId, ((QuestionTag)o).questionTagId);
+	}
+
+	@Override
+	public int hashCode() {
+		return questionTagId != null ? questionTagId.hashCode() : 0;
 	}
 }

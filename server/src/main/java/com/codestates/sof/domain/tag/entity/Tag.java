@@ -2,6 +2,7 @@ package com.codestates.sof.domain.tag.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,8 +45,26 @@ public class Tag {
 		this.taggedCount++;
 	}
 
+	public void decreaseTaggedCount() {
+		this.taggedCount--;
+	}
+
 	public void beforeSave() {
 		this.name = name.toLowerCase();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		return Objects.equals(tagId, ((Tag)o).tagId);
+	}
+
+	@Override
+	public int hashCode() {
+		return tagId != null ? tagId.hashCode() : 0;
 	}
 
 	public static final class Builder {
