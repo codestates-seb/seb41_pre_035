@@ -38,12 +38,12 @@ public class QuestionService {
 	public Question patch(Long questionId, Long memberId, Question newQuestion) {
 		Question question = findExistsQuestion(questionId);
 
-		// TODO(AUTH): if (!question.isItWriter(memberId)) {
-		if (question.getMember().getMemberId() != memberId) {
+		if (!question.isWrittenBy(memberId)) {
 			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
 		}
 
 		question.update(newQuestion);
+		replaceTagNameToTag(question);
 
 		return question;
 	}
@@ -51,10 +51,10 @@ public class QuestionService {
 	public void delete(Long memberId, Long questionId) {
 		Question question = findExistsQuestion(questionId);
 
-		if (question.getMember().getMemberId() != memberId)
+		if (!question.isWrittenBy(memberId))
 			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
 
-		// TODO(AUTH, COMMENT): 답변이나 댓글이 있을 경우.
+		// TODO (AUTH, COMMENT)
 
 		questionRepository.delete(question);
 	}
@@ -64,6 +64,7 @@ public class QuestionService {
 			.forEach(questionTag -> {
 				Tag tag = tagService.findBy(questionTag.getTag().getName());
 				questionTag.setTag(tag);
+				questionTag.setQuestion(question);
 			});
 	}
 

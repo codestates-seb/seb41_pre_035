@@ -2,6 +2,8 @@ package com.codestates.sof.domain.question.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -61,7 +63,7 @@ public class Question extends BaseEntity {
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Answer> answers = new ArrayList<>();
 
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<QuestionTag> tags = new ArrayList<>();
 
 	public Question(Member writer, String title, String content) {
@@ -83,6 +85,10 @@ public class Question extends BaseEntity {
 		this.viewCount++;
 	}
 
+	public boolean isWrittenBy(Long memberId) {
+		return memberId.equals(member.getMemberId());
+	}
+
 	public boolean isItWriter() {
 		return false;
 	}
@@ -97,14 +103,61 @@ public class Question extends BaseEntity {
 
 		if (newQuestion.getContent() != null)
 			content = newQuestion.getContent();
+
+		update(newQuestion.getTagNames());
+
+		// comment
+		// bookmark
+		// adopted Answer
 	}
 
-	public void addTag(String tagName) {
-		this.tags.add(new QuestionTag(new Tag(tagName), this));
+	public void update(List<String> newTags) {
+		List<String> oldTags = getTagNames();
+
+		// 1. 필요없는걸 지운다.
+		new ArrayList<>(tags).stream()
+			.filter(tag -> !newTags.contains(tag.getTagName()))
+			.forEach(tag -> {
+				tag.getTag().decreaseTaggedCount();
+				tags.remove(tag);
+			});
+
+		// 2. 필요한걸 더한다.
+		newTags.stream()
+			.filter(tagName -> !oldTags.contains(tagName))
+			.forEach(tag -> {
+				Tag newTag = addTag(tag);
+				newTag.increaseTaggedCount();
+			});
+	}
+
+	public Tag addTag(String tagName) {
+		Tag tag = new Tag(tagName.toLowerCase());
+		tags.add(new QuestionTag(tag, this));
+		return tag;
 	}
 
 	public void setTags(List<QuestionTag> tags) {
 		this.tags = tags;
+	}
+
+	public List<String> getTagNames() {
+		return tags.stream().map(QuestionTag::getTagName).collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Question question = (Question)o;
+		return Objects.equals(questionId, question.questionId);
+	}
+
+	@Override
+	public int hashCode() {
+		return questionId != null ? questionId.hashCode() : 0;
 	}
 
 	public static final class Builder {
