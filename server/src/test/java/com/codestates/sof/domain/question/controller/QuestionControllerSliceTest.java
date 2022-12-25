@@ -50,9 +50,9 @@ class QuestionControllerSliceTest {
 	@MockBean
 	QuestionService service;
 
-	static Question question = (Question)QuestionStub.Type.DEFAULT.getData();
-	static QuestionDto.Post post = (QuestionDto.Post)QuestionStub.Type.POST.getData();
-	static QuestionDto.Response response = (QuestionDto.Response)QuestionStub.Type.RESPONSE.getData();
+	static Question question = (Question)QuestionStub.Type.DEFAULT.create();
+	static QuestionDto.Post post = (QuestionDto.Post)QuestionStub.Type.POST.create();
+	static QuestionDto.Response response = (QuestionDto.Response)QuestionStub.Type.RESPONSE.create();
 
 	@Test
 	void testForWrite() throws Exception {

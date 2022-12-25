@@ -3,6 +3,7 @@ package com.codestates.sof.domain.stub;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 import com.codestates.sof.domain.member.controller.StubData;
 import com.codestates.sof.domain.member.entity.Member;
@@ -11,28 +12,38 @@ import com.codestates.sof.domain.question.entity.Question;
 
 public class QuestionStub {
 	public enum Type {
-		DEFAULT(getDefaultQuestion()),
-		POST(getPostQuestion()),
-		RESPONSE(getResponse());
+		DEFAULT(QuestionStub::getDefaultQuestion),
+		POST(QuestionStub::getPostRequest),
+		PATCH(QuestionStub::getPathRequest),
+		RESPONSE(QuestionStub::getResponse);
 
-		private final Object data;
+		private final Supplier<Object> data;
 
-		Type(Object data) {
+		Type(Supplier<Object> data) {
 			this.data = data;
 		}
 
-		public Object getData() {
-			return data;
+		public Object create() {
+			return data.get();
 		}
 	}
 
-	private static QuestionDto.Post getPostQuestion() {
+	private static QuestionDto.Post getPostRequest() {
 		QuestionDto.Post post = new QuestionDto.Post();
 		post.setWriterId(1L);
 		post.setTitle("title");
 		post.setContent("content");
 		post.setTags(List.of("java", "javascript", "python"));
 		return post;
+	}
+
+	private static QuestionDto.Patch getPathRequest() {
+		QuestionDto.Patch patch = new QuestionDto.Patch();
+		patch.setMemberId(1L);
+		patch.setTitle("modified-title");
+		patch.setContent("modified-content");
+		patch.setTags(List.of("java", "javascript"));
+		return patch;
 	}
 
 	private static QuestionDto.Response getResponse() {
