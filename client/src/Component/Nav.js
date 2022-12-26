@@ -1,4 +1,5 @@
 import React from "react";
+import "../css/nav.css";
 import { Link } from "react-router-dom";
 
 const Nav = () => {
@@ -6,32 +7,32 @@ const Nav = () => {
     <>
       <div className="navMargin">
         <div className="navContainer">
-          <div className="menu">
+          <div className="navMenu">
             <ul>
-              <li className="menuHover">
+              <li className="navMenuHover">
                 <Link to="/">Home　　　　　　　　　</Link>
               </li>
               <li>PUBLIC</li>
-              <ul className="subMenu">
-                <li className="menuHover">
+              <ul className="navSubMenu">
+                <li className="navMenuHover">
                   <Link to="/questions">
                     <i className="fa-solid fa-earth-americas"></i> Questions　　　　　
                   </Link>
                 </li>
-                <li className="menuHover">
+                <li className="navMenuHover">
                   <Link to="/tags">　 Tags　　　　　　　</Link>
                 </li>
-                <li className="menuHover">
+                <li className="navMenuHover">
                   <Link to="/users">　 Users　　　　　　　</Link>
                 </li>
-                <li className="menuHover">　 Companies</li>
+                <li className="navMenuHover">　 Companies</li>
               </ul>
               <li>COLLECTIVES</li>
-              <ul className="subMenu">
+              <ul className="navSubMenu">
                 <li>Explore Collectives</li>
               </ul>
               <li>TEAMS</li>
-              <ul className="subMenu">
+              <ul className="navSubMenu">
                 <li>Create free Team</li>
               </ul>
             </ul>

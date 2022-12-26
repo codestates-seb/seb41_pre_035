@@ -95,7 +95,7 @@ const Login = () => {
   return (
     <div className="loginWrapper">
       <div className="inputReuse">
-        <Logo text={false} />
+        <Logo text={false} size={true} />
         <SocialBtn text={"log in"} className="loginsocial" />
       </div>
 
@@ -103,12 +103,12 @@ const Login = () => {
         <div>
           <InputEmail value={loginEmailBind} classname={loginEmailError || loginValidError ? "errorInput" : "inputEmailInput"} />
           {loginEmailError ? <div className="errorMessage">Email을 입력해주세요.</div> : null}
-          {loginValidError && !loginEmailError ? <div className="errorMessage">이메일 형식으로 입력해주세요.</div> : null}
+          {loginValidError && !loginEmailError ? <div className="errorMessage">Email 형식으로 입력해주세요.</div> : null}
 
           <InputPw value={loginPasswordBind} classname={loginPasswordError ? "errorInput" : "inputPwInput"} type={"need"} />
           {loginPasswordError ? <div className="errorMessage">Password를 입력해주세요.</div> : null}
 
-          <InputBtn value={"Log in"} onclick={handleLoginBtn} />
+          <InputBtn text={"Log in"} onclick={handleLoginBtn} />
         </div>
       </form>
 

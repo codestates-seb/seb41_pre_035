@@ -126,6 +126,7 @@ class QuestionControllerSliceTest {
 		patch.setContent("content");
 
 		given(service.patch(anyLong(), anyLong(), any())).willReturn(question);
+		given(mapper.questionToResponse(any(Question.class))).willReturn(response);
 
 		// when
 		ResultActions actions = mvc.perform(
@@ -153,18 +154,7 @@ class QuestionControllerSliceTest {
 					)
 				),
 				responseFields(
-					List.of(
-						fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("질문 식별자"),
-						fieldWithPath("data.writerId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
-						fieldWithPath("data.title").type(JsonFieldType.STRING).description("질문 제목"),
-						fieldWithPath("data.content").type(JsonFieldType.STRING).description("질문 내용"),
-						fieldWithPath("data.viewCount").type(JsonFieldType.NUMBER).description("조회수"),
-						fieldWithPath("data.voteCount").type(JsonFieldType.NUMBER).description("투표수 총합"),
-						fieldWithPath("data.isItWriter").type(JsonFieldType.BOOLEAN).description("작성자여부"),
-						fieldWithPath("data.hasAlreadyVoted").type(JsonFieldType.BOOLEAN).description("투표여부"),
-						fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성일자"),
-						fieldWithPath("data.lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자")
-					)
+					getDescription()
 				)
 			));
 	}

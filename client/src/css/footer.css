@@ -1,0 +1,20 @@
+.footerContainer {
+  padding: 50px;
+  font-size: 12px;
+  width: 100%;
+  height: 280px;
+  background-color: #232629;
+  color: #9199a1;
+  position: relative;
+  bottom: 0;
+  margin-top: 100%;
+  display: flex;
+}
+.footerLogo {
+}
+.footerMenus {
+  display: flex;
+}
+.footerMenu {
+  margin: 0 20px;
+}

@@ -23,13 +23,13 @@ import com.codestates.sof.domain.common.BaseEntity;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.tag.entity.Tag;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(indexes = {
 	@Index(name = "idx_question_title", columnList = "title"),
 	@Index(name = "idx_question_created_at", columnList = "created_at"),
@@ -37,8 +37,8 @@ import lombok.NoArgsConstructor;
 })
 public class Question extends BaseEntity {
 	@Id
+	@Setter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "question_id", nullable = false)
 	private Long questionId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -62,6 +62,9 @@ public class Question extends BaseEntity {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Answer> answers = new ArrayList<>();
+
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<QuestionComment> comments = new ArrayList<>();
 
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<QuestionTag> tags = new ArrayList<>();
@@ -97,26 +100,28 @@ public class Question extends BaseEntity {
 		return false;
 	}
 
-	public void update(Question newQuestion) {
+	public void update(Question newQuestion, List<Tag> tags) {
 		if (newQuestion.getTitle() != null)
 			title = newQuestion.getTitle();
 
 		if (newQuestion.getContent() != null)
 			content = newQuestion.getContent();
 
-		update(newQuestion.getTagNames());
+		update(tags);
 
 		// comment
 		// bookmark
 		// adopted Answer
 	}
 
-	public void update(List<String> newTags) {
-		List<String> oldTags = getTagNames();
+	// *** Tag ***
+
+	public void update(List<Tag> newTags) {
+		List<Tag> oldTags = tags.stream().map(QuestionTag::getTag).collect(Collectors.toList());
 
 		// 1. 필요없는걸 지운다.
 		new ArrayList<>(tags).stream()
-			.filter(tag -> !newTags.contains(tag.getTagName()))
+			.filter(tag -> !newTags.contains(tag.getTag()))
 			.forEach(tag -> {
 				tag.getTag().decreaseTaggedCount();
 				tags.remove(tag);
@@ -124,7 +129,7 @@ public class Question extends BaseEntity {
 
 		// 2. 필요한걸 더한다.
 		newTags.stream()
-			.filter(tagName -> !oldTags.contains(tagName))
+			.filter(tag -> !oldTags.contains(tag))
 			.forEach(tag -> {
 				Tag newTag = addTag(tag);
 				newTag.increaseTaggedCount();
@@ -137,12 +142,25 @@ public class Question extends BaseEntity {
 		return tag;
 	}
 
-	public void setTags(List<QuestionTag> tags) {
-		this.tags = tags;
+	public Tag addTag(Tag tag) {
+		tags.add(new QuestionTag(tag, this));
+		return tag;
 	}
 
 	public List<String> getTagNames() {
 		return tags.stream().map(QuestionTag::getTagName).collect(Collectors.toList());
+	}
+
+	public void setTags(List<QuestionTag> tags) {
+		this.tags = tags;
+	}
+
+	// *** Comment ***
+
+	public QuestionComment addComment(QuestionComment comment) {
+		comment.setQuestion(this);
+		comments.add(comment);
+		return comment;
 	}
 
 	@Override

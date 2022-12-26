@@ -143,4 +143,7 @@ a {
   --border-red: 1px solid rgb(216, 18, 18);
   --outline-gray: 4px solid #ddddde;
   --outline-blue: 4px solid #d2dfed;
+  --box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  --little-font-size: 13px;
+  --little-font-color: #6a737c;
 }
