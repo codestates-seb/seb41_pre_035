@@ -12,10 +12,11 @@ import com.codestates.sof.domain.question.page.QuestionPageableHandlerMethodArgu
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-	// @property -> static 제거
+	// @property 사용시 static 제거
 	private static final String PAGE_PARAMETER_NAME = "page";
 	private static final String SIZE_PARAMETER_NAME = "size";
 	private static final String SORT_PARAMETER_NAME = "sort";
@@ -36,9 +37,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Bean
 	public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
-		//
 		return new Jackson2ObjectMapperBuilder()
 			.serializationInclusion(JsonInclude.Include.NON_NULL)
+			.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 			.visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
 			.visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
 			.visibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE);
