@@ -114,6 +114,8 @@ public class Question extends BaseEntity {
 		// adopted Answer
 	}
 
+	// *** Tag ***
+
 	public void update(List<String> newTags) {
 		List<String> oldTags = getTagNames();
 
@@ -146,6 +148,14 @@ public class Question extends BaseEntity {
 
 	public List<String> getTagNames() {
 		return tags.stream().map(QuestionTag::getTagName).collect(Collectors.toList());
+	}
+
+	// *** Comment ***
+
+	public QuestionComment addComment(QuestionComment comment) {
+		comment.setQuestion(this);
+		comments.add(comment);
+		return comment;
 	}
 
 	@Override

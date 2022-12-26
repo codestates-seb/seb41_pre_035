@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(
@@ -31,7 +32,6 @@ import lombok.Setter;
 	})
 public class QuestionComment extends BaseEntity {
 	@Id
-	@Setter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long questionCommentId;
 

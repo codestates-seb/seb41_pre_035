@@ -31,7 +31,7 @@ public class QuestionCommentContoller {
 		@PathVariable("question-id") @Positive long questionId,
 		@RequestBody @Valid QuestionCommentDto.Post post) {
 
-		QuestionComment qc = mapper.postToQuestionComment(post);
+		QuestionComment qc = questionCommentService.comment(questionId, mapper.postToQuestionComment(post));
 		QuestionCommentDto.Response response = mapper.questionCommentToResponse(qc);
 
 		return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
