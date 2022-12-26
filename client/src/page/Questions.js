@@ -13,14 +13,14 @@ function Questions() {
   };
 
   return (
-    <>
+    <div className="qContent">
       <p>All Quesitons</p>
       <button className="btn" onClick={handleClick}>
         Ask Quesitons
       </button>
       <p>0000 questions</p>
       <QuestionItem />
-    </>
+    </div>
   );
 }
 

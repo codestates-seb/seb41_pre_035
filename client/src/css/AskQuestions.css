@@ -1,11 +1,14 @@
-.content {
-  padding: 0px 24px 24px;
+.qContent {
+  padding: 80px 24px 24px;
 }
 
-.content > div {
+.qContent > div {
   margin-bottom: 10px;
 }
-
+.bigTitle {
+  height: 130px;
+  position: relative;
+}
 .postTitle {
   padding: 24px;
 }
@@ -30,10 +33,6 @@
 
 .dWidth {
   width: 850px;
-}
-
-.dStatic btn {
-  position: static;
 }
 
 .bigTitle h1 {
