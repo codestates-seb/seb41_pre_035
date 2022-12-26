@@ -10,9 +10,9 @@ public class MemberDto {
 	@Getter
 	@Setter
 	@AllArgsConstructor
-	public static class Post{
+	public static class Post {
 		private String email;
-		private  String password;
+		private String password;
 		private String name;
 
 	}
@@ -27,6 +27,7 @@ public class MemberDto {
 		private String password;
 
 		// TODO : Profile 객체 필드값도 변경해야합니다.
+		private ProfileDto profile;
 	}
 
 	@Getter
@@ -38,5 +39,6 @@ public class MemberDto {
 		private boolean verificationFlag;
 		private boolean deleteFlag;
 		private LocalDateTime lastActivateAt;
+		private ProfileDto profile;
 	}
 }
