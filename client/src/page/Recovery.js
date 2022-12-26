@@ -69,10 +69,10 @@ const Recovery = () => {
           <div className="recoveryDescription">Forgot your account’s password or having trouble logging into your Team? Enter your email address and we’ll send you a recovery link.</div>
 
           <InputEmail value={reEmailBind} classname={reEmailError || reEmailValidError ? "errorInput" : "inputEmailInput"} />
-          {reEmailError ? <div className="errorMessage">Email cannot be empty.</div> : null}
-          {reEmailValidError && !reEmailError ? <div className="errorMessage">The email is not a valid email address.</div> : null}
+          {reEmailError ? <div className="errorMessage">Email을 입력해주세요.</div> : null}
+          {reEmailValidError && !reEmailError ? <div className="errorMessage">Email 형식으로 입력해주세요.</div> : null}
 
-          <InputBtn value={"Send recovery email"} onclick={handleReEmailBtn} className="recoveryBtn" />
+          <InputBtn text={"Send recovery email"} onclick={handleReEmailBtn} className="recoveryBtn" />
         </form>
       )}
     </div>

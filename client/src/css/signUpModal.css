@@ -1,0 +1,51 @@
+.signUpmodalContainer {
+  position: relative;
+}
+
+/* 모달 버튼 설정 */
+.signUpModalBtn {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* 모달 아이콘 설정 */
+.signUpModalIcon {
+  color: var(--little-font-color);
+  font-size: 15px;
+}
+
+/* 모달 창 바꺝을 누르면 꺼지게 만드는 것과 관련된 설정 */
+.signUpModalBackdrop {
+  width: 99vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+/* 모달 창 설정 */
+.signUpModalView {
+  background-color: white;
+  padding: 12px;
+  border: var(--border);
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+  width: 180px;
+
+  position: absolute;
+  top: -80px;
+  right: 30px;
+}
+
+/* 모달 창 글씨 설정 */
+.signUpModaText {
+  font-size: 14px;
+}
