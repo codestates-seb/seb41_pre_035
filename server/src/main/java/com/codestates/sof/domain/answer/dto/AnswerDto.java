@@ -43,8 +43,8 @@ public class AnswerDto {
 		private Long writerId;
 		private String content;
 		private int voteCount;
-		private Boolean isItWriter;
-		private Boolean hasAlreadyVoted;
+		private boolean isItWriter;
+		private boolean hasAlreadyVoted;
 		private LocalDateTime createdAt;
 		private LocalDateTime lastModifiedAt;
 
