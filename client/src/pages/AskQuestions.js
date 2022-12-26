@@ -8,6 +8,7 @@ import "../css/Editer.css";
 import "../css/Btn.css";
 import TAGS from "../data/Tags";
 import pencilICon from "../img/pngwing.com.png";
+const axios = require("axios");
 
 function AskQuestions() {
   const [question, setQuestion] = useState("");
@@ -16,13 +17,15 @@ function AskQuestions() {
   const [tag, setTag] = useState("");
   const [tagList, setTagList] = useState([]);
   const [post, setPost] = useState(false);
+  const [titleReview, setTitleReview] = useState(false);
   const [questionReview, setQuestionReview] = useState(false);
   const [resultReview, setResultReview] = useState(false);
   const [next, setNext] = useState([true, false, false, false]);
+  const [tagMax, setTagMax] = useState(false);
 
-  let tagMax = false;
   const titleInput = useRef();
   const tagsInput = useRef();
+  const reviewBtn = useRef();
 
   const handleTitleInput = (e) => {
     setTitle(e.target.value);
@@ -32,8 +35,10 @@ function AskQuestions() {
   };
   const handleReviewClick = () => {
     //입력값들을 검증
-    if (title.length === 0) {
+    if (title.length < 15) {
       titleInput.current.focus();
+      setTitleReview(true);
+      setNext([true, false, false, false]);
     } else if (question.length < 20) {
       setQuestionReview(true);
       setNext([false, true, false, false]);
@@ -59,7 +64,7 @@ function AskQuestions() {
       setTag("");
     } else {
       //tag의 개수가 5개를 넘어가는 경우 -> 더 이상 태그가 추가되지 않도록..
-      tagMax = true;
+      setTagMax(true);
       setTag("");
     }
   };
@@ -86,30 +91,28 @@ function AskQuestions() {
     } else if (idx === 2) {
       setNext([false, false, false, true]);
       tagsInput.current.focus();
+    } else if (idx === 3) {
+      reviewBtn.current.focus();
     }
   };
+  const questionBody = JSON.stringify({
+    memberId: 0,
+    title: title,
+    body: `${question}\n\n ${result}`,
+    tags: tagList,
+  });
   const handleQuestionSubmit = (e) => {
     e.preventDefault();
-    if (title && question && result) {
-      fetch("http://34.64.179.131:8080/questions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          memberId: Number,
-          title: title,
-          body: `${question}\n\n ${result}`,
-          tags: tagList,
-        }),
-      }).then((res) => {
+    axios
+      .post("http://34.64.179.131:8080/questions", questionBody, {
+        "Accept-Language": "ko",
+        "Content-Type": "application/json",
+      })
+      .then((res) => {
         if (res.ok) {
           alert("생성이 완료 되었습니다.");
         }
       });
-    } else {
-      //focus 이동 -> 다시 작성하도록..
-    }
   };
   return (
     <>
@@ -117,7 +120,7 @@ function AskQuestions() {
         <div className="bigTitle">
           <h1>Ask a public question</h1>
         </div>
-        <div className="notice dFlex ">
+        <div className="notice dWidth">
           <h2>Writing a good question</h2>
           <p>You’re ready to ask a programming-related question and this form will help guide you through the process.</p>
           <p>Looking to ask a non-programming question? See the topics here to find a relevant site.</p>
@@ -130,7 +133,7 @@ function AskQuestions() {
             <li>Review your question and post it to the site.</li>
           </ul>
         </div>
-        <div className="postTitle dFlex flexItem questionBorder">
+        <div className="postTitle dWidth flexItem questionBorder">
           <p>Title</p>
           <p>Be specific and imagine you're asking a question to another person.</p>
           <input
@@ -141,6 +144,7 @@ function AskQuestions() {
             value={title}
             onChange={handleTitleInput}
           ></input>
+          {titleReview && <p className="warnReview">You should write at least 15 characters.</p>}
           <button className="btn" onClick={() => handleNextClick(0)}>
             Next
           </button>
@@ -157,15 +161,15 @@ function AskQuestions() {
             </div>
           </div>
         )}
-        <div className="editer dFlex flexItem questionBorder">
+        <div className="editer dWidth flexItem questionBorder">
           <p>What are the details of your problem?</p>
           <p>Introduce the problem and expand on what you put in the title. Minimum 20 characters.</p>
           <MDEditor value={question} onChange={setQuestion} />
           <MDEditor.Markdown source={question} style={{ whiteSpace: "pre-wrap" }} />
+          {questionReview && <p className="warnReview">You should write at least 20 characters.</p>}
           <button className="btn" onClick={() => handleNextClick(1)}>
             Next
           </button>
-          {questionReview && <p className="warnReview">You should write at least 20 characters.</p>}
         </div>
         {next[1] && (
           <div className="psAbsolute flexItem questionBorder">
@@ -178,15 +182,15 @@ function AskQuestions() {
             </div>
           </div>
         )}
-        <div className="editer dFlex flexItem questionBorder">
+        <div className="editer dWidth flexItem questionBorder">
           <p>What did you try and what were you expecting?</p>
           <p>Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters.</p>
           <MDEditor value={result} onChange={setResult} />
           <MDEditor.Markdown source={result} style={{ whiteSpace: "pre-wrap" }} />
+          {resultReview && <p className="warnReview">You should write at least 20 characters.</p>}
           <button className="btn" onClick={() => handleNextClick(2)}>
             Next
           </button>
-          {resultReview && <p className="warnReview">You should write at least 20 characters.</p>}
         </div>
         {next[2] && (
           <div className="psAbsolute flexItem questionBorder">
@@ -201,13 +205,27 @@ function AskQuestions() {
             </div>
           </div>
         )}
-        <div className="tagsOverlay dFlex flexItem questionBorder">
+        <div className="tagsOverlay dWidth flexItem questionBorder">
           <p>Tags</p>
           <p>Add up to 5 tags to describe what your question is about. Start typing to see suggestions.</p>
-          <input className="input" type="text" value={tag} ref={tagsInput} onChange={handleTitleTag}></input>
-          <div className="tagsAutoComplete">
-            {tag &&
-              filterTags.map((el, idx) => (
+          <div className="flexTagItem questionBorder">
+            <ul className="tagList">
+              {tagList.map((el, idx) => (
+                <li key={idx} className="tag">
+                  <span className="tagTitle">
+                    {el}
+                    <span className="tagClose" onClick={() => removeTag(idx)}>
+                      x
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <input className="tagInput" type="text" value={tag} ref={tagsInput} onChange={handleTitleTag}></input>
+          </div>
+          {tag && (
+            <div className="tagsAutoComplete questionBorder">
+              {filterTags.map((el, idx) => (
                 <li key={idx} className="tag">
                   <span className="tagTitle" onClick={() => handleTagClick(el.title)}>
                     {el.title}
@@ -215,21 +233,13 @@ function AskQuestions() {
                   <p>{el.content}</p>
                 </li>
               ))}
-          </div>
-          <div className="tagList">
-            {tagList.map((el, idx) => (
-              <li key={idx} className="tag">
-                <span className="tagTitle">
-                  {el}
-                  <span className="tagClose" onClick={() => removeTag(idx)}>
-                    x
-                  </span>
-                </span>
-              </li>
-            ))}
-          </div>
+            </div>
+          )}
+
           {tagMax && <p className="warnReview">The maximum number of tags allowed is 5.</p>}
-          <button className="btn">Next</button>
+          <button className="btn" onClick={() => handleNextClick(3)}>
+            Next
+          </button>
         </div>
         {next[3] && (
           <div className="psAbsolute flexItem questionBorder">
@@ -246,18 +256,18 @@ function AskQuestions() {
         )}
         <div className="flexItem formSubmit">
           {!post && (
-            <button className="btn inlineBtn" onClick={handleReviewClick}>
+            <button className="btn inlineBtn flexItem" ref={reviewBtn} onClick={handleReviewClick}>
               Review your question
             </button>
           )}
 
           {post && (
-            <button className="btn inlineBtn" onClick={handleQuestionSubmit}>
+            <button className="btn inlineBtn flexItem" onClick={handleQuestionSubmit}>
               Post your question
             </button>
           )}
           {(title || result || tag || question) && (
-            <button className="btn redBtn" onClick={handleClear}>
+            <button className="btn redBtn flexItem" onClick={handleClear}>
               Discard draft
             </button>
           )}

@@ -1,12 +1,43 @@
 .tagsAutoComplete {
-  border: 1px solid;
   background-color: white;
   position: absolute;
+  width: 830px;
+  height: 300px;
+  overflow: auto;
 }
-
+.tagsOverlay {
+  padding: 24px 24px;
+}
+.flexTagItem {
+  margin: -3px;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 0 8px;
+}
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 8px 0 0 0;
+}
 .tag {
   list-style: none;
   float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+}
+.tagInput {
+  flex: 1;
+  border: none;
+  height: 46px;
+  font-size: 15px;
+  padding: 4px 0 0 0;
+}
+.tagInput:focus {
+  outline: transparent;
 }
 
 .tagTitle {
@@ -19,16 +50,16 @@
   padding: 0 8px;
   font-size: 14px;
   list-style: none;
-  border-radius: 4px;
   margin: 0 8px 8px 0;
   background: #e1ecf4;
+  border-radius: 8%;
 }
 
 .tagClose {
   display: block;
   width: 20px;
   height: 20px;
-  line-height: 20px;
+  line-height: 17px;
   text-align: center;
   font-size: 20px;
   font-weight: bold;
@@ -41,10 +72,6 @@
 .tagClose:hover {
   color: #9ac6e6;
   background-color: #388fcd;
-}
-
-.tagsOverlay {
-  padding: 24px 8px;
 }
 
 .tagsOverlay p:nth-child(1) {

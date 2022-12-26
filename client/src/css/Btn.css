@@ -2,12 +2,15 @@
   display: block;
   background-color: #0a95ff;
   color: white;
-  margin: 8px 0px 0px;
+  margin: 10px;
   text-align: center;
   padding: 10.4px;
   cursor: pointer;
   border: none;
   border-radius: 3px;
+}
+.btn:hover {
+  background-color: #166bac;
 }
 .inlineBtn {
   display: inline;
@@ -15,4 +18,7 @@
 .redBtn {
   color: #c22e32;
   background-color: white;
+}
+.redBtn:hover {
+  background-color: rgb(194, 195, 195);
 }
