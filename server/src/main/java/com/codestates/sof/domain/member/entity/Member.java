@@ -35,10 +35,10 @@ public class Member extends BaseEntity {
 	@Column(nullable = false, length = 127)
 	private String name;
 
-	@Column(nullable = false, length = 63)
+	@Column(nullable = false, length = 127)
 	private String encryptedPassword;
 
-	@Column(length = 63)
+	@Column(length = 127)
 	private String beforeEncryptedPassword;
 
 	@Column(nullable = false)
