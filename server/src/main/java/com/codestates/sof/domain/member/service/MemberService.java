@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.codestates.sof.domain.common.CustomBeanUtils;
 import com.codestates.sof.domain.member.entity.Member;
+import com.codestates.sof.domain.member.entity.Profile;
 import com.codestates.sof.domain.member.repository.MemberRepository;
 import com.codestates.sof.global.error.dto.ExceptionCode;
 import com.codestates.sof.global.error.exception.BusinessLogicException;
@@ -19,7 +20,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MemberService {
 	private final MemberRepository memberRepository;
-	private final CustomBeanUtils<Member> beanUtils;
+	private final CustomBeanUtils<Member> memberCustomBeanUtils;
+	private final CustomBeanUtils<Profile> profileCustomBeanUtils;
 
 	public Member createMember(Member member) {
 		verifyUserExist(member.getEmail());
@@ -50,12 +52,18 @@ public class MemberService {
 	public Member updateMember(Member member) {
 		Member findMember = findMember(member.getMemberId());
 
+		// Profile의 변경사항이 있으면 Profile 객체 먼저 업데이트 후 업데이트 된 Profile 객체를 Member에 업데이트 해야합니다.
+		if (member.getProfile() != null) {
+			profileCustomBeanUtils.copyNonNullProperties(member.getProfile(), findMember.getProfile());
+			member.setProfile(findMember.getProfile());
+		}
+
 		// TODO: 비밀번호 변경이 있으면 암호화를 해주어야 합니다. -> aop로 가능할 듯?
 		Optional.ofNullable(member.getEncryptedPassword()).ifPresent(pass -> {
 			member.setBeforeEncryptedPassword(findMember.getEncryptedPassword());
 			member.setEncryptedPassword(pass);
 		});
-		beanUtils.copyNonNullProperties(member, findMember);
+		memberCustomBeanUtils.copyNonNullProperties(member, findMember);
 
 		return memberRepository.save(findMember);
 	}
