@@ -1,14 +1,27 @@
 package com.codestates.sof.domain.question.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.common.BaseEntity;
+import com.codestates.sof.domain.member.entity.Member;
+import com.codestates.sof.domain.tag.entity.Tag;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,9 +31,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(indexes = {
-	@Index(name = "idx_member_id", columnList = "member_id"),
 	@Index(name = "idx_question_title", columnList = "title"),
-	@Index(name = "idx_question_created_at", columnList = "created_at")
+	@Index(name = "idx_question_created_at", columnList = "created_at"),
+	@Index(name = "idx_question_view_count", columnList = "view_count")
 })
 public class Question extends BaseEntity {
 	@Id
@@ -28,8 +41,9 @@ public class Question extends BaseEntity {
 	@Column(name = "question_id", nullable = false)
 	private Long questionId;
 
-	@Column(name = "member_id", nullable = false, updatable = false)
-	private Long writerId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", updatable = false)
+	private Member member;
 
 	@Column(name = "title", nullable = false)
 	private String title;
@@ -43,20 +57,36 @@ public class Question extends BaseEntity {
 	@Column(name = "vote_count", nullable = false)
 	private int voteCount;
 
-	public Question(Long writerId, String title, String content) {
-		this.writerId = writerId;
+	@Column(name = "has_adopted_answer")
+	private boolean hasAdoptedAnswer;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Answer> answers = new ArrayList<>();
+
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<QuestionTag> tags = new ArrayList<>();
+
+	public Question(Member writer, String title, String content) {
+		this(writer, title, content, new ArrayList<>());
+	}
+
+	public Question(Member writer, String title, String content, List<QuestionTag> tags) {
+		this.member = writer;
 		this.title = title;
 		this.content = content;
-		this.viewCount = this.voteCount = 0;
+		this.tags = tags;
 	}
 
-	public void postWrote() {
-		// TODO
+	public void increaseTaggedCountForAllTags() {
+		tags.forEach(tag -> tag.getTag().increaseTaggedCount());
 	}
 
-	public void afterFound() {
+	public void increaseViewCount() {
 		this.viewCount++;
-		// TODO
+	}
+
+	public boolean isWrittenBy(Long memberId) {
+		return memberId.equals(member.getMemberId());
 	}
 
 	public boolean isItWriter() {
@@ -73,15 +103,71 @@ public class Question extends BaseEntity {
 
 		if (newQuestion.getContent() != null)
 			content = newQuestion.getContent();
+
+		update(newQuestion.getTagNames());
+
+		// comment
+		// bookmark
+		// adopted Answer
+	}
+
+	public void update(List<String> newTags) {
+		List<String> oldTags = getTagNames();
+
+		// 1. 필요없는걸 지운다.
+		new ArrayList<>(tags).stream()
+			.filter(tag -> !newTags.contains(tag.getTagName()))
+			.forEach(tag -> {
+				tag.getTag().decreaseTaggedCount();
+				tags.remove(tag);
+			});
+
+		// 2. 필요한걸 더한다.
+		newTags.stream()
+			.filter(tagName -> !oldTags.contains(tagName))
+			.forEach(tag -> {
+				Tag newTag = addTag(tag);
+				newTag.increaseTaggedCount();
+			});
+	}
+
+	public Tag addTag(String tagName) {
+		Tag tag = new Tag(tagName.toLowerCase());
+		tags.add(new QuestionTag(tag, this));
+		return tag;
+	}
+
+	public void setTags(List<QuestionTag> tags) {
+		this.tags = tags;
+	}
+
+	public List<String> getTagNames() {
+		return tags.stream().map(QuestionTag::getTagName).collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Question question = (Question)o;
+		return Objects.equals(questionId, question.questionId);
+	}
+
+	@Override
+	public int hashCode() {
+		return questionId != null ? questionId.hashCode() : 0;
 	}
 
 	public static final class Builder {
 		private Long questionId;
-		private Long writerId;
+		private Member writer;
 		private String title;
 		private String content;
 		private int viewCount;
 		private int voteCount;
+		private List<QuestionTag> tags;
 
 		private Builder() {
 		}
@@ -95,8 +181,8 @@ public class Question extends BaseEntity {
 			return this;
 		}
 
-		public Builder writerId(Long writerId) {
-			this.writerId = writerId;
+		public Builder writer(Member writer) {
+			this.writer = writer;
 			return this;
 		}
 
@@ -120,11 +206,17 @@ public class Question extends BaseEntity {
 			return this;
 		}
 
+		public Builder tags(List<QuestionTag> tags) {
+			this.tags = tags;
+			return this;
+		}
+
 		public Question build() {
-			Question question = new Question(writerId, title, content);
+			Question question = new Question(writer, title, content);
 			question.questionId = this.questionId;
 			question.viewCount = this.viewCount;
 			question.voteCount = this.voteCount;
+			question.tags = this.tags;
 			return question;
 		}
 	}

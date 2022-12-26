@@ -18,6 +18,18 @@ public class MemberDto {
 	}
 
 	@Getter
+	@Setter
+	@AllArgsConstructor
+	public static class Patch {
+		private long memberId;
+		private String name;
+		// TODO : 비밀번호만 변경하는 로직이 따로 필요할까?
+		private String password;
+
+		// TODO : Profile 객체 필드값도 변경해야합니다.
+	}
+
+	@Getter
 	@AllArgsConstructor
 	public static class Response {
 		private long memberId;

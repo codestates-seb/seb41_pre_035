@@ -11,12 +11,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,12 +28,14 @@ import com.codestates.sof.domain.question.dto.QuestionDto;
 import com.codestates.sof.domain.question.entity.Question;
 import com.codestates.sof.domain.question.mapper.QuestionMapper;
 import com.codestates.sof.domain.question.service.QuestionService;
+import com.codestates.sof.domain.stub.QuestionStub;
 import com.codestates.sof.global.utils.TestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @AutoConfigureRestDocs
 @ActiveProfiles("local")
 @MockBean(JpaMetamodelMappingContext.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @WebMvcTest({QuestionController.class, QuestionMapper.class})
 class QuestionControllerSliceTest {
 	@Autowired
@@ -40,61 +44,45 @@ class QuestionControllerSliceTest {
 	@Autowired
 	ObjectMapper om;
 
-	@Autowired
+	@MockBean
 	QuestionMapper mapper;
 
 	@MockBean
 	QuestionService service;
 
+	static Question question = (Question)QuestionStub.Type.DEFAULT.create();
+	static QuestionDto.Post post = (QuestionDto.Post)QuestionStub.Type.POST.create();
+	static QuestionDto.Response response = (QuestionDto.Response)QuestionStub.Type.RESPONSE.create();
+
 	@Test
 	void testForWrite() throws Exception {
 		// given
-		Question question = getDefaultQuestion();
-		QuestionDto.Post post = new QuestionDto.Post();
-		post.setWriterId(1L);
-		post.setTitle("title");
-		post.setContent("content");
+		given(service.write(any(Question.class))).willReturn(question);
+		given(mapper.questionToResponse(any(Question.class))).willReturn(response);
+		given(mapper.postToQuestion(any(QuestionDto.Post.class))).willReturn(question);
 
 		// when
-		when(service.write(any(Question.class))).thenReturn(question);
-
 		ResultActions actions = mvc.perform(TestUtils.POST.apply("/questions", om.writeValueAsString(post)));
 
 		// then
 		actions
 			.andDo(print())
-			.andExpect(jsonPath("$.questionId").value(1))
-			.andExpect(jsonPath("$.writerId").value(1))
-			.andExpect(jsonPath("$.title").value("title"))
-			.andExpect(jsonPath("$.content").value("content"))
-			.andExpect(jsonPath("$.viewCount").value(0))
-			.andExpect(jsonPath("$.voteCount").value(0))
-			.andExpect(jsonPath("$.isItWriter").value(true))
-			.andExpect(jsonPath("$.hasAlreadyVoted").value(false))
-			.andExpect(jsonPath("$.createdAt").exists())
-			.andExpect(jsonPath("$.lastModifiedAt").exists())
+			.andExpect(status().isCreated())
+			.andExpect(jsonPath("$.data.questionId").value(1))
+			.andExpect(jsonPath("$.data.createdAt").exists())
+			.andExpect(jsonPath("$.data.lastModifiedAt").exists())
 			.andDo(getDefaultDocument(
-				"question-post",
+				"question/post",
 				requestFields(
 					List.of(
-						fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("작성자 id"),
+						fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("작성자의 식별자"),
 						fieldWithPath("title").type(JsonFieldType.STRING).description("질문 제목"),
-						fieldWithPath("content").type(JsonFieldType.STRING).description("질문 내용")
+						fieldWithPath("content").type(JsonFieldType.STRING).description("질문 내용"),
+						fieldWithPath("tags").type(JsonFieldType.ARRAY).description("질문에 등록된 태그들의 이름")
 					)
 				),
 				responseFields(
-					List.of(
-						fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("생성된 질문 id"),
-						fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("작성자 id"),
-						fieldWithPath("title").type(JsonFieldType.STRING).description("질문 제목"),
-						fieldWithPath("content").type(JsonFieldType.STRING).description("질문 내용"),
-						fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수"),
-						fieldWithPath("voteCount").type(JsonFieldType.NUMBER).description("투표수 총합"),
-						fieldWithPath("isItWriter").type(JsonFieldType.BOOLEAN).description("작성자여부"),
-						fieldWithPath("hasAlreadyVoted").type(JsonFieldType.BOOLEAN).description("투표여부"),
-						fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),
-						fieldWithPath("lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자")
-					)
+					getDescription()
 				)
 			));
 	}
@@ -102,8 +90,8 @@ class QuestionControllerSliceTest {
 	@Test
 	void testForGetByAnonymous() throws Exception {
 		// given
-		Question question = getDefaultQuestion();
 		given(service.findById(any(Long.class))).willReturn(question);
+		given(mapper.questionToResponse(any(Question.class))).willReturn(response);
 
 		// when
 		ResultActions actions = mvc.perform(
@@ -114,27 +102,17 @@ class QuestionControllerSliceTest {
 		// then
 		actions
 			.andDo(print())
+			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.data.questionId").value(question.getQuestionId()))
-			.andExpect(jsonPath("$.data.writerId").value(question.getWriterId()))
+			.andExpect(jsonPath("$.data.writer.memberId").value(question.getMember().getMemberId()))
 			.andExpect(jsonPath("$.data.lastModifiedAt").exists())
 			.andDo(getDefaultDocument(
-				"question-get",
+				"question/get",
 				pathParameters(
 					parameterWithName("question-id").description("질문 식별자")
 				),
 				responseFields(
-					List.of(
-						fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("질문 식별자"),
-						fieldWithPath("data.writerId").type(JsonFieldType.NUMBER).description("작성자 식별자"),
-						fieldWithPath("data.title").type(JsonFieldType.STRING).description("질문 제목"),
-						fieldWithPath("data.content").type(JsonFieldType.STRING).description("질문 내용"),
-						fieldWithPath("data.viewCount").type(JsonFieldType.NUMBER).description("조회수"),
-						fieldWithPath("data.voteCount").type(JsonFieldType.NUMBER).description("투표수 총합"),
-						fieldWithPath("data.isItWriter").type(JsonFieldType.BOOLEAN).description("작성자여부"),
-						fieldWithPath("data.hasAlreadyVoted").type(JsonFieldType.BOOLEAN).description("투표여부"),
-						fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성일자"),
-						fieldWithPath("data.lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자")
-					)
+					getDescription()
 				)
 			));
 	}
@@ -142,7 +120,6 @@ class QuestionControllerSliceTest {
 	@Test
 	void testForPatch() throws Exception {
 		// given
-		Question question = getDefaultQuestion();
 		QuestionDto.Patch patch = new QuestionDto.Patch();
 		patch.setMemberId(1L);
 		patch.setTitle("title");
@@ -209,14 +186,26 @@ class QuestionControllerSliceTest {
 			));
 	}
 
-	private Question getDefaultQuestion() {
-		return Question.Builder.aQuestion()
-			.questionId(1L)
-			.writerId(1L)
-			.title("title")
-			.content("content")
-			.viewCount(0)
-			.voteCount(0)
-			.build();
+	private List<FieldDescriptor> getDescription() {
+		return List.of(
+			fieldWithPath("data.questionId").type(JsonFieldType.NUMBER).description("생성된 질문 식별자"),
+			fieldWithPath("data.writer").type(JsonFieldType.OBJECT).description("작성자 정보 (단일 Member 조회 API 응답과 동일)"),
+			fieldWithPath("data.writer.memberId").type(JsonFieldType.NUMBER).description("작성자의 식별자"),
+			fieldWithPath("data.writer.email").type(JsonFieldType.STRING).description("작성자 이메일"),
+			fieldWithPath("data.writer.name").type(JsonFieldType.STRING).description("작성자 이름"),
+			fieldWithPath("data.writer.verificationFlag").type(JsonFieldType.BOOLEAN).description("인증여부"),
+			fieldWithPath("data.writer.deleteFlag").type(JsonFieldType.BOOLEAN).description("삭제여부"),
+			fieldWithPath("data.writer.lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자"),
+			fieldWithPath("data.title").type(JsonFieldType.STRING).description("질문 제목"),
+			fieldWithPath("data.content").type(JsonFieldType.STRING).description("질문 내용"),
+			fieldWithPath("data.viewCount").type(JsonFieldType.NUMBER).description("조회수"),
+			fieldWithPath("data.voteCount").type(JsonFieldType.NUMBER).description("투표수 총합"),
+			fieldWithPath("data.isItWriter").type(JsonFieldType.BOOLEAN).description("작성자여부"),
+			fieldWithPath("data.hasAlreadyVoted").type(JsonFieldType.BOOLEAN).description("투표여부"),
+			fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성일자"),
+			fieldWithPath("data.lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자"),
+			fieldWithPath("data.tags").type(JsonFieldType.ARRAY).description("각 태그들의 정보 (단일 Tag 조회 API 응답과 동일)"),
+			fieldWithPath("data.answers").type(JsonFieldType.ARRAY).description("각 답변들의 정보 (단일 Answer 조회 API 응답과 동일)")
+		);
 	}
 }

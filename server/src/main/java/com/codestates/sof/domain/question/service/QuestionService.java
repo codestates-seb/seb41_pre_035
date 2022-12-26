@@ -1,10 +1,14 @@
 package com.codestates.sof.domain.question.service;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.codestates.sof.domain.question.entity.Question;
+import com.codestates.sof.domain.question.page.QuestionPageRequest;
 import com.codestates.sof.domain.question.repository.QuestionRepository;
+import com.codestates.sof.domain.tag.entity.Tag;
+import com.codestates.sof.domain.tag.service.TagService;
 import com.codestates.sof.global.error.dto.ExceptionCode;
 import com.codestates.sof.global.error.exception.BusinessLogicException;
 
@@ -15,18 +19,24 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class QuestionService {
 	private final QuestionRepository questionRepository;
+	private final TagService tagService;
 
 	@Transactional
 	public Question write(Question question) {
+		replaceTagNameToTag(question);
 		question = save(question);
-		question.postWrote();
+		question.increaseTaggedCountForAllTags();
 		return question;
+	}
+
+	public Page<Question> findAll(QuestionPageRequest pageRequest) {
+		return null;
 	}
 
 	@Transactional
 	public Question findById(Long questionId) {
 		Question question = findExistsQuestion(questionId);
-		question.afterFound();
+		question.increaseViewCount();
 		return question;
 	}
 
@@ -34,12 +44,12 @@ public class QuestionService {
 	public Question patch(Long questionId, Long memberId, Question newQuestion) {
 		Question question = findExistsQuestion(questionId);
 
-		// TODO(AUTH): if (!question.isItWriter(memberId)) {
-		if (!question.getWriterId().equals(memberId)) {
+		if (!question.isWrittenBy(memberId)) {
 			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
 		}
 
 		question.update(newQuestion);
+		replaceTagNameToTag(question);
 
 		return question;
 	}
@@ -47,12 +57,21 @@ public class QuestionService {
 	public void delete(Long memberId, Long questionId) {
 		Question question = findExistsQuestion(questionId);
 
-		if (!question.getWriterId().equals(memberId))
+		if (!question.isWrittenBy(memberId))
 			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
 
-		// TODO(AUTH, COMMENT): 답변이나 댓글이 있을 경우.
+		// TODO (AUTH, COMMENT)
 
 		questionRepository.delete(question);
+	}
+
+	private void replaceTagNameToTag(Question question) {
+		question.getTags()
+			.forEach(questionTag -> {
+				Tag tag = tagService.findBy(questionTag.getTag().getName());
+				questionTag.setTag(tag);
+				questionTag.setQuestion(question);
+			});
 	}
 
 	private Question findExistsQuestion(Long questionId) {

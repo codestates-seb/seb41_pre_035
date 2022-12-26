@@ -1,14 +1,19 @@
 package com.codestates.sof.domain.member.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.codestates.sof.domain.common.BaseEntity;
+import com.codestates.sof.domain.question.entity.Question;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,4 +48,7 @@ public class Member extends BaseEntity {
 
 	@Column(nullable = false)
 	private LocalDateTime lastActivateAt = LocalDateTime.now();
+
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+	private List<Question> questions = new ArrayList<>();
 }

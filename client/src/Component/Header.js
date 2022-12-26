@@ -1,6 +1,10 @@
 import React from "react";
 import "../css/header.css";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+const logoiconSize = { fontSize: "30px" };
+const logotextSize = { fontSize: "18px" };
 
 const Header = () => {
   const navigate = useNavigate();
@@ -8,7 +12,20 @@ const Header = () => {
   return (
     <>
       <div className="headerContainer">
-        <div className="headerLogo">stackoverflow</div>
+        <div className="headerLogo">
+          <Link to="/" className="logoWrapper">
+            <i className="fa-brands fa-stack-overflow" style={logoiconSize}></i>
+            <div className="logoText">
+              <div className="logoText1" style={logotextSize}>
+                stack
+              </div>
+              <div className="logoText2" style={logotextSize}>
+                overflow
+              </div>
+            </div>
+          </Link>
+          {/* <Logo text={true} /> */}
+        </div>
         <div className="headerMenu">
           <p>About</p>
           <p>Products</p>

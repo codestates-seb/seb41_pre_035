@@ -1,12 +1,12 @@
 package com.codestates.sof.domain.answer.entity;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.codestates.sof.domain.common.BaseEntity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,25 +16,28 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class Answer {
+public class Answer extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long answerId;
+	private Long answerId;
+
+	@Column(nullable = false, updatable = false)
+	private Long questionId;
+
+	@Column(nullable = false, updatable = false)
+	private Long writerId;
 
 	@Column(columnDefinition = "MEDIUMTEXT", nullable = false)
 	private String content;
 
-	@Column(length = 8)
+	@Column(nullable = false)
 	private int voteCount;
 
-	@Column(nullable = false)
-	private LocalDateTime createdAt = LocalDateTime.now();
-
-	@Column(nullable = false)
-	private LocalDateTime lastModifiedAt = LocalDateTime.now();
-
-	public Answer(String body) {
-		this.content = body;
+	public Answer(Long questionId, Long writerId, String content) {
+		this.questionId = questionId;
+		this.writerId = writerId;
+		this.content = content;
+		this.voteCount = 0;
 	}
 }
