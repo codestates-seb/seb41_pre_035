@@ -1,12 +1,18 @@
 import React from "react";
-import "./style.css";
+import "../css/footer.css";
+import Logo from "./Logo";
 
 const Footer = () => {
   return (
     <>
       <div className="footerContainer">
         <div className="footerMenus">
-          <div className="footerLogo">logo</div>
+          <div className="footerLogo">
+            <Logo text={false} />
+            {/* <Link to="/" className="logoWrapper">
+              <i className="fa-brands fa-stack-overflow"></i>
+            </Link> */}
+          </div>
           <div className="footerMenu">
             <p>STACK OVERFLOW</p>
             <p>Questions</p>

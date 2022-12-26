@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codestates.sof.domain.member.dto.MemberDto;
 import com.codestates.sof.domain.member.entity.Member;
+import com.codestates.sof.domain.member.entity.Profile;
 import com.codestates.sof.domain.member.mapper.MemberMapper;
 import com.codestates.sof.domain.member.service.MemberService;
 import com.codestates.sof.global.dto.MultiResponseDto;
@@ -34,7 +35,10 @@ public class MemberController {
 	@PostMapping
 	public ResponseEntity<?> postMember(@RequestBody MemberDto.Post requestBody) {
 		Member postDtoToMember = mapper.memberPostDtoToMember(requestBody);
+		postDtoToMember.setProfile(new Profile());
+
 		Member member = memberService.createMember(postDtoToMember);
+
 		MemberDto.Response response = mapper.memberToMemberResponseDto(member);
 
 		return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
@@ -62,6 +66,9 @@ public class MemberController {
 		@RequestBody MemberDto.Patch requestBody) {
 		requestBody.setMemberId(memberId);
 		Member dtoToMember = mapper.memberPatchDtoToMember(requestBody);
+		if (dtoToMember.getProfile() != null) {
+			dtoToMember.getProfile().setId(memberId);
+		}
 		Member member = memberService.updateMember(dtoToMember);
 		MemberDto.Response response = mapper.memberToMemberResponseDto(member);
 
