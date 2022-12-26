@@ -1,38 +1,46 @@
-import React from 'react'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
-import { Link } from 'react-router-dom';
+import React from "react";
+import "../css/nav.css";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
   return (
     <>
-        <div className='navMargin'>
-        <div className='navContainer'>
-            <div className='menu'>
-                <ul>
-                    <li className='menuHover'><Link to="/">Home　　　　　　　　　</Link></li>
-                    <li>PUBLIC</li>
-                        <ul className='subMenu'>
-                            <li className='menuHover'><Link to="/questions"><FontAwesomeIcon icon={faEarthAmericas}/> Questions　　　　　</Link></li>
-                            <li className='menuHover'><Link to="/tags">　 Tags　　　　　　　</Link></li>
-                            <li className='menuHover'><Link to="/users">　 Users　　　　　　　</Link></li>
-                            <li className='menuHover'>　 Companies</li>
-                        </ul>
-                    <li>COLLECTIVES</li>
-                        <ul className='subMenu'>
-                            <li>Explore Collectives</li>
-                        </ul>
-                    <li>TEAMS</li>
-                        <ul className='subMenu'>
-                            <li>Create free Team</li>
-                        </ul>
-                </ul>
-            </div>
+      <div className="navMargin">
+        <div className="navContainer">
+          <div className="navMenu">
+            <ul>
+              <li className="navMenuHover">
+                <Link to="/">Home　　　　　　　　　</Link>
+              </li>
+              <li>PUBLIC</li>
+              <ul className="navSubMenu">
+                <li className="navMenuHover">
+                  <Link to="/questions">
+                    <i className="fa-solid fa-earth-americas"></i> Questions　　　　　
+                  </Link>
+                </li>
+                <li className="navMenuHover">
+                  <Link to="/tags">　 Tags　　　　　　　</Link>
+                </li>
+                <li className="navMenuHover">
+                  <Link to="/users">　 Users　　　　　　　</Link>
+                </li>
+                <li className="navMenuHover">　 Companies</li>
+              </ul>
+              <li>COLLECTIVES</li>
+              <ul className="navSubMenu">
+                <li>Explore Collectives</li>
+              </ul>
+              <li>TEAMS</li>
+              <ul className="navSubMenu">
+                <li>Create free Team</li>
+              </ul>
+            </ul>
+          </div>
         </div>
-        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Nav
-
+export default Nav;

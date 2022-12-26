@@ -1,28 +1,29 @@
-import React from 'react'
+import React from "react";
+import "../css/sidebar.css";
 
 const Sidebar = () => {
   return (
-    <div className='sidebarContainer'>
-        <div className='blogFeature'>
-            <div className='blog'>
-                <div className='blogFeatureTitle'>The Overflow Blog</div>
-                <div className='blogFeatureContents'>contents</div>
-            </div>
-            <div className='feature'>
-                <div className='blogFeatureTitle'>Featured on Meta</div>
-                <div className='blogFeatureContents'>contents</div>
-            </div>
+    <div className="sidebarContainer">
+      <div className="sideBlogFeature">
+        <div className="sideBlog">
+          <div className="sideBlogFeatureTitle">The Overflow Blog</div>
+          <div className="sideblogFeatureContents">contents</div>
         </div>
-        <div className='customFilters'>
-                <div className='filtertagTitle'>Custom Filters</div>
-                <div className='fiterContents'>Create a custom filter</div>
+        <div className="sideFeature">
+          <div className="sideBlogFeatureTitle">Featured on Meta</div>
+          <div className="sideblogFeatureContents">contents</div>
         </div>
-        <div className='watchedTags'>
-                <div className='filtertagTitle'>Watched Tags</div>
-                <div className='tagContents'>Watch tags to curate your list of questions.</div>
-        </div>
+      </div>
+      <div className="sideCustomFilters">
+        <div className="sideFiltertagTitle">Custom Filters</div>
+        <div className="sideFiterContents">Create a custom filter</div>
+      </div>
+      <div className="sideWatchedTags">
+        <div className="sideFiltertagTitle">Watched Tags</div>
+        <div className="sideTagContents">Watch tags to curate your list of questions.</div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
