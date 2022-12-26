@@ -11,11 +11,12 @@ import com.codestates.sof.domain.question.entity.QuestionComment;
 public interface QuestionCommentMapper {
 	@Mapping(source = "memberId", target = "member.memberId")
 	@Mapping(source = "questionId", target = "question.questionId")
-	QuestionComment questionCommentPostToQuestionComment(QuestionCommentDto.Post post);
+	QuestionComment postToQuestionComment(QuestionCommentDto.Post post);
 
+	@Mapping(source = "commentId", target = "questionCommentId")
 	@Mapping(source = "modifierId", target = "member.memberId")
 	@Mapping(source = "questionId", target = "question.questionId")
-	QuestionComment questionCommentPatchToQuestionComment(QuestionCommentDto.Patch patch);
+	QuestionComment patchToQuestionComment(QuestionCommentDto.Patch patch);
 
 	@Mapping(source = "question.questionId", target = "questionId")
 	QuestionCommentDto.Response questionCommentToResponse(QuestionComment questionComment);

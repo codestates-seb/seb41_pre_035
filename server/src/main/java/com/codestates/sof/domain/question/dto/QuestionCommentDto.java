@@ -1,5 +1,7 @@
 package com.codestates.sof.domain.question.dto;
 
+import java.time.LocalDateTime;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
@@ -44,5 +46,7 @@ public class QuestionCommentDto {
 		private MemberDto.Response member;
 		private Long questionId;
 		private String content;
+		private LocalDateTime createdAt;
+		private LocalDateTime lastModifiedAt;
 	}
 }

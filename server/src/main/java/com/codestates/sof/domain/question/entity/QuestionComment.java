@@ -63,4 +63,44 @@ public class QuestionComment extends BaseEntity {
 	public int hashCode() {
 		return questionCommentId != null ? questionCommentId.hashCode() : 0;
 	}
+
+	public static final class Builder {
+		private Long questionCommentId;
+		private Member member;
+		private Question question;
+		private String content;
+
+		private Builder() {
+		}
+
+		public static Builder aQuestionComment() {
+			return new Builder();
+		}
+
+		public Builder questionCommentId(Long questionCommentId) {
+			this.questionCommentId = questionCommentId;
+			return this;
+		}
+
+		public Builder member(Member member) {
+			this.member = member;
+			return this;
+		}
+
+		public Builder question(Question question) {
+			this.question = question;
+			return this;
+		}
+
+		public Builder content(String content) {
+			this.content = content;
+			return this;
+		}
+
+		public QuestionComment build() {
+			QuestionComment questionComment = new QuestionComment(member, question, content);
+			questionComment.questionCommentId = this.questionCommentId;
+			return questionComment;
+		}
+	}
 }
