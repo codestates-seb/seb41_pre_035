@@ -23,13 +23,13 @@ import com.codestates.sof.domain.common.BaseEntity;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.tag.entity.Tag;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(indexes = {
 	@Index(name = "idx_question_title", columnList = "title"),
 	@Index(name = "idx_question_created_at", columnList = "created_at"),
@@ -37,8 +37,8 @@ import lombok.NoArgsConstructor;
 })
 public class Question extends BaseEntity {
 	@Id
+	@Setter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "question_id", nullable = false)
 	private Long questionId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -62,6 +62,9 @@ public class Question extends BaseEntity {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Answer> answers = new ArrayList<>();
+
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<QuestionComment> comments = new ArrayList<>();
 
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<QuestionTag> tags = new ArrayList<>();
