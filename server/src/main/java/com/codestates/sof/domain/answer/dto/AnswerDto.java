@@ -13,7 +13,7 @@ import lombok.Setter;
 public class AnswerDto {
 
 	@Getter
-	@AllArgsConstructor
+	@Setter
 	@NoArgsConstructor
 	public static class Post {
 		@Min(value = 0, message = "WriterId must be equal and more than 0")
@@ -24,7 +24,7 @@ public class AnswerDto {
 	}
 
 	@Getter
-	@AllArgsConstructor
+	@Setter
 	@NoArgsConstructor
 	public static class Patch {
 		private Long answerId;
@@ -35,7 +35,6 @@ public class AnswerDto {
 
 	@Getter
 	@Setter
-	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class Response {
 		private Long answerId;
