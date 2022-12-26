@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -249,12 +248,12 @@ class QuestionControllerIntegralTest {
 			// given
 			QuestionDto.Patch patch = (QuestionDto.Patch)QuestionStub.Type.PATCH.create();
 			patch.setTags(Collections.emptyList());
-			Question before = service.findById(questionId);
+			Question before = service.findByIdWithoutIncreasingViewCount(questionId);
 
 			// when
 			em.clear();
 			patchActions.apply(patch);
-			Question after = service.findById(questionId);
+			Question after = service.findByIdWithoutIncreasingViewCount(questionId);
 
 			// then
 			assertNotSame(after, before);
@@ -275,33 +274,36 @@ class QuestionControllerIntegralTest {
 			// given
 			Question before = service.findById(questionId);
 			QuestionDto.Patch patch = (QuestionDto.Patch)QuestionStub.Type.PATCH.create();
-			Function<Map.Entry<String, Long>, Long> getTaggedCount = tag -> tagService.findBy(tag.getKey())
-				.getTaggedCount();
-			Map<String, Long> countsBeforePatch = before.getTags().stream()
+
+			// 1. 삭제되지 않은 태그
+			Map<String, Long> alivedTags = before.getTags().stream()
+				.filter(tag -> patch.getTags().contains(tag.getTagName()))
 				.collect(Collectors.toMap(QuestionTag::getTagName, tag -> tag.getTag().getTaggedCount()));
+
+			// 2. 삭제된 태그
+			Map<String, Long> removedTags = before.getTags().stream()
+				.filter(tag -> !patch.getTags().contains(tag.getTagName()))
+				.collect(Collectors.toMap(QuestionTag::getTagName, tag -> tag.getTag().getTaggedCount()));
+
+			// 3. 추가된 태그
+			Map<String, Long> addedTags = patch.getTags().stream()
+				.filter(tag -> !before.getTagNames().contains(tag))
+				.collect(Collectors.toMap(tag -> tag, tag -> tagService.findBy(tag).getTaggedCount()));
 
 			// when
 			em.clear();
 			patchActions.apply(patch);
 			Question after = service.findById(questionId);
-			Map<String, Long> countsAfterPatch = after.getTags().stream()
-				.collect(Collectors.toMap(QuestionTag::getTagName, tag -> tag.getTag().getTaggedCount()));
 
 			// then
-			// 1. 삭제되지 않은 기존 태그
-			countsAfterPatch.entrySet().stream()
-				.filter(tag -> countsBeforePatch.containsKey(tag.getKey()))
-				.forEach(alived -> assertEquals(getTaggedCount.apply(alived), alived.getValue()));
+			alivedTags
+				.forEach((key, value) -> assertEquals(value, tagService.findBy(key).getTaggedCount()));
 
-			// 2. 추가된 태그
-			countsAfterPatch.entrySet().stream()
-				.filter(tag -> !countsBeforePatch.containsKey(tag.getKey()))
-				.forEach(alived -> assertEquals(getTaggedCount.apply(alived), alived.getValue() + 1));
+			addedTags
+				.forEach((key, value) -> assertEquals(value + 1, tagService.findBy(key).getTaggedCount()));
 
-			// 3. 삭제된 태그
-			countsBeforePatch.entrySet().stream()
-				.filter(tag -> !countsAfterPatch.containsKey(tag.getKey()))
-				.forEach(alived -> assertEquals(getTaggedCount.apply(alived), alived.getValue() - 1));
+			removedTags
+				.forEach((key, value) -> assertEquals(value - 1, tagService.findBy(key).getTaggedCount()));
 		}
 
 		@Test

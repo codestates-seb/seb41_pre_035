@@ -33,6 +33,10 @@ public class QuestionService {
 		return null;
 	}
 
+	public Question findByIdWithoutIncreasingViewCount(Long questionId) {
+		return findExistsQuestion(questionId);
+	}
+
 	@Transactional
 	public Question findById(Long questionId) {
 		Question question = findExistsQuestion(questionId);

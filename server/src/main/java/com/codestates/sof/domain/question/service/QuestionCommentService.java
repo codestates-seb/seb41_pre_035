@@ -22,7 +22,7 @@ public class QuestionCommentService {
 	@Transactional
 	public QuestionComment comment(long questionId, QuestionComment comment) {
 		Member member = memberService.findMember(comment.getMember().getMemberId());
-		Question question = questionService.findById(questionId);
+		Question question = questionService.findByIdWithoutIncreasingViewCount(questionId);
 
 		comment.setMember(member);
 
