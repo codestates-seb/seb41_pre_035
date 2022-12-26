@@ -10,12 +10,10 @@ import com.codestates.sof.domain.question.entity.QuestionComment;
 @Mapper(componentModel = "spring", uses = {MemberMapper.class})
 public interface QuestionCommentMapper {
 	@Mapping(source = "memberId", target = "member.memberId")
-	@Mapping(source = "questionId", target = "question.questionId")
 	QuestionComment postToQuestionComment(QuestionCommentDto.Post post);
 
 	@Mapping(source = "commentId", target = "questionCommentId")
 	@Mapping(source = "modifierId", target = "member.memberId")
-	@Mapping(source = "questionId", target = "question.questionId")
 	QuestionComment patchToQuestionComment(QuestionCommentDto.Patch patch);
 
 	@Mapping(source = "question.questionId", target = "questionId")

@@ -14,6 +14,7 @@ public class QuestionCommentDto {
 	@Getter
 	@Setter
 	public static class Post {
+		// TODO (Auth)
 		@Positive(message = "MemberId must be greater than 0")
 		private Long memberId;
 
@@ -24,6 +25,7 @@ public class QuestionCommentDto {
 	@Getter
 	@Setter
 	public static class Patch {
+		// TODO (Auth)
 		@Positive(message = "Modifier Id must be greater than 0")
 		private Long modifierId;
 
