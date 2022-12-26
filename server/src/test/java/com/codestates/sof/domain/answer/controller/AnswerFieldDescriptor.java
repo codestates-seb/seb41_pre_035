@@ -24,4 +24,26 @@ public class AnswerFieldDescriptor {
 		fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("총 내용 수"),
 		fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수")
 	};
+
+	public static FieldDescriptor[] answerCommentResponseFields = new FieldDescriptor[] {
+		fieldWithPath("commentId").type(JsonFieldType.NUMBER).description("고유 식별자"),
+		fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("답변 id"),
+		fieldWithPath("member").type(JsonFieldType.OBJECT).description("회원 정보"),
+		fieldWithPath("member.memberId").type(JsonFieldType.NUMBER).description("고유 식별자"),
+		fieldWithPath("member.email").type(JsonFieldType.STRING).description("이메일"),
+		fieldWithPath("member.name").type(JsonFieldType.STRING).description("이름"),
+		fieldWithPath("member.verificationFlag").type(JsonFieldType.BOOLEAN).description("이메일 인증여부"),
+		fieldWithPath("member.deleteFlag").type(JsonFieldType.BOOLEAN).description("탈퇴여부"),
+		fieldWithPath("member.lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자"),
+		fieldWithPath("member.profile").type(JsonFieldType.OBJECT).description("추가 정보"),
+		fieldWithPath("member.profile.title").type(JsonFieldType.STRING).description("자기소개 제목"),
+		fieldWithPath("member.profile.aboutMe").type(JsonFieldType.STRING).description("자기소개 내용"),
+		fieldWithPath("member.profile.location").type(JsonFieldType.STRING).description("지역"),
+		fieldWithPath("member.profile.websiteLink").type(JsonFieldType.STRING).description("홈페이지 링크"),
+		fieldWithPath("member.profile.twitterLink").type(JsonFieldType.STRING).description("트위터 링크"),
+		fieldWithPath("member.profile.githubLink").type(JsonFieldType.STRING).description("깃헙 링크"),
+		fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용"),
+		fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),
+		fieldWithPath("lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자")
+	};
 }
