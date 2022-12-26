@@ -1,0 +1,120 @@
+/* form 설정 */
+.recoveryForm,
+.loginForm,
+.signup {
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background-color: white;
+  border-radius: 6px;
+  border: var(--border);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+/* 닉넴, 이메일, 비밀번호 컴포넌트 배치 */
+.inputWrapper {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 닉넴, 이메일, 비밀번호 label 설정 */
+.inputLabel {
+  font-weight: 600;
+  padding: 0 2px;
+  margin: 3px 0;
+}
+
+/* 닉넴, 이메일, 비밀번호  input 설정 */
+.inputNickInput,
+.inputEmailInput,
+.inputPwInput,
+.errorInput {
+  width: 100%;
+  padding: 7px 9px;
+  border-radius: 4px;
+}
+
+/* 에러가 나지 않았을 때 설정 */
+.inputNickInput,
+.inputEmailInput,
+.inputPwInput {
+  border: var(--border);
+}
+
+.inputNickInput:focus,
+.inputEmailInput:focus,
+.inputPwInput:focus {
+  outline: 4px solid #dee9f7;
+  border: var(--border-blue);
+}
+
+/* 비밀번호 설정 */
+.inputPwWrapper > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.recoveryLink {
+  color: var(--link);
+  font-size: 13.5px;
+}
+.recoveryLink:hover {
+  color: var(--link-hover);
+}
+
+/* 이메일 복구 링크가 있을 경우 */
+.inputWrapper > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.inputPwLink {
+  color: var(--link);
+  font-size: 13.5px;
+}
+.inputPwLink:hover {
+  color: var(--link-hover);
+}
+
+/* 로그인 버튼 설정 */
+.InputBtn {
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  margin: 18px 0 10px;
+
+  border-top: 2px solid #65b1fc;
+  border-left: 1px solid #0a95ff;
+  border-bottom: 1px solid #0a95ff;
+  border-right: 1px solid #0a95ff;
+
+  border-radius: 4px;
+  background-color: #0a95ff;
+  color: white;
+  cursor: pointer;
+}
+.InputBtn:hover {
+  background-color: #0074cc;
+  border-top: 2px solid #5498dc;
+  border-left: 1px solid #0074cc;
+  border-bottom: 1px solid #0074cc;
+  border-right: 1px solid #0074cc;
+}
+.InputBtn:active {
+  border: none;
+  outline: var(--outline-blue);
+}
+
+/* error */
+.errorMessage {
+  margin-top: 5px;
+  font-size: 12px;
+  color: rgb(216, 18, 18);
+}
+.errorInput {
+  border: var(--border-red);
+}
