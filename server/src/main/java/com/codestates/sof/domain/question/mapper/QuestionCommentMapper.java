@@ -12,7 +12,6 @@ public interface QuestionCommentMapper {
 	@Mapping(source = "memberId", target = "member.memberId")
 	QuestionComment postToQuestionComment(QuestionCommentDto.Post post);
 
-	@Mapping(source = "commentId", target = "questionCommentId")
 	@Mapping(source = "modifierId", target = "member.memberId")
 	QuestionComment patchToQuestionComment(QuestionCommentDto.Patch patch);
 
