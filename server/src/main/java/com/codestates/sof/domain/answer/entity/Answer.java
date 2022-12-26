@@ -22,7 +22,7 @@ public class Answer extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long answerId;
 
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = true, updatable = false)
 	private Long questionId;
 
 	@Column(nullable = false, updatable = false)
