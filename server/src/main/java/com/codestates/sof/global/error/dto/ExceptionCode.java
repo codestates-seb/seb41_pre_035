@@ -14,11 +14,13 @@ public enum ExceptionCode {
 	NOT_FOUND_QUESTION(40402, "Question not found"),
 	NOT_FOUND_ANSWER(40403, "Answer not found"),
 	NOT_FOUND_TAG(40404, "Tag not found"),
+	NOT_FOUND_TOKEN(40405, "Token not found"),
 
 	// 409
-	MEMBER_EXISTS(40901, "Member already exist");
+	MEMBER_EXISTS(40901, "Member already exist"),
 
 	// 5xx
+	EMAIL_SEND_FAILURE(50301, "Verification email error. Please try again later.");
 
 	int status;
 	String message;
