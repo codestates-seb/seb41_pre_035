@@ -100,14 +100,14 @@ public class Question extends BaseEntity {
 		return false;
 	}
 
-	public void update(Question newQuestion) {
+	public void update(Question newQuestion, List<Tag> tags) {
 		if (newQuestion.getTitle() != null)
 			title = newQuestion.getTitle();
 
 		if (newQuestion.getContent() != null)
 			content = newQuestion.getContent();
 
-		update(newQuestion.getTagNames());
+		update(tags);
 
 		// comment
 		// bookmark
@@ -116,12 +116,12 @@ public class Question extends BaseEntity {
 
 	// *** Tag ***
 
-	public void update(List<String> newTags) {
-		List<String> oldTags = getTagNames();
+	public void update(List<Tag> newTags) {
+		List<Tag> oldTags = tags.stream().map(QuestionTag::getTag).collect(Collectors.toList());
 
 		// 1. 필요없는걸 지운다.
 		new ArrayList<>(tags).stream()
-			.filter(tag -> !newTags.contains(tag.getTagName()))
+			.filter(tag -> !newTags.contains(tag.getTag()))
 			.forEach(tag -> {
 				tag.getTag().decreaseTaggedCount();
 				tags.remove(tag);
@@ -129,7 +129,7 @@ public class Question extends BaseEntity {
 
 		// 2. 필요한걸 더한다.
 		newTags.stream()
-			.filter(tagName -> !oldTags.contains(tagName))
+			.filter(tag -> !oldTags.contains(tag))
 			.forEach(tag -> {
 				Tag newTag = addTag(tag);
 				newTag.increaseTaggedCount();
@@ -142,12 +142,17 @@ public class Question extends BaseEntity {
 		return tag;
 	}
 
-	public void setTags(List<QuestionTag> tags) {
-		this.tags = tags;
+	public Tag addTag(Tag tag) {
+		tags.add(new QuestionTag(tag, this));
+		return tag;
 	}
 
 	public List<String> getTagNames() {
 		return tags.stream().map(QuestionTag::getTagName).collect(Collectors.toList());
+	}
+
+	public void setTags(List<QuestionTag> tags) {
+		this.tags = tags;
 	}
 
 	// *** Comment ***
