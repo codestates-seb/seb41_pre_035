@@ -1,0 +1,35 @@
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  font-size: 20px;
+}
+
+.logoText {
+  display: flex;
+}
+
+/* 로고 진한 글자 */
+.logoText2 {
+  margin-left: 3px;
+  font-weight: 700;
+}
+
+/* 로고 아이콘 */
+.fa-stack-overflow {
+  background: linear-gradient(to top left, transparent 40%, #bcbbbb 5%) 0 100%/20% 40%, linear-gradient(0deg, transparent 46%, #f48024 48%), linear-gradient(103deg, transparent 78%, #bcbbbb 40%),
+    linear-gradient(0deg, transparent 22%, #f48024 20%), #bcbbbb;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.logoSize1 {
+  font-size: 42px;
+}
+
+.logoSize2 {
+  font-size: 30px;
+}

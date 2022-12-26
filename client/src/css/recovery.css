@@ -1,0 +1,47 @@
+/* 배경 */
+.recoveryWraapper {
+  height: 90vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--login-bg);
+}
+
+/* 가운데 요소 설정 */
+.recoveryForm {
+  width: 350px;
+}
+
+/* 설명 설정 */
+.recoveryDescription {
+  font-size: 14px;
+}
+
+/* 복구 이메일 요청 성공 시 설정 */
+.recoverySuccess {
+  display: flex;
+  align-items: center;
+
+  width: 525px;
+  padding: 16px;
+
+  border: 1px solid #a6d9b7;
+  border-radius: 5px;
+  background-color: #dbf0e2;
+  color: #3b4045;
+}
+.fa-check {
+  color: #3d8f59;
+  margin-right: 8px;
+}
+.recoverySuccessTitle {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.recoverySuccessDescription {
+  font-size: 14px;
+  line-height: 18px;
+}

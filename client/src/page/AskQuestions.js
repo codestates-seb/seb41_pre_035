@@ -7,7 +7,6 @@ import "../css/Tags.css";
 import "../css/Editer.css";
 import "../css/Btn.css";
 import TAGS from "../data/Tags";
-import pencilICon from "../img/pngwing.com.png";
 const axios = require("axios");
 
 function AskQuestions() {
@@ -155,7 +154,7 @@ function AskQuestions() {
               <p>Writing a good title</p>
             </div>
             <div className="bgWhite">
-              <img className="pencilIcon" src={pencilICon} alt="pencil icon" />
+              <i class="pencilIcon fa-regular fa-pen-to-square"></i>
               <p>Your title should summarize the problem.</p>
               <p>You might find that you have a better idea of your title after writing out the rest of the question.</p>
             </div>
@@ -177,7 +176,7 @@ function AskQuestions() {
               <p>Introduce the problem</p>
             </div>
             <div className="bgWhite">
-              <img className="pencilIcon" src={pencilICon} alt="pencil icon" />
+              <i class="pencilIcon fa-regular fa-pen-to-square"></i>
               <p>Explain how you encountered the problem you’re trying to solve, and any difficulties that have prevented you from solving it yourself.</p>
             </div>
           </div>
@@ -198,7 +197,7 @@ function AskQuestions() {
               <p>Expand on the problem</p>
             </div>
             <div className="bgWhite">
-              <img className="pencilIcon" src={pencilICon} alt="pencil icon" />
+              <i class="pencilIcon fa-regular fa-pen-to-square"></i>
               <p>Show what you’ve tried, tell us what happened, and why it didn’t meet your needs.</p>
               <p>Not all questions benefit from including code, but if your problem is better understood with code you’ve written, you should include a minimal, reproducible example.</p>
               <p>Please make sure to post code and errors as text directly to the question (and not as images), and format them appropriately.</p>
@@ -247,7 +246,7 @@ function AskQuestions() {
               <p>Adding tags</p>
             </div>
             <div className="bgWhite">
-              <img className="pencilIcon" src={pencilICon} alt="pencil icon" />
+              <i class="pencilIcon fa-regular fa-pen-to-square"></i>
               <p>Tags help ensure that your question will get attention from the right people.</p>
               <p>Tag things in more than one way so people can find them more easily. Add tags for product lines, projects, teams, and the specific technologies or languages used.</p>
               <p>Learn more about tagging</p>

@@ -1,0 +1,91 @@
+/* 배경 */
+.signUpWraapper {
+  height: 95vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--login-bg);
+}
+
+/*
+  왼쪽
+*/
+/* title */
+.signUpLeftTitle {
+  font-size: 28px;
+  font-weight: 500;
+  margin-bottom: 32px;
+  margin-right: 48px;
+}
+
+/* title 아래 소개들 */
+.signUpLeftContainerContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+
+  color: #232629;
+  font-weight: 500;
+}
+
+.signUpLeftContainerContent > i {
+  color: #0a95ff;
+
+  font-size: 23px;
+}
+
+/* 
+  작은 글씨 
+*/
+.signUpLeftLink,
+.sigUpRightLink,
+.signUpRightPwNotice {
+  font-size: 13px;
+  color: #6a737c;
+}
+.signUpLeftLink > div {
+  margin-bottom: 5px;
+}
+
+.signUpLeftLink > a,
+.sigUpRightLink > a {
+  color: var(--link);
+}
+.signUpLeftLink > a:hover,
+.sigUpRightLink > a:hover {
+  color: var(--link-hover);
+}
+.sigUpRightLink {
+  margin-top: 32px;
+}
+.signUpRightPwNotice {
+  margin: 6px 0 15px;
+}
+/*
+  오른쪽
+*/
+.signUpRightWrapper {
+  width: 310px;
+}
+.signUpRightPromoNotice {
+  margin: 10px 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.signUpRightPromoNoticeText {
+  font-size: 13px;
+  width: 214px;
+}
+.signUpRightPromoNoticeBtn {
+  border: none;
+  background-color: white;
+}
+.signUpRightPromoNoticeIcon {
+  font-size: 13px;
+  color: var(--little-font-color);
+  cursor: pointer;
+}
