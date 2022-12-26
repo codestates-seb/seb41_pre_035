@@ -1,9 +1,11 @@
 package com.codestates.sof.domain.question.service;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.codestates.sof.domain.question.entity.Question;
+import com.codestates.sof.domain.question.page.QuestionPageRequest;
 import com.codestates.sof.domain.question.repository.QuestionRepository;
 import com.codestates.sof.domain.tag.entity.Tag;
 import com.codestates.sof.domain.tag.service.TagService;
@@ -25,6 +27,10 @@ public class QuestionService {
 		question = save(question);
 		question.increaseTaggedCountForAllTags();
 		return question;
+	}
+
+	public Page<Question> findAll(QuestionPageRequest pageRequest) {
+		return null;
 	}
 
 	@Transactional

@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codestates.sof.domain.question.dto.QuestionDto;
 import com.codestates.sof.domain.question.entity.Question;
 import com.codestates.sof.domain.question.mapper.QuestionMapper;
+import com.codestates.sof.domain.question.page.QuestionPageRequest;
 import com.codestates.sof.domain.question.service.QuestionService;
+import com.codestates.sof.global.dto.MultiResponseDto;
 import com.codestates.sof.global.dto.SingleResponseDto;
 
 import lombok.RequiredArgsConstructor;
@@ -50,6 +52,13 @@ public class QuestionController {
 		Question question = questionService.findById(questionId);
 		QuestionDto.Response response = mapper.questionToResponse(question);
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
+	}
+
+	@GetMapping
+	public ResponseEntity<MultiResponseDto<QuestionDto.Response>> get(QuestionPageRequest pageRequest) {
+		// return type of simple response dto
+		// return ResponseEntity.ok(new MultiResponseDto<>);
+		return null;
 	}
 
 	@PatchMapping("/{question-id}")
