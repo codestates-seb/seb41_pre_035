@@ -1,13 +1,11 @@
-// import Header from "./Components/Header";
-import Nav from "./Components/Nav";
-import Footer from "./Components/Footer";
-import Sidebar from "./Components/Sidebar";
+import Nav from "./component/Nav";
+import Footer from "./component/Footer";
+import Sidebar from "./component/Sidebar";
 
-import Header from "./Components/Header";
-import HeaderLogin from "./Components/HeaderLogin";
-import HeaderMenumodal from "./Components/HeaderMenumodal";
+import Header from "./component/Header";
+import HeaderLogin from "./component/HeaderLogin";
+import HeaderMenumodal from "./component/HeaderMenumodal";
 
-// ! 위 코드 수정해주세요
 import Login from "./page/Login";
 import Recovery from "./page/Recovery";
 import SignUp from "./page/SignUp";
@@ -17,7 +15,7 @@ function App() {
   return (
     <div className="App">
       <Header />
-      {/* <HeaderLogin/> */}
+      {/* <HeaderLogin /> */}
       {/* <HeaderMenumodal/> */}
       <Routes>
         <Route path="/login" element={<Login />} />
