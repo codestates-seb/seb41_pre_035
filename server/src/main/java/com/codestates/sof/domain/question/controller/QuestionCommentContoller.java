@@ -5,6 +5,7 @@ import javax.validation.constraints.Positive;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/questions/{question-id}/comments")
 public class QuestionCommentContoller {
-	private final QuestionCommentService questionCommentService;
+	private final QuestionCommentService commentService;
 	private final QuestionCommentMapper mapper;
 
 	@PostMapping
@@ -31,9 +32,21 @@ public class QuestionCommentContoller {
 		@PathVariable("question-id") @Positive long questionId,
 		@RequestBody @Valid QuestionCommentDto.Post post) {
 
-		QuestionComment qc = questionCommentService.comment(questionId, mapper.postToQuestionComment(post));
+		QuestionComment qc = commentService.comment(questionId, mapper.postToQuestionComment(post));
 		QuestionCommentDto.Response response = mapper.questionCommentToResponse(qc);
 
 		return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
+	}
+
+	@PatchMapping("/{comment-id}")
+	public ResponseEntity<SingleResponseDto<QuestionCommentDto.Response>> patch(
+		@PathVariable("question-id") @Positive long questionId,
+		@PathVariable("comment-id") @Positive long commentId,
+		@RequestBody @Valid QuestionCommentDto.Patch patch
+	) {
+		QuestionComment comment = commentService.modify(questionId, commentId, mapper.patchToQuestionComment(patch));
+		QuestionCommentDto.Response response = mapper.questionCommentToResponse(comment);
+
+		return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
 	}
 }

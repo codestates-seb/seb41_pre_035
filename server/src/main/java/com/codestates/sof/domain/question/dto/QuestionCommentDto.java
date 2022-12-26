@@ -29,9 +29,6 @@ public class QuestionCommentDto {
 		@Positive(message = "Modifier Id must be greater than 0")
 		private Long modifierId;
 
-		@Positive(message = "CommentId must be greater than 0")
-		private Long commentId;
-
 		@NotBlank(message = "Content must not be null")
 		private String content;
 	}
