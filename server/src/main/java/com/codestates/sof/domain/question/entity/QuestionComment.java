@@ -19,6 +19,7 @@ import com.codestates.sof.domain.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -30,6 +31,7 @@ import lombok.NoArgsConstructor;
 	})
 public class QuestionComment extends BaseEntity {
 	@Id
+	@Setter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long questionCommentId;
 

@@ -17,9 +17,6 @@ public class QuestionCommentDto {
 		@Positive(message = "MemberId must be greater than 0")
 		private Long memberId;
 
-		@Positive(message = "QuestionId must be greater than 0")
-		private Long questionId;
-
 		@NotBlank(message = "Content must not be null")
 		private String content;
 	}
@@ -29,9 +26,6 @@ public class QuestionCommentDto {
 	public static class Patch {
 		@Positive(message = "Modifier Id must be greater than 0")
 		private Long modifierId;
-
-		@Positive(message = "QuestionId must be greater than 0")
-		private Long questionId;
 
 		@Positive(message = "CommentId must be greater than 0")
 		private Long commentId;
