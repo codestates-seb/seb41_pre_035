@@ -64,6 +64,7 @@ class QuestionCommentContollerSliceTest {
 		QuestionComment temporalEntity = new QuestionComment(null, null, null);
 		given(mapper.postToQuestionComment(any(QuestionCommentDto.Post.class))).willReturn(temporalEntity);
 		given(mapper.questionCommentToResponse(any(QuestionComment.class))).willReturn(response);
+		given(service.comment(anyLong(), any(QuestionComment.class))).willReturn(temporalEntity);
 
 		// when
 		ResultActions actions = mvc.perform(
