@@ -53,10 +53,10 @@ export const InputPw = ({ value, classname, type }) => {
   }
 };
 
-export const InputBtn = ({ value, onclick }) => {
+export const InputBtn = ({ text, onclick }) => {
   return (
     <button type="submit" className="InputBtn" onClick={onclick}>
-      {value}
+      {text}
     </button>
   );
 };

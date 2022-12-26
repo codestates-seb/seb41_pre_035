@@ -1,6 +1,6 @@
 /* 배경 */
-.recoveryForm {
-  height: 95vh;
+.recoveryWraapper {
+  height: 90vh;
 
   display: flex;
   align-items: center;
@@ -10,7 +10,7 @@
 }
 
 /* 가운데 요소 설정 */
-.recoveryContent {
+.recoveryForm {
   width: 350px;
 }
 

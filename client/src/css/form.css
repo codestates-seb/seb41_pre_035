@@ -1,7 +1,7 @@
 /* form 설정 */
 .recoveryForm,
 .loginForm,
-.signup {
+.signUpRightWrapper {
   padding: 24px;
 
   display: flex;

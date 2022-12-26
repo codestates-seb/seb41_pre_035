@@ -2,6 +2,7 @@ import React from "react";
 import "../css/header.css";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 const logoiconSize = { fontSize: "30px" };
 const logotextSize = { fontSize: "18px" };
@@ -14,7 +15,7 @@ const Header = () => {
       <div className="headerContainer">
         <div className="headerLogo">
           <Link to="/" className="logoWrapper">
-            <i className="fa-brands fa-stack-overflow" style={logoiconSize}></i>
+            {/* <i className="fa-brands fa-stack-overflow" style={logoiconSize}></i>
             <div className="logoText">
               <div className="logoText1" style={logotextSize}>
                 stack
@@ -22,7 +23,8 @@ const Header = () => {
               <div className="logoText2" style={logotextSize}>
                 overflow
               </div>
-            </div>
+            </div> */}
+            <Logo text={true} className="test" />
           </Link>
           {/* <Logo text={true} /> */}
         </div>
