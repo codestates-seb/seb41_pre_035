@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.codestates.sof.domain.member.dto.MemberDto;
+import com.codestates.sof.domain.member.dto.ProfileDto;
 import com.codestates.sof.domain.member.entity.Member;
 
 public class StubData {
@@ -21,7 +22,17 @@ public class StubData {
 	static {
 		stubRequestBody = new HashMap<>();
 		stubRequestBody.put(HttpMethod.POST, new MemberDto.Post("user01@hello.com", "1111", "user01"));
-		stubRequestBody.put(HttpMethod.PATCH, new MemberDto.Patch(0, "user01", null));
+		stubRequestBody.put(HttpMethod.PATCH, new MemberDto.Patch(
+			0,
+			"user01",
+			null,
+			new ProfileDto(
+				"My profile",
+				"Hello world!",
+				"Seoul, South Korea",
+				"websiteLink",
+				"twitter",
+				"github")));
 	}
 
 	public static class MockMember {
@@ -54,7 +65,14 @@ public class StubData {
 				"user01",
 				false,
 				false,
-				LocalDateTime.now());
+				LocalDateTime.now(),
+				new ProfileDto(
+					"My profile",
+					"Hello world!",
+					"Seoul, South Korea",
+					"websiteLink",
+					"twitter",
+					"github"));
 		}
 
 		public static List<MemberDto.Response> getMultiResponseBody() {
@@ -66,7 +84,14 @@ public class StubData {
 					String.format("user%02d", i),
 					false,
 					false,
-					LocalDateTime.now()
+					LocalDateTime.now(),
+					new ProfileDto(
+						"My profile",
+						"Hello world!",
+						"Seoul, South Korea",
+						"websiteLink",
+						"twitter",
+						"github")
 				);
 
 				responses.add(member);

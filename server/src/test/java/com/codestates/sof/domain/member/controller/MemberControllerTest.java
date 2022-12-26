@@ -98,7 +98,14 @@ class MemberControllerTest {
 						fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
 						fieldWithPath("data.verificationFlag").type(JsonFieldType.BOOLEAN).description("이메일 인증여부"),
 						fieldWithPath("data.deleteFlag").type(JsonFieldType.BOOLEAN).description("탈퇴여부"),
-						fieldWithPath("data.lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자")
+						fieldWithPath("data.lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자"),
+						fieldWithPath("data.profile").type(JsonFieldType.OBJECT).description("추가 정보"),
+						fieldWithPath("data.profile.title").type(JsonFieldType.STRING).description("자기소개 제목"),
+						fieldWithPath("data.profile.aboutMe").type(JsonFieldType.STRING).description("자기소개 내용"),
+						fieldWithPath("data.profile.location").type(JsonFieldType.STRING).description("지역"),
+						fieldWithPath("data.profile.websiteLink").type(JsonFieldType.STRING).description("홈페이지 링크"),
+						fieldWithPath("data.profile.twitterLink").type(JsonFieldType.STRING).description("트위터 링크"),
+						fieldWithPath("data.profile.githubLink").type(JsonFieldType.STRING).description("깃헙 링크")
 					)
 				)));
 	}
@@ -146,6 +153,13 @@ class MemberControllerTest {
 						fieldWithPath("data[].verificationFlag").type(JsonFieldType.BOOLEAN).description("이메일 인증여부"),
 						fieldWithPath("data[].deleteFlag").type(JsonFieldType.BOOLEAN).description("탈퇴여부"),
 						fieldWithPath("data[].lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자"),
+						fieldWithPath("data[].profile").type(JsonFieldType.OBJECT).description("추가 정보"),
+						fieldWithPath("data[].profile.title").type(JsonFieldType.STRING).description("자기소개 제목"),
+						fieldWithPath("data[].profile.aboutMe").type(JsonFieldType.STRING).description("자기소개 내용"),
+						fieldWithPath("data[].profile.location").type(JsonFieldType.STRING).description("지역"),
+						fieldWithPath("data[].profile.websiteLink").type(JsonFieldType.STRING).description("홈페이지 링크"),
+						fieldWithPath("data[].profile.twitterLink").type(JsonFieldType.STRING).description("트위터 링크"),
+						fieldWithPath("data[].profile.githubLink").type(JsonFieldType.STRING).description("깃헙 링크"),
 
 						fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("Page 정보"),
 						fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("Page 번호"),
@@ -198,7 +212,14 @@ class MemberControllerTest {
 						fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
 						fieldWithPath("data.verificationFlag").type(JsonFieldType.BOOLEAN).description("이메일 인증여부"),
 						fieldWithPath("data.deleteFlag").type(JsonFieldType.BOOLEAN).description("탈퇴여부"),
-						fieldWithPath("data.lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자")
+						fieldWithPath("data.lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자"),
+						fieldWithPath("data.profile").type(JsonFieldType.OBJECT).description("추가 정보"),
+						fieldWithPath("data.profile.title").type(JsonFieldType.STRING).description("자기소개 제목"),
+						fieldWithPath("data.profile.aboutMe").type(JsonFieldType.STRING).description("자기소개 내용"),
+						fieldWithPath("data.profile.location").type(JsonFieldType.STRING).description("지역"),
+						fieldWithPath("data.profile.websiteLink").type(JsonFieldType.STRING).description("홈페이지 링크"),
+						fieldWithPath("data.profile.twitterLink").type(JsonFieldType.STRING).description("트위터 링크"),
+						fieldWithPath("data.profile.githubLink").type(JsonFieldType.STRING).description("깃헙 링크")
 					)
 				)
 			));
@@ -238,7 +259,14 @@ class MemberControllerTest {
 					List.of(
 						fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자").ignored(),
 						fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호").optional(),
-						fieldWithPath("name").type(JsonFieldType.STRING).description("이름").optional()
+						fieldWithPath("name").type(JsonFieldType.STRING).description("이름").optional(),
+						fieldWithPath("profile").type(JsonFieldType.OBJECT).description("추가 정보").optional(),
+						fieldWithPath("profile.title").type(JsonFieldType.STRING).description("자기소개 제목").optional(),
+						fieldWithPath("profile.aboutMe").type(JsonFieldType.STRING).description("자기소개 내용").optional(),
+						fieldWithPath("profile.location").type(JsonFieldType.STRING).description("지역").optional(),
+						fieldWithPath("profile.websiteLink").type(JsonFieldType.STRING).description("홈페이지 링크").optional(),
+						fieldWithPath("profile.twitterLink").type(JsonFieldType.STRING).description("트위터 링크").optional(),
+						fieldWithPath("profile.githubLink").type(JsonFieldType.STRING).description("깃헙 링크").optional()
 					)
 				),
 				responseFields(
@@ -249,7 +277,14 @@ class MemberControllerTest {
 						fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
 						fieldWithPath("data.verificationFlag").type(JsonFieldType.BOOLEAN).description("이메일 인증여부"),
 						fieldWithPath("data.deleteFlag").type(JsonFieldType.BOOLEAN).description("탈퇴여부"),
-						fieldWithPath("data.lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자")
+						fieldWithPath("data.lastActivateAt").type(JsonFieldType.STRING).description("마지막 활동일자"),
+						fieldWithPath("data.profile").type(JsonFieldType.OBJECT).description("추가 정보"),
+						fieldWithPath("data.profile.title").type(JsonFieldType.STRING).description("자기소개 제목"),
+						fieldWithPath("data.profile.aboutMe").type(JsonFieldType.STRING).description("자기소개 내용"),
+						fieldWithPath("data.profile.location").type(JsonFieldType.STRING).description("지역"),
+						fieldWithPath("data.profile.websiteLink").type(JsonFieldType.STRING).description("홈페이지 링크"),
+						fieldWithPath("data.profile.twitterLink").type(JsonFieldType.STRING).description("트위터 링크"),
+						fieldWithPath("data.profile.githubLink").type(JsonFieldType.STRING).description("깃헙 링크")
 					)
 				)));
 	}
