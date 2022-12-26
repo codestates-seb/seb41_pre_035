@@ -13,10 +13,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -90,14 +87,20 @@ public class QuestionCommentContollerIntegralTest {
 
 		@BeforeAll
 		void setUp() {
+			saveMember();
+			question = questionService.write(new Question(member, "title", "content"));
+		}
+
+		@Transactional
+		void saveMember() {
 			Member member = new Member();
 			member.setName("name");
 			member.setEmail("email");
 			member.setName("name");
 			member.setEncryptedPassword("encryptedPassword");
 
-			this.member = memberService.createMember(member);
-			this.question = questionService.write(new Question(member, "title", "content"));
+			this.member = memberRepository.findByEmail(member.getEmail())
+				.orElseGet(() -> memberService.createMember(member));
 		}
 
 		@Test
@@ -177,11 +180,6 @@ public class QuestionCommentContollerIntegralTest {
 		void 회원이_아니면_댓글을_등록할_수_없다() throws Exception {
 			// TODO (Auth)
 		}
-
-		@AfterAll
-		void clear() {
-			clearAll();
-		}
 	}
 
 	@Nested
@@ -196,10 +194,11 @@ public class QuestionCommentContollerIntegralTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(om.writeValueAsString(content))
 			);
-		QuestionComment comment;
 
+		QuestionComment comment;
 		Question question;
 		Member member;
+
 		@BeforeAll
 		void setUp() {
 			Member member = new Member();
@@ -210,22 +209,8 @@ public class QuestionCommentContollerIntegralTest {
 
 			this.member = memberService.createMember(member);
 			this.question = questionService.write(new Question(member, "title", "content"));
-		}
-
-		@AfterAll
-		void clear() {
-			clearAll();
-		}
-
-		@BeforeEach
-		void beforeEach() {
-			comment = commentService.comment(question.getQuestionId(),
+			this.comment = commentService.comment(question.getQuestionId(),
 				new QuestionComment(member, question, "content"));
-		}
-
-		@AfterEach
-		void afterEach() {
-			commentRepository.deleteAll();
 		}
 
 		@Test
@@ -278,15 +263,16 @@ public class QuestionCommentContollerIntegralTest {
 
 			// given
 			actions
-				.andExpect(status().isForbidden());
+				.andExpect(status().isForbidden())
+				.andExpect(res -> {
+					Exception ex = res.getResolvedException();
+					assertTrue(ex.getClass().isAssignableFrom(BusinessLogicException.class));
+					assertEquals(
+						ExceptionCode.NO_PERMISSION_EDITING_COMMENT,
+						((BusinessLogicException)ex).getExceptionCode());
+				});
 		}
 
-	}
-
-	private void clearAll() {
-		commentRepository.deleteAll();
-		questionRepository.deleteAll();
-		memberRepository.deleteAll();
 	}
 
 	@FunctionalInterface

@@ -44,7 +44,10 @@ public class QuestionCommentContoller {
 		@PathVariable("comment-id") @Positive long commentId,
 		@RequestBody @Valid QuestionCommentDto.Patch patch
 	) {
-		QuestionComment comment = commentService.modify(questionId, commentId, mapper.patchToQuestionComment(patch));
+		QuestionComment patchToComment = mapper.patchToQuestionComment(patch);
+		patchToComment.setQuestionCommentId(commentId);
+
+		QuestionComment comment = commentService.modify(questionId, patch.getModifierId(), patchToComment);
 		QuestionCommentDto.Response response = mapper.questionCommentToResponse(comment);
 
 		return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
