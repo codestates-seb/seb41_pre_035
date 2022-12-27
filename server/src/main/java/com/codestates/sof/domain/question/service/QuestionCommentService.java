@@ -1,5 +1,7 @@
 package com.codestates.sof.domain.question.service;
 
+import java.util.Objects;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +37,7 @@ public class QuestionCommentService {
 	public QuestionComment modify(long questionId, long modifierId, QuestionComment comment) {
 		QuestionComment existsComment = getExistsComment(comment);
 
-		if (!existsComment.isItWriter(modifierId)) {
+		if (!existsComment.isWrittenBy(modifierId)) {
 			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_COMMENT);
 		}
 
@@ -48,8 +50,26 @@ public class QuestionCommentService {
 		return existsComment;
 	}
 
+	@Transactional
+	public void delete(long memberId, long questionId, long commentId) {
+		QuestionComment comment = getExistsComment(commentId);
+
+		if (!comment.isWrittenBy(memberId)) {
+			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_COMMENT);
+		}
+
+		commentRepository.delete(comment);
+	}
+
 	private QuestionComment getExistsComment(QuestionComment comment) {
-		return commentRepository.findById(comment.getQuestionCommentId())
+		if (Objects.isNull(comment.getQuestionCommentId()))
+			throw new BusinessLogicException(ExceptionCode.NOT_FOUND_COMMENT);
+
+		return getExistsComment(comment.getQuestionCommentId());
+	}
+
+	private QuestionComment getExistsComment(long commentId) {
+		return commentRepository.findById(commentId)
 			.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_COMMENT));
 	}
 }
