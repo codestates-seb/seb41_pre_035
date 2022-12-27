@@ -1,7 +1,7 @@
 package com.codestates.sof.domain.answer.controller;
 
 import static com.codestates.sof.domain.answer.controller.AnswerFieldDescriptor.*;
-import static com.codestates.sof.domain.answer.controller.AnswerStubData.MockAnswer.*;
+import static com.codestates.sof.domain.stub.AnswerStubData.MockAnswer.*;
 import static com.codestates.sof.global.utils.AsciiUtils.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
