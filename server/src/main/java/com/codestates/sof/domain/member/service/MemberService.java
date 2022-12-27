@@ -32,7 +32,6 @@ public class MemberService {
 
 		String encode = passwordEncoder.encode(member.getEncryptedPassword());
 		member.setEncryptedPassword(encode);
-		System.out.println(encode);
 		Member saveMember = memberRepository.save(member);
 
 		authService.sendActivationEmail(saveMember);
@@ -80,9 +79,18 @@ public class MemberService {
 
 	private void verifyUserExist(String email) {
 		Optional<Member> optionalMember = memberRepository.findByEmail(email);
-		if (optionalMember.isPresent()) {
-			throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+		if (optionalMember.isEmpty()) {
+			return;
 		}
-	}
 
+		// 유저가 등록이 되어있지만 아직 이메일 인증을 하지 않은 경우 해당 메일로 한 번 더 이메일을 전송합니다.
+		Member member = optionalMember.get();
+		if (!member.getVerificationFlag()) {
+			authService.sendActivationEmail(member);
+			throw new BusinessLogicException(ExceptionCode.EMAIL_VERIFICATION_REQUIRED);
+		}
+
+		throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+	}
 }
+
