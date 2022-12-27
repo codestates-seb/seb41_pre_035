@@ -1,4 +1,4 @@
-package com.codestates.sof.domain.answer.controller;
+package com.codestates.sof.domain.stub;
 
 import java.time.LocalDateTime;
 import java.util.List;
