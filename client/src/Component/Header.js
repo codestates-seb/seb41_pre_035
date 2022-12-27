@@ -4,9 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 
-const logoiconSize = { fontSize: "30px" };
-const logotextSize = { fontSize: "18px" };
-
 const Header = () => {
   const navigate = useNavigate();
 
@@ -14,19 +11,8 @@ const Header = () => {
     <>
       <div className="headerContainer">
         <div className="headerLogo">
-          <Link to="/" className="logoWrapper">
-            {/* <i className="fa-brands fa-stack-overflow" style={logoiconSize}></i>
-            <div className="logoText">
-              <div className="logoText1" style={logotextSize}>
-                stack
-              </div>
-              <div className="logoText2" style={logotextSize}>
-                overflow
-              </div>
-            </div> */}
-            <Logo text={true} className="test" />
-          </Link>
-          {/* <Logo text={true} /> */}
+          {/* Logo 컴포넌트에 홈으로 리다이렉션이 되도록 만들어놨습니다. 해당 주석 확인 후 작업하실 때 삭제해주세요 */}
+          <Logo text={true} size={false} />
         </div>
         <div className="headerMenu">
           <p>About</p>

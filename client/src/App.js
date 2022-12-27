@@ -10,22 +10,22 @@ import Login from "./page/Login";
 import Recovery from "./page/Recovery";
 import SignUp from "./page/SignUp";
 import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { userState } from "./recoil";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false);
-  const [userInfo, setUserInfo] = useState("");
+  const user = useRecoilValue(userState);
 
   return (
     <div className="App">
-      {isLogin ? <HeaderLogin /> : <Header />}
+      {user ? <HeaderLogin /> : <Header />}
       {/* <HeaderMenumodal/> */}
       <Routes>
-        <Route path="/login" element={<Login setIsLogin={setIsLogin} setUserInfo={setUserInfo} />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/recovery" element={<Recovery />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
-
       {/* <Nav />
       <Sidebar />
       <Footer /> */}

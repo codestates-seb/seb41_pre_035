@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../css/headerLogin.css";
 import { useNavigate } from "react-router-dom";
+import Logo from "./Logo";
 
 const HeaderLogin = () => {
   const [logoutmodal] = useState(false);
@@ -9,7 +10,8 @@ const HeaderLogin = () => {
   return (
     <>
       <div className="headerContainer">
-        <div className="headerLogo">stackoverflow</div>
+        {/* 로고 컴포넌트 안쓰신거 같아서 제가 가져왔어요 확인 후 삭제해주세요 */}
+        <Logo text={true} size={false} />
         <div className="headerProducts">products</div>
         <div className="search">
           <input className="headerSearch" type="search" placeholder="Search...." />
