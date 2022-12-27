@@ -6,6 +6,7 @@ import "../css/Btn.css";
 import "../css/QuestionPage.css";
 import questionList from "../data/Questions";
 import MDEditor from "@uiw/react-md-editor";
+
 const axios = require("axios");
 
 function QuestionPage() {
@@ -24,6 +25,15 @@ function QuestionPage() {
     body: answer,
     tags: [],
   });
+
+  const handleClear = () => {
+    if (window.confirm("Discard question")) {
+      setAnswer("");
+      alert("Discard");
+    } else {
+      alert("Cancel");
+    }
+  };
 
   const handleAnswerSubmit = (e) => {
     e.preventDefault();
@@ -92,9 +102,14 @@ function QuestionPage() {
           </div>
         )}
         <MDEditor.Markdown source={answer} style={{ whiteSpace: "pre-wrap" }} />
-        <button className="btn" onClick={handleAnswerSubmit}>
+        <button className="btn flexItem" onClick={handleAnswerSubmit}>
           Post Your Answer
         </button>
+        {answer && (
+          <button className="btn redBtn flexItem" onClick={handleClear}>
+            Discard draft
+          </button>
+        )}
       </div>
     </div>
   );

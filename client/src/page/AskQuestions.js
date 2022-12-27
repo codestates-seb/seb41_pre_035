@@ -258,7 +258,6 @@ function AskQuestions() {
             Review your question
           </button>
         )}
-
         {post && (
           <button className="btn inlineBtn flexItem" onClick={handleQuestionSubmit}>
             Post your question

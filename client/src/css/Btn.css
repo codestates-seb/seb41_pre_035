@@ -41,3 +41,17 @@
   color: rgb(93, 161, 216);
   border: 1px solid rgb(93, 161, 216);
 }
+
+.pageBtn {
+  color: black;
+  background-color: white;
+  border: 1px solid rgb(145, 144, 144);
+  border-radius: 10%;
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 14px;
+  padding: 5px;
+}
+.pageBtn:hover {
+  background-color: rgb(204, 204, 204);
+}

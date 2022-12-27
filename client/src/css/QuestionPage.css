@@ -80,3 +80,7 @@
   font-size: 13px;
   margin: 10px 30px;
 }
+
+.flexItem {
+  float: left;
+}

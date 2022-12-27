@@ -33,6 +33,97 @@ const Quesitons = [
       "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
     answer: ["answer"],
   },
+  {
+    id: 5,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 6,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 7,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 8,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 9,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 10,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 11,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 12,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 13,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 14,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 15,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 16,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
+  {
+    id: 17,
+    title: "php",
+    content:
+      "PHP is a widely used, open source, general-purpose, multi-paradigm, dynamically typed and interpreted scripting language designed initially for server-side web development. Use this tag for questions about programming in the PHP language.",
+    answer: ["answer"],
+  },
 ];
 
 export default Quesitons;
