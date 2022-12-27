@@ -50,8 +50,6 @@ public class AnswerControllerRestDocsTest {
 	@Test
 	public void postAnswerTest() throws Exception {
 		// given
-		long questionId = 1L;
-
 		AnswerDto.Post post = getAnswerPostDto();
 		String content = gson.toJson(post);
 
@@ -73,12 +71,14 @@ public class AnswerControllerRestDocsTest {
 		// then
 		actions
 			.andExpect(status().isCreated())
+			.andExpect(jsonPath("$.data.questionId").value(post.getQuestionId()))
 			.andExpect(jsonPath("$.data.memberId").value(post.getMemberId()))
 			.andExpect(jsonPath("$.data.content").value(post.getContent()))
 			.andDo(document("post-answer",
 					getRequestPreProcessor(),
 					getResponsePreProcessor(),
 					requestFields(
+						fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문 id"),
 						fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
 						fieldWithPath("content").type(JsonFieldType.STRING).description("답변 본문")),
 					responseFields(

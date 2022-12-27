@@ -22,6 +22,7 @@ public class AnswerStubData {
 
 		public static AnswerDto.Post getAnswerPostDto() {
 			AnswerDto.Post post = new AnswerDto.Post();
+			post.setQuestionId(1L);
 			post.setMemberId(1L);
 			post.setContent("답변");
 

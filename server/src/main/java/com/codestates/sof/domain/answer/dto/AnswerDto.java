@@ -16,6 +16,9 @@ public class AnswerDto {
 	@Setter
 	@NoArgsConstructor
 	public static class Post {
+		@Min(value = 0, message = "QuestionId must be equal and more than 0")
+		private Long questionId;
+
 		@Min(value = 0, message = "MemberId must be equal and more than 0")
 		private Long memberId;
 
