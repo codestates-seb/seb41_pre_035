@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -18,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.codestates.sof.domain.auth.filter.JwtAuthenticationFilter;
+import com.codestates.sof.domain.auth.filter.JwtVerificationFilter;
 import com.codestates.sof.domain.auth.handler.MemberAuthenticationFailureHandler;
 import com.codestates.sof.domain.auth.handler.MemberAuthenticationSuccessHandler;
 import com.codestates.sof.domain.auth.jwt.JwtTokenizer;
@@ -38,6 +40,8 @@ public class SecurityConfig {
 			.and()
 			.csrf().disable()
 			.cors(withDefaults())
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
 			.formLogin().disable()
 			.httpBasic().disable()
 			.apply(new CustomFilterConfigure())
@@ -45,7 +49,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(a -> a
 				.antMatchers("/auth/**", "/h2/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/members").permitAll()
-				.anyRequest().permitAll());
+				.anyRequest().authenticated());  // TODO : 도메인 권한 설정 무조건 필요합니다!
 
 		return httpSecurity.build();
 	}
@@ -61,7 +65,7 @@ public class SecurityConfig {
 
 		// TODO : CORS 도메인 설정이 필요합니다.
 		configuration.setAllowedOrigins(List.of("*"));
-		configuration.setAllowedMethods(List.of("POST", "GET", "PATCH", "DELETE", "OPTION"));
+		configuration.setAllowedMethods(List.of("POST", "GET", "PATCH", "DELETE", "OPTIONS"));
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
@@ -75,12 +79,17 @@ public class SecurityConfig {
 
 			JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager,
 				jwtTokenizer);
-
 			jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
 			jwtAuthenticationFilter.setAuthenticationSuccessHandler(
 				new MemberAuthenticationSuccessHandler(mapper));
 			jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 			httpSecurity.addFilter(jwtAuthenticationFilter);
+
+			JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer);
+
+			httpSecurity
+				.addFilter(jwtAuthenticationFilter)
+				.addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
 		}
 	}
 }
