@@ -15,12 +15,18 @@
   float: left;
 }
 
-.qPost :nth-child(1) {
+#qPostTitle {
   font-size: 17px;
   line-height: 20px;
+  color: rgb(115, 150, 222);
 }
 
-.qPost :nth-child(2) {
+#qPostTitle:hover {
+  cursor: pointer;
+  color: rgb(132, 171, 249);
+}
+
+#qPostCon {
   font-size: 13px;
   line-height: 17px;
   margin: 8px 0px;

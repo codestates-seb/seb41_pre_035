@@ -29,6 +29,7 @@
   justify-content: center;
   margin: 5px;
 }
+
 .tagInput {
   flex: 1;
   border: none;
@@ -54,7 +55,11 @@
   background: #e1ecf4;
   border-radius: 8%;
 }
-
+.sTag {
+  font-size: 12px;
+  height: 22px;
+  cursor: default;
+}
 .tagClose {
   display: block;
   width: 20px;

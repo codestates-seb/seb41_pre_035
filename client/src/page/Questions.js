@@ -31,15 +31,6 @@ function Questions() {
     setIsLoading(false); //"로딩 중이 아니다"
   };
 
-  const handleLoadMore = () => {
-    setPage(page + 1);
-    handleLoad(page * 15);
-  };
-
-  const handleNext = () => {
-    setPage(page + 1);
-  };
-
   useEffect(() => {
     handleLoad(page * 15);
   }, [page]);
@@ -82,7 +73,7 @@ function Questions() {
         <button className="pageBtn" onClick={() => setPage(4)}>
           5
         </button>
-        <button className="pageBtn" onClick={handleNext}>
+        <button className="pageBtn" onClick={() => setPage(page + 1)}>
           Next
         </button>
       </div>
