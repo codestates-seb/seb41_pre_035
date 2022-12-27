@@ -1,7 +1,7 @@
 .navMargin {
   margin-left: 40px;
 }
-.navContainer {
+nav {
   font-size: 12px;
   width: 150px;
   height: 800px;
@@ -29,5 +29,5 @@
   border-right: solid 3px #f48225;
 }
 .fa-earth-americas {
-  font-size: 15px;
+  font-size: 16px;
 }

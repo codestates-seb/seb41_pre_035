@@ -16,16 +16,16 @@ function App() {
     <div className="App">
       <Header />
       {/* <HeaderLogin /> */}
-      {/* <HeaderMenumodal/> */}
+      {/* <HeaderMenumodal /> */}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/recovery" element={<Recovery />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
 
-      {/* <Nav />
+      <Nav />
       <Sidebar />
-      <Footer /> */}
+      <Footer />
     </div>
   );
 }

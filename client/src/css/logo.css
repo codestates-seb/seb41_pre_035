@@ -8,6 +8,7 @@
 
 .logoText {
   display: flex;
+  font-size: 19px;
 }
 
 /* 로고 진한 글자 */
@@ -27,7 +28,7 @@
   -webkit-text-fill-color: transparent;
 }
 .logoSize1 {
-  font-size: 42px;
+  font-size: 35px;
 }
 
 .logoSize2 {
