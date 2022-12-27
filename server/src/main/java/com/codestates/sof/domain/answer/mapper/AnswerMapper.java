@@ -10,11 +10,11 @@ import com.codestates.sof.domain.answer.entity.Answer;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AnswerMapper {
-	Answer answerPostToAnswer(AnswerDto.Post requestBody);
+	Answer postToAnswer(AnswerDto.Post requestBody);
 
-	Answer answerPatchToAnswer(AnswerDto.Patch requestBody);
+	Answer patchToAnswer(AnswerDto.Patch requestBody);
 
-	AnswerDto.Response answerToAnswerResponse(Answer answer);
+	AnswerDto.Response answerToResponse(Answer answer);
 
-	List<AnswerDto.Response> answersToAnswerResponses(List<Answer> answers);
+	List<AnswerDto.Response> answersToResponses(List<Answer> answers);
 }

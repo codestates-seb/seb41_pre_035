@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class MemberDto {
 	@Getter
 	@Setter
+	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class Post {
 		private String email;
@@ -19,6 +21,7 @@ public class MemberDto {
 
 	@Getter
 	@Setter
+	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class Patch {
 		private long memberId;
@@ -31,7 +34,8 @@ public class MemberDto {
 	}
 
 	@Getter
-	@AllArgsConstructor
+	@Setter
+	@NoArgsConstructor
 	public static class Response {
 		private long memberId;
 		private String email;

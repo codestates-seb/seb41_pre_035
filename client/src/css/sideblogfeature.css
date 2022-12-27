@@ -1,0 +1,50 @@
+.sidebarContainer {
+  position: absolute;
+  top: 60px;
+  right: 40px;
+  font-size: 12px;
+  width: 320px;
+  height: 1000px;
+  background-color: #fff;
+}
+.sideBlogFeature {
+  box-shadow: 0 0 5px rgb(195, 195, 195);
+  margin: 20px 0px;
+  width: 300px;
+}
+.sideBlogFeatureTitle {
+  background-color: #fbf3d5;
+  border: solid 1px #f5ebc8;
+  font-weight: 700;
+  height: 50px;
+  padding: 15px;
+  font-size: 13px;
+}
+.sideblogFeatureContents {
+  background-color: #fdf7e2;
+  height: 150px;
+  padding: 15px;
+}
+.sideCustomFilters {
+  box-shadow: 0 0 5px rgb(195, 195, 195);
+  margin-bottom: 20px;
+  width: 300px;
+}
+.sideWatchedTags {
+  box-shadow: 0 0 5px rgb(195, 195, 195);
+  width: 300px;
+}
+.sideFiltertagTitle {
+  background-color: #f8f9f9;
+  height: 50px;
+  padding: 15px;
+  font-size: 15px;
+}
+.sideFiterContents {
+  height: 100px;
+  padding: 15px;
+}
+.sideTagContents {
+  height: 100px;
+  padding: 15px;
+}

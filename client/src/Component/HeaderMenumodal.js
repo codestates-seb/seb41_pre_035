@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "../css/headerMenumodal.css";
 import { useNavigate } from "react-router-dom";
-
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 const HeaderMenumodal = () => {
   const [menumodal, setMenumodal] = useState(false);
@@ -10,7 +10,7 @@ const HeaderMenumodal = () => {
 
   return (
     <>
-      <div className="headerContainer">
+      <header>
         <div>
           <p
             onClick={() => {
@@ -20,7 +20,11 @@ const HeaderMenumodal = () => {
             <i className="fa-solid fa-bars"></i>
           </p>
         </div>
-        <div className="headerLogo">stackoverflow</div>
+        <div className="headerLogo">
+          <Link to="/" className="logoWrapper">
+            <Logo text={true} size={true} />
+          </Link>
+        </div>
         <div className="headerMenu">
           <p>About</p>
           <p>Products</p>
@@ -48,7 +52,7 @@ const HeaderMenumodal = () => {
           </button>
         </div>
         {menumodal ? (
-          <div className="navContainer menumodal">
+          <nav className="menumodal">
             <div className="navMenu">
               <ul>
                 <li className="navMenuHover">
@@ -62,12 +66,12 @@ const HeaderMenumodal = () => {
                     </Link>
                   </li>
                   <li className="navMenuHover">
-                    <Link to="/tags">　 Tags　　　　　　　</Link>
+                    <Link to="/tags">　　Tags　　　　　　　</Link>
                   </li>
                   <li className="navMenuHover">
-                    <Link to="/users">　 Users　　　　　　　</Link>
+                    <Link to="/users">　　Users　　　　　　　</Link>
                   </li>
-                  <li className="navMenuHover">　 Companies</li>
+                  <li className="navMenuHover">　　Companies</li>
                 </ul>
                 <li>COLLECTIVES</li>
                 <ul className="navSubMenu">
@@ -79,9 +83,9 @@ const HeaderMenumodal = () => {
                 </ul>
               </ul>
             </div>
-          </div>
+          </nav>
         ) : null}
-      </div>
+      </header>
     </>
   );
 };

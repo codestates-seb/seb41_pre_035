@@ -19,7 +19,7 @@ function App() {
     <div className="App">
       <Header />
       {/* <HeaderLogin /> */}
-      {/* <HeaderMenumodal/> */}
+      {/* <HeaderMenumodal /> */}
       <Routes>
         <Route path="/" element={<Questions />} />
         <Route path="/questions" element={<AskQuestions />} />
@@ -28,9 +28,9 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
       </Routes>
 
-      {/* <Nav />
+      <Nav />
       <Sidebar />
-      <Footer /> */}
+      <Footer />
     </div>
   );
 }

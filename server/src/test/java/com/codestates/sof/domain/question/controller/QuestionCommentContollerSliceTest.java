@@ -94,6 +94,67 @@ class QuestionCommentContollerSliceTest {
 			);
 	}
 
+	@Test
+	void testForPatch() throws Exception {
+		// given
+		QuestionComment temporalEntity = new QuestionComment(null, null, null);
+		given(mapper.patchToQuestionComment(any(QuestionCommentDto.Patch.class))).willReturn(temporalEntity);
+		given(mapper.questionCommentToResponse(any(QuestionComment.class))).willReturn(response);
+		given(service.modify(anyLong(), anyLong(), any(QuestionComment.class))).willReturn(temporalEntity);
+
+		// when
+		ResultActions actions = mvc.perform(
+			patch("/questions/{question-id}/comments/{comment-id}", 1L, 1L)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(patch))
+		);
+
+		// then
+		actions
+			.andExpect(status().isOk())
+			.andDo(
+				getDefaultDocument(
+					"question-comments/patch",
+					pathParameters(
+						parameterWithName("question-id").description("질문 식별자"),
+						parameterWithName("comment-id").description("댓글 식별자")
+					),
+					requestFields(
+						List.of(
+							fieldWithPath("modifierId").type(JsonFieldType.NUMBER).description("수정을 시도한 회원의 식별자"),
+							fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
+						)
+					),
+					getResponseFieldsSnippet()
+				)
+			);
+	}
+
+	@Test
+	void testForDelete() throws Exception {
+		// given
+		willDoNothing().given(service).delete(anyLong(), anyLong(), anyLong());
+
+		// when
+		ResultActions actions = mvc.perform(
+			delete("/questions/{question-id}/comments/{comment-id}", 1L, 1L)
+		);
+
+		// then
+		actions
+			.andExpect(status().isNoContent())
+			.andDo(
+				getDefaultDocument(
+					"question-comments/delete",
+					pathParameters(
+						parameterWithName("question-id").description("질문 식별자"),
+						parameterWithName("comment-id").description("댓글 식별자")
+					)
+				)
+			);
+	}
+
 	private ResponseFieldsSnippet getResponseFieldsSnippet() {
 		return responseFields(
 			List.of(

@@ -1,7 +1,7 @@
 package com.codestates.sof.domain.answer.controller;
 
 import static com.codestates.sof.domain.answer.controller.AnswerFieldDescriptor.*;
-import static com.codestates.sof.domain.answer.controller.AnswerStubData.MockAnswer.*;
+import static com.codestates.sof.domain.stub.AnswerStubData.MockAnswer.*;
 import static com.codestates.sof.global.utils.AsciiUtils.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -56,9 +56,9 @@ public class AnswerControllerRestDocsTest {
 
 		AnswerDto.Response response = getAnswerResponseDto();
 
-		given(answerMapper.answerPostToAnswer(any(AnswerDto.Post.class))).willReturn(new Answer());
+		given(answerMapper.postToAnswer(any(AnswerDto.Post.class))).willReturn(new Answer());
 		given(answerService.createAnswer(any(Answer.class))).willReturn(new Answer());
-		given(answerMapper.answerToAnswerResponse(any(Answer.class))).willReturn(response);
+		given(answerMapper.answerToResponse(any(Answer.class))).willReturn(response);
 
 		// when
 		ResultActions actions =
@@ -96,9 +96,9 @@ public class AnswerControllerRestDocsTest {
 
 		AnswerDto.Response response = getAnswerResponseDto();
 
-		given(answerMapper.answerPatchToAnswer(any(AnswerDto.Patch.class))).willReturn(new Answer());
+		given(answerMapper.patchToAnswer(any(AnswerDto.Patch.class))).willReturn(new Answer());
 		given(answerService.updateAnswer(any(Answer.class))).willReturn(new Answer());
-		given(answerMapper.answerToAnswerResponse(any(Answer.class))).willReturn(response);
+		given(answerMapper.answerToResponse(any(Answer.class))).willReturn(response);
 
 		// when
 		ResultActions actions =
@@ -138,7 +138,7 @@ public class AnswerControllerRestDocsTest {
 		List<AnswerDto.Response> responses = getMultiAnswerResponseDto();
 
 		given(answerService.findAnswers(anyInt(), anyInt())).willReturn(pageAnswers);
-		given(answerMapper.answersToAnswerResponses(anyList())).willReturn(responses);
+		given(answerMapper.answersToResponses(anyList())).willReturn(responses);
 
 		// when
 		ResultActions actions =
