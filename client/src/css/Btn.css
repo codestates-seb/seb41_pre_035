@@ -59,3 +59,7 @@
 .pageBtn:hover {
   background-color: rgb(204, 204, 204);
 }
+.applyBtn {
+  border-top: 1px solid rgb(164, 163, 163);
+  display: flex;
+}
