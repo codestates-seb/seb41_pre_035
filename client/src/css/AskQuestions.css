@@ -1,5 +1,7 @@
 .qContent {
   padding: 80px 24px 24px;
+  margin-left: 180px;
+  margin-right: 200px;
 }
 
 .qContent > div {
@@ -32,7 +34,7 @@
 }
 
 .dWidth {
-  width: 850px;
+  width: 800px;
 }
 
 .bigTitle h1 {
@@ -80,9 +82,9 @@
 
 .psAbsolute {
   padding: 12px;
-  width: 350px;
+  width: 300px;
   height: auto;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 .psAbsolute p {
   overflow-wrap: normal;
