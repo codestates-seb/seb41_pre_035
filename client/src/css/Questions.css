@@ -1,0 +1,25 @@
+.fsHeadLine {
+  display: flex;
+}
+
+.fsHeadLine h1 {
+  font-size: 27px;
+  margin: 10px 800px 12px 0px;
+}
+
+.fsHeadLine btn {
+  margin: 0px 0px 12px 0px;
+}
+
+.qTopBar {
+  margin: 0px 0px 12px;
+  display: flex;
+}
+
+.qTopBar p {
+  margin-right: 500px;
+}
+
+.qListItem {
+  list-style-type: none;
+}

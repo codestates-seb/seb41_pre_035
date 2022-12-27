@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import Nav from "./component/Nav";
 import Footer from "./component/Footer";
 import Sidebar from "./component/Sidebar";
@@ -13,6 +13,7 @@ import SignUp from "./page/SignUp";
 
 import Questions from "./page/Questions";
 import AskQuestions from "./page/AskQuestions";
+import QuestionPage from "./page/QuestionPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Questions />} />
         <Route path="/questions" element={<AskQuestions />} />
+        <Route path="/questions/:questionId" element={<QuestionPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/recovery" element={<Recovery />} />
         <Route path="/signup" element={<SignUp />} />
