@@ -11,3 +11,13 @@ server:
   servlet:
     encoding:
       force-response: true
+
+mail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    auth: true
+    starttls:
+      enable: true

@@ -6,12 +6,18 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.codestates.sof.domain.common.BaseEntity;
+import com.codestates.sof.domain.member.entity.Member;
+import com.codestates.sof.domain.question.entity.Question;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,17 +33,19 @@ public class Answer extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long answerId;
 
-	@Column(nullable = true, updatable = false)
-	private Long questionId;
-
-	@Column(nullable = false, updatable = false)
-	private Long writerId;
-
 	@Column(columnDefinition = "MEDIUMTEXT", nullable = false)
 	private String content;
 
 	@Column(nullable = false)
 	private int voteCount;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", nullable = false)
+	private Member member;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "question_id", nullable = false)
+	private Question question;
 
 	@OneToMany(
 		mappedBy = "answer",
@@ -45,9 +53,9 @@ public class Answer extends BaseEntity {
 		orphanRemoval = true)
 	private List<AnswerComment> comments = new ArrayList<>();
 
-	public Answer(Long questionId, Long writerId, String content) {
-		this.questionId = questionId;
-		this.writerId = writerId;
+	public Answer(Question question, Member member, String content) {
+		this.question = question;
+		this.member = member;
 		this.content = content;
 		this.voteCount = 0;
 	}

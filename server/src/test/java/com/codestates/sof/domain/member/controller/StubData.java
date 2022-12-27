@@ -1,16 +1,16 @@
 package com.codestates.sof.domain.member.controller;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpMethod;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpMethod;
 
 import com.codestates.sof.domain.member.dto.MemberDto;
 import com.codestates.sof.domain.member.dto.ProfileDto;
@@ -22,17 +22,7 @@ public class StubData {
 	static {
 		stubRequestBody = new HashMap<>();
 		stubRequestBody.put(HttpMethod.POST, new MemberDto.Post("user01@hello.com", "1111", "user01"));
-		stubRequestBody.put(HttpMethod.PATCH, new MemberDto.Patch(
-			0,
-			"user01",
-			null,
-			new ProfileDto(
-				"My profile",
-				"Hello world!",
-				"Seoul, South Korea",
-				"websiteLink",
-				"twitter",
-				"github")));
+		stubRequestBody.put(HttpMethod.PATCH, new MemberDto.Patch(0, "user01", null, MockMember.getDefaultProfileDto()));
 	}
 
 	public static class MockMember {
@@ -59,44 +49,44 @@ public class StubData {
 		}
 
 		public static MemberDto.Response getSingleResponseBody() {
-			return new MemberDto.Response(
-				1L,
-				"user01@hello.com",
-				"user01",
-				false,
-				false,
-				LocalDateTime.now(),
-				new ProfileDto(
-					"My profile",
-					"Hello world!",
-					"Seoul, South Korea",
-					"websiteLink",
-					"twitter",
-					"github"));
+			MemberDto.Response response = new MemberDto.Response();
+			response.setMemberId(1L);
+			response.setEmail("user01@hello.com");
+			response.setName("user01");
+			response.setVerificationFlag(false);
+			response.setDeleteFlag(false);
+			response.setLastActivateAt(LocalDateTime.now());
+			response.setProfile(getDefaultProfileDto());
+
+			return response;
 		}
 
 		public static List<MemberDto.Response> getMultiResponseBody() {
 			List<MemberDto.Response> responses = new ArrayList<>();
 			for (int i = 1; i <= 3; i++) {
-				MemberDto.Response member = new MemberDto.Response(
-					i,
-					String.format("user%02d@hello.com", i),
-					String.format("user%02d", i),
-					false,
-					false,
-					LocalDateTime.now(),
-					new ProfileDto(
-						"My profile",
-						"Hello world!",
-						"Seoul, South Korea",
-						"websiteLink",
-						"twitter",
-						"github")
-				);
+				MemberDto.Response member = new MemberDto.Response();
+				member.setMemberId(i);
+				member.setEmail(String.format("user%02d@hello.com", i));
+				member.setName(String.format("user%02d", i));
+				member.setVerificationFlag(false);
+				member.setDeleteFlag(false);
+				member.setLastActivateAt(LocalDateTime.now());
+				member.setProfile(getDefaultProfileDto());
 
 				responses.add(member);
 			}
 			return responses;
+		}
+
+		public static ProfileDto getDefaultProfileDto() {
+			return new ProfileDto(
+				"My profile",
+				"Hello world!",
+				"Seoul, South Korea",
+				"websiteLink",
+				"twitter",
+				"github"
+			);
 		}
 	}
 }

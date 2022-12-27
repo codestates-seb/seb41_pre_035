@@ -35,10 +35,10 @@ public class Member extends BaseEntity {
 	@Column(nullable = false, length = 127)
 	private String name;
 
-	@Column(nullable = false, length = 63)
+	@Column(nullable = false, length = 127)
 	private String encryptedPassword;
 
-	@Column(length = 63)
+	@Column(length = 127)
 	private String beforeEncryptedPassword;
 
 	@Column(nullable = false)
@@ -63,4 +63,8 @@ public class Member extends BaseEntity {
   
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<Question> questions = new ArrayList<>();
+
+	public boolean getVerificationFlag() {
+		return verificationFlag;
+	}
 }

@@ -9,9 +9,12 @@ const HeaderLogin = () => {
 
   return (
     <>
-      <div className="headerContainer">
-        {/* 로고 컴포넌트 안쓰신거 같아서 제가 가져왔어요 확인 후 삭제해주세요 */}
-        <Logo text={true} size={false} />
+      <header>
+        <div className="headerLogo">
+          {/* 로고 컴포넌트 안쓰신거 같아서 제가 가져왔어요 확인 후 삭제해주세요 */}
+          <Logo text={true} size={false} />
+        </div>
+
         <div className="headerProducts">products</div>
         <div className="search">
           <input className="headerSearch" type="search" placeholder="Search...." />
@@ -30,7 +33,7 @@ const HeaderLogin = () => {
           </div>
         </div>
         {logoutmodal ? <div className="logoutmodal">log out</div> : null}
-      </div>
+      </header>
     </>
   );
 };

@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.snippet.Attributes.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
@@ -12,9 +13,14 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -24,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.codestates.sof.domain.question.dto.QuestionCommentDto;
+import com.codestates.sof.domain.question.dto.QuestionCommentResponseDto;
 import com.codestates.sof.domain.question.entity.QuestionComment;
 import com.codestates.sof.domain.question.mapper.QuestionCommentMapper;
 import com.codestates.sof.domain.question.service.QuestionCommentService;
@@ -32,9 +39,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @AutoConfigureRestDocs
 @ActiveProfiles("local")
+@AutoConfigureMockMvc(addFilters = false)
 @MockBean(JpaMetamodelMappingContext.class)
-@WebMvcTest(QuestionCommentContoller.class)
-class QuestionCommentContollerSliceTest {
+@WebMvcTest(value = QuestionCommentContoller.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+class QuestionCommentContollerRestDocsTest {
 	@Autowired
 	MockMvc mvc;
 
@@ -49,7 +57,7 @@ class QuestionCommentContollerSliceTest {
 
 	QuestionCommentDto.Post post;
 	QuestionCommentDto.Patch patch;
-	QuestionCommentDto.Response response;
+	QuestionCommentResponseDto.Response response;
 
 	@BeforeEach
 	void beforeEach() {
@@ -63,7 +71,7 @@ class QuestionCommentContollerSliceTest {
 		// given
 		QuestionComment temporalEntity = new QuestionComment(null, null, null);
 		given(mapper.postToQuestionComment(any(QuestionCommentDto.Post.class))).willReturn(temporalEntity);
-		given(mapper.questionCommentToResponse(any(QuestionComment.class))).willReturn(response);
+		given(mapper.commentToResponse(any(QuestionComment.class))).willReturn(response);
 		given(service.comment(anyLong(), any(QuestionComment.class))).willReturn(temporalEntity);
 
 		// when
@@ -89,7 +97,7 @@ class QuestionCommentContollerSliceTest {
 							fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
 						)
 					),
-					getResponseFieldsSnippet()
+					getSingleResponseSnippet()
 				)
 			);
 	}
@@ -99,7 +107,7 @@ class QuestionCommentContollerSliceTest {
 		// given
 		QuestionComment temporalEntity = new QuestionComment(null, null, null);
 		given(mapper.patchToQuestionComment(any(QuestionCommentDto.Patch.class))).willReturn(temporalEntity);
-		given(mapper.questionCommentToResponse(any(QuestionComment.class))).willReturn(response);
+		given(mapper.commentToResponse(any(QuestionComment.class))).willReturn(response);
 		given(service.modify(anyLong(), anyLong(), any(QuestionComment.class))).willReturn(temporalEntity);
 
 		// when
@@ -126,12 +134,71 @@ class QuestionCommentContollerSliceTest {
 							fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
 						)
 					),
-					getResponseFieldsSnippet()
+					getSingleResponseSnippet()
 				)
 			);
 	}
 
-	private ResponseFieldsSnippet getResponseFieldsSnippet() {
+	@Test
+	void testForGetAll() throws Exception {
+		// given
+		QuestionComment temporalEntity = new QuestionComment(null, null, null);
+		Page<QuestionComment> page = new PageImpl<>(List.of(temporalEntity, temporalEntity), Pageable.ofSize(5), 10);
+		given(service.findAll(anyLong(), anyInt(), anyInt())).willReturn(page);
+		given(mapper.commentToSimpleResponse(any(QuestionComment.class))).willReturn(
+			QuestionCommentStub.getSimpleResponse());
+
+		// when
+		ResultActions actions = mvc.perform(
+			get("/questions/{question-id}/comments", 1L)
+				.param("page", "1")
+				.param("size", "5")
+		);
+
+		// then
+		actions
+			.andExpect(status().isOk())
+			.andDo(
+				getDefaultDocument(
+					"question-comments/get-all",
+					pathParameters(
+						parameterWithName("question-id").description("질문의 식별자")
+					),
+					requestParameters(
+						parameterWithName("page").description("페이지 번호").attributes(key("default").value("1")),
+						parameterWithName("size").description("개수").attributes(key("default").value("5"))
+
+					),
+					getMultiResponseSnippet()
+				)
+			);
+	}
+
+	@Test
+	void testForDelete() throws Exception {
+		// given
+		willDoNothing().given(service).delete(anyLong(), anyLong(), anyLong());
+
+		// when
+		ResultActions actions = mvc.perform(
+			delete("/questions/{question-id}/comments/{comment-id}", 1L, 1L)
+		);
+
+		// then
+		actions
+			.andExpect(status().isNoContent())
+			.andDo(
+				getDefaultDocument(
+					"question-comments/delete",
+					pathParameters(
+						parameterWithName("question-id").description("질문 식별자"),
+						parameterWithName("comment-id").description("댓글 식별자")
+					)
+				)
+			);
+	}
+
+	private ResponseFieldsSnippet getSingleResponseSnippet() {
 		return responseFields(
 			List.of(
 				fieldWithPath("data.member").type(JsonFieldType.OBJECT).description("댓글 작성자의 정보"),
@@ -146,6 +213,25 @@ class QuestionCommentContollerSliceTest {
 				fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("댓글 등록일자"),
 				fieldWithPath("data.lastModifiedAt").type(JsonFieldType.STRING).description("마지막 댓글 수정일자")
 			)
+		);
+	}
+
+	private ResponseFieldsSnippet getMultiResponseSnippet() {
+		return responseFields(
+			fieldWithPath("data").type(JsonFieldType.ARRAY).description("질문 정보"),
+			fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보")
+		).andWithPrefix("data.[].",
+			fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문의 식별자"),
+			fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("작성자의 식별자"),
+			fieldWithPath("memberName").type(JsonFieldType.STRING).description("작성자의 이름"),
+			fieldWithPath("content").type(JsonFieldType.STRING).description("질문 내용"),
+			fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),
+			fieldWithPath("lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자")
+		).andWithPrefix("pageInfo.",
+			fieldWithPath("page").type(JsonFieldType.NUMBER).description("요청한 페이지"),
+			fieldWithPath("size").type(JsonFieldType.NUMBER).description("요청한 개수"),
+			fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수"),
+			fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("총 개수")
 		);
 	}
 }

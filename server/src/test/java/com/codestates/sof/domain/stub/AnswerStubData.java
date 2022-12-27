@@ -1,4 +1,4 @@
-package com.codestates.sof.domain.answer.controller;
+package com.codestates.sof.domain.stub;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +13,8 @@ import com.codestates.sof.domain.answer.dto.AnswerDto;
 import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.answer.entity.AnswerComment;
 import com.codestates.sof.domain.member.controller.StubData;
+import com.codestates.sof.domain.member.entity.Member;
+import com.codestates.sof.domain.question.entity.Question;
 
 public class AnswerStubData {
 
@@ -20,7 +22,8 @@ public class AnswerStubData {
 
 		public static AnswerDto.Post getAnswerPostDto() {
 			AnswerDto.Post post = new AnswerDto.Post();
-			post.setWriterId(1L);
+			post.setQuestionId(1L);
+			post.setMemberId(1L);
 			post.setContent("답변");
 
 			return post;
@@ -28,7 +31,7 @@ public class AnswerStubData {
 
 		public static AnswerDto.Patch getAnswerPatchDto() {
 			AnswerDto.Patch patch = new AnswerDto.Patch();
-			patch.setAnswerId(1L);
+			patch.setMemberId(1L);
 			patch.setContent("답변");
 
 			return patch;
@@ -38,7 +41,7 @@ public class AnswerStubData {
 			AnswerDto.Response response = new AnswerDto.Response();
 			response.setAnswerId(1L);
 			response.setQuestionId(1L);
-			response.setWriterId(1L);
+			response.setMemberId(1L);
 			response.setContent("답변");
 			response.setVoteCount(0);
 			response.setIsItWriter(true);
@@ -50,8 +53,24 @@ public class AnswerStubData {
 		}
 
 		public static Page<Answer> getPageAnswers() {
-			Answer answer1 = new Answer(1L, 1L, "답변1");
-			Answer answer2 = new Answer(2L, 2L, "답변2");
+			Member member1 = new Member();
+			member1.setMemberId(1L);
+			Question question1 = new Question();
+			question1.setQuestionId(1L);
+			Member member2 = new Member();
+			member1.setMemberId(2L);
+			Question question2 = new Question();
+			question1.setQuestionId(2L);
+
+			Answer answer1 = new Answer();
+			answer1.setContent("답변1");
+			answer1.setMember(member1);
+			answer1.setQuestion(question1);
+
+			Answer answer2 = new Answer();
+			answer1.setContent("답변2");
+			answer1.setMember(member2);
+			answer1.setQuestion(question2);
 
 			return new PageImpl<>(List.of(answer1, answer2),
 				PageRequest.of(0, 30, Sort.by("answerId").descending()), 2);
@@ -61,7 +80,7 @@ public class AnswerStubData {
 			AnswerDto.Response response1 = new AnswerDto.Response();
 			response1.setAnswerId(1L);
 			response1.setQuestionId(1L);
-			response1.setWriterId(1L);
+			response1.setMemberId(1L);
 			response1.setContent("답변1");
 			response1.setVoteCount(0);
 			response1.setIsItWriter(true);
@@ -72,7 +91,7 @@ public class AnswerStubData {
 			AnswerDto.Response response2 = new AnswerDto.Response();
 			response2.setAnswerId(2L);
 			response2.setQuestionId(2L);
-			response2.setWriterId(2L);
+			response2.setMemberId(2L);
 			response2.setContent("답변2");
 			response2.setVoteCount(0);
 			response2.setIsItWriter(true);

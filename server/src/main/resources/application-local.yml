@@ -15,6 +15,9 @@ spring:
     ansi:
       enabled: always
 
+server:
+  domain: http://localhost
+
 decorator.datasource.p6spy:
   enable-logging: true
   multiline: true

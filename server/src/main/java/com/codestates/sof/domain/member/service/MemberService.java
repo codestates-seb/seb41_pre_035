@@ -5,8 +5,10 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.codestates.sof.domain.auth.service.AuthService;
 import com.codestates.sof.domain.common.CustomBeanUtils;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.member.entity.Profile;
@@ -22,15 +24,17 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 	private final CustomBeanUtils<Member> memberCustomBeanUtils;
 	private final CustomBeanUtils<Profile> profileCustomBeanUtils;
+	private final PasswordEncoder passwordEncoder;
+	private final AuthService authService;
 
 	public Member createMember(Member member) {
 		verifyUserExist(member.getEmail());
 
-		// password 암호화 해야합니다.
-
+		String encode = passwordEncoder.encode(member.getEncryptedPassword());
+		member.setEncryptedPassword(encode);
 		Member saveMember = memberRepository.save(member);
 
-		// member가 생성되었으면 메일 인증 코드를 구현해야합니다.
+		authService.sendActivationEmail(saveMember);
 
 		return saveMember;
 	}
@@ -58,10 +62,9 @@ public class MemberService {
 			member.setProfile(findMember.getProfile());
 		}
 
-		// TODO: 비밀번호 변경이 있으면 암호화를 해주어야 합니다. -> aop로 가능할 듯?
-		Optional.ofNullable(member.getEncryptedPassword()).ifPresent(pass -> {
+		Optional.ofNullable(member.getEncryptedPassword()).ifPresent(newPassword -> {
 			member.setBeforeEncryptedPassword(findMember.getEncryptedPassword());
-			member.setEncryptedPassword(pass);
+			member.setEncryptedPassword(passwordEncoder.encode(newPassword));
 		});
 		memberCustomBeanUtils.copyNonNullProperties(member, findMember);
 
@@ -76,9 +79,18 @@ public class MemberService {
 
 	private void verifyUserExist(String email) {
 		Optional<Member> optionalMember = memberRepository.findByEmail(email);
-		if (optionalMember.isPresent()) {
-			throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+		if (optionalMember.isEmpty()) {
+			return;
 		}
-	}
 
+		// 유저가 등록이 되어있지만 아직 이메일 인증을 하지 않은 경우 해당 메일로 한 번 더 이메일을 전송합니다.
+		Member member = optionalMember.get();
+		if (!member.getVerificationFlag()) {
+			authService.sendActivationEmail(member);
+			throw new BusinessLogicException(ExceptionCode.EMAIL_VERIFICATION_REQUIRED);
+		}
+
+		throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+	}
 }
+

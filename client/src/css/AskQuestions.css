@@ -1,0 +1,125 @@
+.qContent {
+  padding: 80px 24px 24px;
+  margin-left: 180px;
+  margin-right: 200px;
+}
+
+.qContent > div {
+  margin-bottom: 10px;
+}
+.bigTitle {
+  height: 130px;
+  position: relative;
+}
+.postTitle {
+  padding: 24px;
+}
+.postTitle p:nth-child(1) {
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 17px;
+  padding: 0px 2px;
+}
+.postTitle p:nth-child(2) {
+  font-size: 12px;
+  line-height: 15px;
+  margin: 2px 0px;
+}
+
+.titleInput {
+  padding: 7.8px 9.1px;
+  width: 634px;
+  border: 1px solid;
+  border-radius: 1%;
+}
+
+.dWidth {
+  width: 800px;
+}
+
+.bigTitle h1 {
+  font-size: 27px;
+  font-weight: bold;
+  margin: 24px 0px 27px;
+}
+
+.questionBorder {
+  border: 1px solid rgb(196, 195, 195);
+  border-radius: 1%;
+}
+
+.notice {
+  padding: 24px;
+  border: 1px solid hsl(206, 93%, 83.5%);
+  background-color: #ebf4fb;
+  border-radius: 1%;
+}
+
+.notice h2 {
+  margin: 0px 0px 8px;
+  font-size: 21px;
+}
+.notice p {
+  font-size: 15px;
+  line-height: 20px;
+}
+.notice p:nth-child(3) {
+  margin: 0px 0px 15px;
+}
+
+.notice p:nth-child(4) {
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0px 0px 8px;
+}
+.notice li {
+  font-size: 13px;
+  line-height: 15px;
+  margin-left: 35px;
+  display: list-item;
+  list-style-type: disc;
+}
+
+.psAbsolute {
+  padding: 12px;
+  width: 300px;
+  height: auto;
+  margin-left: 10px;
+}
+.psAbsolute p {
+  overflow-wrap: normal;
+}
+
+.pencilIcon {
+  font-size: 45px;
+  float: left;
+  margin: 10px 20px 20px 0px;
+}
+
+.fsBody p {
+  font-size: 14.3px;
+}
+
+.bgWhite {
+  margin: 16px;
+}
+
+.bgWhite p {
+  font-size: 12px;
+  margin: 0px 0px 12px;
+  line-height: 16px;
+}
+
+.warnReview {
+  font-size: 11px;
+  margin: 5px;
+  color: #c22e32;
+}
+
+.flexItem {
+  float: left;
+}
+
+.formSubmit {
+  width: 900px;
+}
