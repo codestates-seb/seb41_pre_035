@@ -31,6 +31,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
 	// UNANSWERED
 	// @Query("select q from Question q left join q.answers a where a.answerId is null")
-	@Query("select q from Question q where not exists (select 1 from Answer a where a.questionId = q.questionId)")
+	@Query("select q from Question q where not exists (select 1 from Answer a where a.question = q)")
 	Page<Question> findAllByAnswersEmpty(Pageable pageable);
 }
