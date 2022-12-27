@@ -14,6 +14,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.codestates.sof.domain.member.entity.Member;
@@ -186,7 +188,6 @@ public class QuestionCommentContollerIntegralTest {
 	@DisplayName("댓글 수정")
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	class Patch {
-
 		TriFunction<Long, Long, Object, ResultActions> patchPerform = (questionId, commentId, content) ->
 			mvc.perform(
 				patch("/questions/{question-id}/comments/{comment-id}", questionId, commentId)
@@ -272,7 +273,56 @@ public class QuestionCommentContollerIntegralTest {
 						((BusinessLogicException)ex).getExceptionCode());
 				});
 		}
+	}
 
+	@Nested
+	@DisplayName("댓글 삭제")
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	class Delete {
+		QuestionComment comment;
+		Question question;
+		Member member;
+
+		@BeforeAll
+		void setUp() {
+			Member member = new Member();
+			member.setName("name");
+			member.setEmail("email");
+			member.setName("name");
+			member.setEncryptedPassword("encryptedPassword");
+
+			this.member = memberService.createMember(member);
+			this.question = questionService.write(new Question(member, "title", "content"));
+		}
+
+		@BeforeEach
+		@Transactional(propagation = Propagation.REQUIRES_NEW)
+		void createComment() {
+			this.comment = commentService.comment(question.getQuestionId(),
+				new QuestionComment(member, question, "content"));
+		}
+
+		@Test
+		void 작성자는_댓글을_삭제할_수_있다() throws Exception {
+			// given
+			// when
+			ResultActions actions = mvc.perform(
+				delete(
+					"/questions/{question-id}/comments/{comment-id}",
+					question.getQuestionId(),
+					comment.getQuestionCommentId()
+				)
+			);
+
+			// then
+			actions
+				.andExpect(status().isNoContent());
+		}
+
+		@Test
+		void 작성자가_아니면_실패한다() throws Exception {
+			// TODO (Auth)
+		}
 	}
 
 	@FunctionalInterface
