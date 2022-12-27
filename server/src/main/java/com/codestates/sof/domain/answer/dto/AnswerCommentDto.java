@@ -1,21 +1,23 @@
-package com.codestates.sof.domain.question.dto;
+package com.codestates.sof.domain.answer.dto;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 import com.codestates.sof.domain.member.dto.MemberDto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class QuestionCommentDto {
+public class AnswerCommentDto {
+
 	@Getter
 	@Setter
+	@NoArgsConstructor
 	public static class Post {
-		// TODO (Auth)
-		@Positive(message = "MemberId must be greater than 0")
+		@Min(value = 1, message = "MemberId must be equal and more than 1")
 		private Long memberId;
 
 		@NotBlank(message = "Content must not be null")
@@ -24,10 +26,10 @@ public class QuestionCommentDto {
 
 	@Getter
 	@Setter
+	@NoArgsConstructor
 	public static class Patch {
-		// TODO (Auth)
-		@Positive(message = "Modifier Id must be greater than 0")
-		private Long modifierId;
+		@Min(value = 1, message = "MemberId must be equal and more than 1")
+		private Long memberId;
 
 		@NotBlank(message = "Content must not be null")
 		private String content;
@@ -35,9 +37,11 @@ public class QuestionCommentDto {
 
 	@Getter
 	@Setter
+	@NoArgsConstructor
 	public static class Response {
+		private Long commentId;
+		private Long answerId;
 		private MemberDto.Response member;
-		private Long questionId;
 		private String content;
 		private LocalDateTime createdAt;
 		private LocalDateTime lastModifiedAt;
