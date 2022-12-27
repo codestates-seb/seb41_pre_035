@@ -135,7 +135,7 @@ a {
 
 /* 자주 쓰는 설정 */
 :root {
-  --login-bg: #f1f2f3;
+  --bg: #f1f2f3;
   --link: #0074cc;
   --link-hover: #289cf4;
   --border: 1px solid #d6d9dc;
@@ -146,4 +146,8 @@ a {
   --box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   --little-font-size: 13px;
   --little-font-color: #6a737c;
+}
+
+body {
+  background-color: var(--bg);
 }

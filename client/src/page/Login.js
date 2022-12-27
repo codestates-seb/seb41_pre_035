@@ -7,12 +7,12 @@ import { emailValidator } from "../component/validator";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
+import axios from "axios";
 
 // ! 눌렀을 때 인터렉션(소셜 로그인 버튼, 일반 로그인 버튼)은 API 주소 확정 후 하기
 // ! sign up 버튼 클릭시 회원가입 페이지로 이동하기 -> 회원가입 페이지가 만들어지면 주소 추가함
 
-const Login = () => {
+const Login = ({ setIsLogin, setUserInfo }) => {
   const navigate = useNavigate();
 
   // * input 관련 상태
@@ -23,6 +23,7 @@ const Login = () => {
   const [loginEmailError, setloginEmailError] = useState(false);
   const [loginValidError, setLoginValidError] = useState(false);
   const [loginPasswordError, setloginPasswordError] = useState(false);
+  const [loginError, setLoginError] = useState(false);
 
   // * 입력되었는지 + 유효성 검사하는 함수
   // ! 로그인시에도 비밀번호 유효성 검사가 필요한가?
@@ -67,43 +68,47 @@ const Login = () => {
 
     if (checkEmail() && checkEmailValid() && checkPassword()) {
       console.log("서버에 데이터를 보내세요!");
-      // postUserData();
+      postLoginData();
     }
   };
 
   // ! 서버로 요청을 보내는 함수 완성해야 됨
-  // const postUserData = () => {
-  //   const loginData = JSON.stringify({
-  //     email: email,
-  //     password: password,
-  //   });
+  const postLoginData = () => {
+    const loginData = {
+      email: loginEmail,
+      password: loginPassword,
+    };
 
-  //   axios
-  //     .post("서버 주소", loginData)
-  //     .then((res) => {
-  //       const { accessToken } = res.data;
-  //     })
-  //     .then((res) => {
-  //       if (res.status === 200) {
-  //         navigate("/");
-  //         window.location.reload();
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
+    return axios
+      .post("서버 주소", loginData)
+      .then((res) => {
+        if (res.headers.authorization) {
+          localStorage.setItem("login-accessToken", res.headers.authorization);
+          localStorage.setItem("login-refreshToken", res.headers.refresh);
+        }
+      })
+      .then((res) => {
+        navigate("/");
+      })
+      .catch((err) => {
+        setLoginError(true);
+        console.log("로그인에 실패했습니다.");
+      });
+  };
 
   return (
     <div className="loginWrapper">
       <div className="inputReuse">
         <Logo text={false} size={true} />
-        <SocialBtn text={"log in"} className="loginsocial" />
+        <SocialBtn text={"log in"} />
       </div>
 
       <form className="loginForm">
         <div>
-          <InputEmail value={loginEmailBind} classname={loginEmailError || loginValidError ? "errorInput" : "inputEmailInput"} />
+          <InputEmail value={loginEmailBind} classname={loginEmailError || loginValidError || loginError ? "errorInput" : "inputEmailInput"} />
           {loginEmailError ? <div className="errorMessage">Email을 입력해주세요.</div> : null}
           {loginValidError && !loginEmailError ? <div className="errorMessage">Email 형식으로 입력해주세요.</div> : null}
+          {loginError ? <div className="errorMessage">email이나 password를 확인해주세요.</div> : null}
 
           <InputPw value={loginPasswordBind} classname={loginPasswordError ? "errorInput" : "inputPwInput"} type={"need"} />
           {loginPasswordError ? <div className="errorMessage">Password를 입력해주세요.</div> : null}

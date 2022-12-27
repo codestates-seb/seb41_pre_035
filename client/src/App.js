@@ -10,15 +10,18 @@ import Login from "./page/Login";
 import Recovery from "./page/Recovery";
 import SignUp from "./page/SignUp";
 import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
+  const [userInfo, setUserInfo] = useState("");
+
   return (
     <div className="App">
-      <Header />
-      {/* <HeaderLogin /> */}
+      {isLogin ? <HeaderLogin /> : <Header />}
       {/* <HeaderMenumodal/> */}
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login setIsLogin={setIsLogin} setUserInfo={setUserInfo} />} />
         <Route path="/recovery" element={<Recovery />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>

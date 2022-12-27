@@ -112,6 +112,7 @@
 /* error */
 .errorMessage {
   margin-top: 5px;
+  margin-left: 5px;
   font-size: 12px;
   color: rgb(216, 18, 18);
 }

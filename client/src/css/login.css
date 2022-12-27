@@ -1,13 +1,11 @@
 /* 전체 설정 */
 .loginWrapper {
-  height: 95vh;
+  height: 97vh;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  background-color: var(--login-bg);
 }
 
 /* 재사용 컴포넌트 로고 + 소셜 버튼 */
