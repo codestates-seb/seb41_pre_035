@@ -12,6 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.answer.repository.AnswerRepository;
+import com.codestates.sof.domain.member.entity.Member;
+import com.codestates.sof.domain.member.service.MemberService;
+import com.codestates.sof.domain.question.entity.Question;
+import com.codestates.sof.domain.question.service.QuestionService;
 import com.codestates.sof.global.error.dto.ExceptionCode;
 import com.codestates.sof.global.error.exception.BusinessLogicException;
 
@@ -19,13 +23,24 @@ import com.codestates.sof.global.error.exception.BusinessLogicException;
 @Service
 public class AnswerService {
 	private final AnswerRepository answerRepository;
+	private final MemberService memberService;
+	private final QuestionService questionService;
 
-	public AnswerService(AnswerRepository answerRepository) {
+	public AnswerService(AnswerRepository answerRepository, MemberService memberService,
+		QuestionService questionService) {
 		this.answerRepository = answerRepository;
+		this.memberService = memberService;
+		this.questionService = questionService;
 	}
 
 	public Answer createAnswer(Answer answer) {
 		// 필요하다면 verify 추가
+		Member findMember = memberService.findMember(answer.getMember().getMemberId());
+		answer.setMember(findMember);
+
+		Question findQuestion = questionService.findById(answer.getQuestion().getQuestionId());
+		answer.setQuestion(findQuestion);
+
 		Answer savedAnswer = answerRepository.save(answer);
 
 		return savedAnswer;

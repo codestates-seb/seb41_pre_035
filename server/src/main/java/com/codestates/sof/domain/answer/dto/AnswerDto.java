@@ -16,8 +16,11 @@ public class AnswerDto {
 	@Setter
 	@NoArgsConstructor
 	public static class Post {
-		@Min(value = 0, message = "WriterId must be equal and more than 0")
-		private Long writerId;
+		@Min(value = 0, message = "QuestionId must be equal and more than 0")
+		private Long questionId;
+
+		@Min(value = 0, message = "MemberId must be equal and more than 0")
+		private Long memberId;
 
 		@NotBlank(message = "content must not be null")
 		private String content;
@@ -27,7 +30,8 @@ public class AnswerDto {
 	@Setter
 	@NoArgsConstructor
 	public static class Patch {
-		private Long answerId;
+		@Min(value = 0, message = "MemberId must be equal and more than 0")
+		private Long memberId;
 
 		@NotBlank
 		private String content;
@@ -39,7 +43,7 @@ public class AnswerDto {
 	public static class Response {
 		private Long answerId;
 		private Long questionId;
-		private Long writerId;
+		private Long memberId;
 		private String content;
 		private int voteCount;
 		private boolean isItWriter;

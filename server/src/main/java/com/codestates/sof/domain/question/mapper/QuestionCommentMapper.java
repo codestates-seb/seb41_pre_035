@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 
 import com.codestates.sof.domain.member.mapper.MemberMapper;
 import com.codestates.sof.domain.question.dto.QuestionCommentDto;
+import com.codestates.sof.domain.question.dto.QuestionCommentResponseDto;
 import com.codestates.sof.domain.question.entity.QuestionComment;
 
 @Mapper(componentModel = "spring", uses = {MemberMapper.class})
@@ -16,5 +17,10 @@ public interface QuestionCommentMapper {
 	QuestionComment patchToQuestionComment(QuestionCommentDto.Patch patch);
 
 	@Mapping(source = "question.questionId", target = "questionId")
-	QuestionCommentDto.Response questionCommentToResponse(QuestionComment questionComment);
+	QuestionCommentResponseDto.Response commentToResponse(QuestionComment questionComment);
+
+	@Mapping(source = "member.name", target = "memberName")
+	@Mapping(source = "member.memberId", target = "memberId")
+	@Mapping(source = "question.questionId", target = "questionId")
+	QuestionCommentResponseDto.SimpleResponse commentToSimpleResponse(QuestionComment questionComment);
 }

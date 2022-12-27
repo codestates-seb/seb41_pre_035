@@ -8,7 +8,9 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.codestates.sof.domain.question.page.QuestionPageableHandlerMethodArgumentResolver;
+import com.codestates.sof.domain.question.support.QuestionPageableArgumentResolver;
+import com.codestates.sof.domain.tag.support.TagPageableArgumentResolver;
+import com.codestates.sof.global.config.support.PageableHandlerMethodargumentResolver;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -23,16 +25,28 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-		resolvers.add(questionResolver());
+		resolvers.add(questionPageableArgumentResolver());
+		resolvers.add(tagPageableArgumentResolver());
 	}
 
 	@Bean
-	public QuestionPageableHandlerMethodArgumentResolver questionResolver() {
-		QuestionPageableHandlerMethodArgumentResolver questionResolver = new QuestionPageableHandlerMethodArgumentResolver();
-		questionResolver.setPageParameterName(PAGE_PARAMETER_NAME);
-		questionResolver.setSizeParameterName(SIZE_PARAMETER_NAME);
-		questionResolver.setSortParameterName(SORT_PARAMETER_NAME);
+	public QuestionPageableArgumentResolver questionPageableArgumentResolver() {
+		QuestionPageableArgumentResolver questionResolver = new QuestionPageableArgumentResolver(1, 5);
+		setDefaultParameterNames(questionResolver);
 		return questionResolver;
+	}
+
+	@Bean
+	public TagPageableArgumentResolver tagPageableArgumentResolver() {
+		TagPageableArgumentResolver tagResolver = new TagPageableArgumentResolver(1, 30);
+		setDefaultParameterNames(tagResolver);
+		return tagResolver;
+	}
+
+	private void setDefaultParameterNames(PageableHandlerMethodargumentResolver<?> resolver) {
+		resolver.setPageParameterName(PAGE_PARAMETER_NAME);
+		resolver.setSizeParameterName(SIZE_PARAMETER_NAME);
+		resolver.setSortParameterName(SORT_PARAMETER_NAME);
 	}
 
 	@Bean

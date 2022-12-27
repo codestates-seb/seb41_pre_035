@@ -9,7 +9,7 @@ public class AnswerFieldDescriptor {
 	public static FieldDescriptor[] answerResponseFields = new FieldDescriptor[] {
 		fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("고유 식별자"),
 		fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("질문 id"),
-		fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("작성자 id"),
+		fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
 		fieldWithPath("content").type(JsonFieldType.STRING).description("답변 본문"),
 		fieldWithPath("voteCount").type(JsonFieldType.NUMBER).description("투표 횟수"),
 		fieldWithPath("isItWriter").type(JsonFieldType.BOOLEAN).description("작성자 여부"),

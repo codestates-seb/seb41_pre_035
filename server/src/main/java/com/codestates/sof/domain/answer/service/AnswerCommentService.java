@@ -3,6 +3,8 @@ package com.codestates.sof.domain.answer.service;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -55,11 +57,14 @@ public class AnswerCommentService {
 
 	public Page<AnswerComment> findComments(int page, int size) {
 
-		return null;
+		return commentRepository.findAll(PageRequest.of(page, size,
+			Sort.by("commentId").descending()));
 	}
 
 	public void deleteComment(long commentId) {
+		AnswerComment comment = findVerifiedComment(commentId);
 
+		commentRepository.delete(comment);
 	}
 
 	@Transactional(readOnly = true)

@@ -15,6 +15,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -37,7 +38,9 @@ import com.google.gson.Gson;
 import com.jayway.jsonpath.JsonPath;
 
 // TODO: 공통기능 메서드화
-@WebMvcTest(MemberController.class)
+@WebMvcTest(
+	controllers = MemberController.class,
+	excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 class MemberControllerTest {

@@ -24,5 +24,6 @@ public interface AnswerCommentMapper {
 	@Mapping(source = "answer.answerId", target = "answerId")
 	AnswerCommentDto.Response commentToResponse(AnswerComment answerComment);
 
+	@Mapping(source = "answer.answerId", target = "answerId")
 	List<AnswerCommentDto.Response> commentsToResponses(List<AnswerComment> answerComments);
 }
