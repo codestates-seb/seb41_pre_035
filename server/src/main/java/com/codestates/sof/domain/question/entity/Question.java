@@ -60,7 +60,7 @@ public class Question extends BaseEntity {
 	@Column(name = "has_adopted_answer")
 	private boolean hasAdoptedAnswer;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 	private List<Answer> answers = new ArrayList<>();
 
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)

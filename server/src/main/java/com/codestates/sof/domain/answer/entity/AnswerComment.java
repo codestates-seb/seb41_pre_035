@@ -31,7 +31,7 @@ public class AnswerComment extends BaseEntity {
 	private Member member;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "answer_id", nullable = false, updatable = false)
+	@JoinColumn(name = "answer_id", nullable = false)
 	private Answer answer;
 
 	@Column(columnDefinition = "MEDIUMTEXT", nullable = false)
