@@ -5,37 +5,34 @@ import Logo from "./Logo";
 const Footer = () => {
   return (
     <>
-      <div className="footerContainer">
+      <footer>
         <div className="footerMenus">
           <div className="footerLogo">
-            <Logo text={false} />
-            {/* <Link to="/" className="logoWrapper">
-              <i className="fa-brands fa-stack-overflow"></i>
-            </Link> */}
+            <Logo text={false} size={true} />
           </div>
           <div className="footerMenu">
-            <p>STACK OVERFLOW</p>
+            <h2>STACK OVERFLOW</h2>
             <p>Questions</p>
             <p>Help</p>
           </div>
           <div className="footerMenu">
-            <p>PRODUCTS</p>
+            <h2>PRODUCTS</h2>
             <p>Teams</p>
             <p>Advertising</p>
           </div>
           <div className="footerMenu">
-            <p>COMPANY</p>
+            <h2>COMPANY</h2>
             <p>About</p>
             <p>Press</p>
           </div>
           <div className="footerMenu">
-            <p>STACK EXCHANGE NETWORK</p>
+            <h2>STACK EXCHANGE NETWORK</h2>
             <p>Technology</p>
             <p>Culture & recreation</p>
           </div>
         </div>
-        <div>Site design / logo © 2022 Stack Exchange Inc; user contributions licensed under CC BY-SA. rev 2022.12.19.43125</div>
-      </div>
+        <div className="footerLicense">Site design / logo © 2022 Stack Exchange Inc; user contributions licensed under CC BY-SA. rev 2022.12.19.43125</div>
+      </footer>
     </>
   );
 };

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../css/headerLogin.css";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 const HeaderLogin = () => {
   const [logoutmodal] = useState(false);
@@ -8,8 +10,12 @@ const HeaderLogin = () => {
 
   return (
     <>
-      <div className="headerContainer">
-        <div className="headerLogo">stackoverflow</div>
+      <header>
+        <div className="headerLogo">
+          <Link to="/" className="logoWrapper">
+            <Logo text={true} size={true} />
+          </Link>
+        </div>
         <div className="headerProducts">products</div>
         <div className="search">
           <input className="headerSearch" type="search" placeholder="Search...." />
@@ -28,7 +34,7 @@ const HeaderLogin = () => {
           </div>
         </div>
         {logoutmodal ? <div className="logoutmodal">log out</div> : null}
-      </div>
+      </header>
     </>
   );
 };

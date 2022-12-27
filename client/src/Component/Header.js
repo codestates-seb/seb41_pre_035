@@ -4,29 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 
-const logoiconSize = { fontSize: "30px" };
-const logotextSize = { fontSize: "18px" };
-
 const Header = () => {
   const navigate = useNavigate();
 
   return (
     <>
-      <div className="headerContainer">
+      <header>
         <div className="headerLogo">
           <Link to="/" className="logoWrapper">
-            {/* <i className="fa-brands fa-stack-overflow" style={logoiconSize}></i>
-            <div className="logoText">
-              <div className="logoText1" style={logotextSize}>
-                stack
-              </div>
-              <div className="logoText2" style={logotextSize}>
-                overflow
-              </div>
-            </div> */}
-            <Logo text={true} className="test" />
+            <Logo text={true} size={true} />
           </Link>
-          {/* <Logo text={true} /> */}
         </div>
         <div className="headerMenu">
           <p>About</p>
@@ -54,7 +41,7 @@ const Header = () => {
             Sign up
           </button>
         </div>
-      </div>
+      </header>
     </>
   );
 };

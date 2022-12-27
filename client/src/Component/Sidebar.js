@@ -1,19 +1,11 @@
 import React from "react";
 import "../css/sidebar.css";
+import SideBlogFeature from "./SideBlogFeature";
 
 const Sidebar = () => {
   return (
     <div className="sidebarContainer">
-      <div className="sideBlogFeature">
-        <div className="sideBlog">
-          <div className="sideBlogFeatureTitle">The Overflow Blog</div>
-          <div className="sideblogFeatureContents">contents</div>
-        </div>
-        <div className="sideFeature">
-          <div className="sideBlogFeatureTitle">Featured on Meta</div>
-          <div className="sideblogFeatureContents">contents</div>
-        </div>
-      </div>
+      <SideBlogFeature />
       <div className="sideCustomFilters">
         <div className="sideFiltertagTitle">Custom Filters</div>
         <div className="sideFiterContents">Create a custom filter</div>
