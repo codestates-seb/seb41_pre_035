@@ -5,6 +5,7 @@ import javax.validation.constraints.Positive;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,8 @@ import com.codestates.sof.domain.question.service.QuestionCommentService;
 import com.codestates.sof.global.dto.SingleResponseDto;
 
 import lombok.RequiredArgsConstructor;
+
+// TODO: /questions/{question-id}/comments/{comment-id} -> /questions/comments/{comment-id}
 
 @RestController
 @RequiredArgsConstructor
@@ -51,5 +54,15 @@ public class QuestionCommentContoller {
 		QuestionCommentDto.Response response = mapper.questionCommentToResponse(comment);
 
 		return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{comment-id}")
+	public ResponseEntity<?> delete(
+		@PathVariable("question-id") @Positive long questionId,
+		@PathVariable("comment-id") @Positive long commentId
+	) {
+		commentService.delete(1L, questionId, commentId);
+
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
