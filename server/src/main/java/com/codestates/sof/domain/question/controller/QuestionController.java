@@ -1,8 +1,11 @@
 package com.codestates.sof.domain.question.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,11 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codestates.sof.domain.question.dto.QuestionDto;
+import com.codestates.sof.domain.question.dto.QuestionRequestDto;
+import com.codestates.sof.domain.question.dto.QuestionResponseDto;
 import com.codestates.sof.domain.question.entity.Question;
 import com.codestates.sof.domain.question.mapper.QuestionMapper;
-import com.codestates.sof.domain.question.page.QuestionPageRequest;
 import com.codestates.sof.domain.question.service.QuestionService;
+import com.codestates.sof.domain.question.support.QuestionPageRequest;
 import com.codestates.sof.global.dto.MultiResponseDto;
 import com.codestates.sof.global.dto.SingleResponseDto;
 
@@ -40,36 +44,45 @@ public class QuestionController {
 	private final QuestionMapper mapper;
 
 	@PostMapping
-	public ResponseEntity<SingleResponseDto<QuestionDto.Response>> post(@Valid @RequestBody QuestionDto.Post post) {
+	public ResponseEntity<SingleResponseDto<QuestionResponseDto.Response>> post(@Valid @RequestBody QuestionRequestDto.Post post) {
 		Question question = mapper.postToQuestion(post);
-		QuestionDto.Response response = mapper.questionToResponse(questionService.write(question));
+		QuestionResponseDto.Response response = mapper.questionToResponse(questionService.write(question));
 		response.setIsItWriter(true);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResponseDto<>(response));
 	}
 
+	@PatchMapping("/{question-id}")
+	public ResponseEntity<SingleResponseDto<QuestionResponseDto.Response>> patch(
+		@PathVariable("question-id") @Positive Long questionId,
+		@RequestBody @Valid QuestionRequestDto.Patch patch) {
+
+		Question question = questionService.patch(questionId, patch.getMemberId(), mapper.patchToQuestion(patch));
+		QuestionResponseDto.Response response = mapper.questionToResponse(question);
+
+		return ResponseEntity.ok(new SingleResponseDto<>(response));
+	}
+
 	@GetMapping("/{question-id}")
-	public ResponseEntity<SingleResponseDto<QuestionDto.Response>> get(@PathVariable("question-id") @Positive Long questionId) {
+	public ResponseEntity<SingleResponseDto<QuestionResponseDto.Response>> get(@PathVariable("question-id") @Positive Long questionId) {
 		Question question = questionService.findById(questionId);
-		QuestionDto.Response response = mapper.questionToResponse(question);
+		QuestionResponseDto.Response response = mapper.questionToResponse(question);
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
 	}
 
 	@GetMapping
-	public ResponseEntity<MultiResponseDto<QuestionDto.Response>> get(QuestionPageRequest pageRequest) {
-		// return type of simple response dto
-		// return ResponseEntity.ok(new MultiResponseDto<>);
-		return null;
+	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAll(QuestionPageRequest pageRequest) {
+		Page<Question> page = questionService.findAll(pageRequest);
+		List<QuestionResponseDto.SimpleResponse> response = page.map(mapper::questionToSimpleResponse).toList();
+		return new ResponseEntity<>(new MultiResponseDto<>(response, page), HttpStatus.OK);
 	}
 
-	@PatchMapping("/{question-id}")
-	public ResponseEntity<SingleResponseDto<QuestionDto.Response>> patch(
-		@PathVariable("question-id") @Positive Long questionId,
-		@RequestBody @Valid QuestionDto.Patch patch) {
-
-		Question question = questionService.patch(questionId, patch.getMemberId(), mapper.patchToQuestion(patch));
-		QuestionDto.Response response = mapper.questionToResponse(question);
-
-		return ResponseEntity.ok(new SingleResponseDto<>(response));
+	@GetMapping("/tags/{tag-name}")
+	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAllByTag(
+		@PathVariable("tag-name") String tagName, QuestionPageRequest pageRequest
+	) {
+		Page<Question> page = questionService.findAllByTag(tagName, pageRequest);
+		List<QuestionResponseDto.SimpleResponse> response = page.map(mapper::questionToSimpleResponse).toList();
+		return new ResponseEntity<>(new MultiResponseDto<>(response, page), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{question-id}")

@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.codestates.sof.domain.question.entity.Question;
-import com.codestates.sof.domain.question.page.QuestionPageRequest;
 import com.codestates.sof.domain.question.repository.QuestionRepository;
+import com.codestates.sof.domain.question.support.QuestionPageRequest;
+import com.codestates.sof.domain.question.support.QuestionSortingType;
 import com.codestates.sof.domain.tag.entity.Tag;
 import com.codestates.sof.domain.tag.service.TagService;
+import com.codestates.sof.global.config.support.CustomPageRequest;
 import com.codestates.sof.global.error.dto.ExceptionCode;
 import com.codestates.sof.global.error.exception.BusinessLogicException;
 
@@ -31,8 +33,31 @@ public class QuestionService {
 		return question;
 	}
 
-	public Page<Question> findAll(QuestionPageRequest pageRequest) {
-		return null;
+	public Page<Question> findAll(CustomPageRequest<QuestionSortingType> pageRequest) {
+		switch (pageRequest.getSortType()) {
+			case NEWEST:
+				return questionRepository.findAll(pageRequest.of());
+			case UNADOPTED:
+				return questionRepository.findAllByHasAdoptedAnswerIsFalse(pageRequest.of());
+			case UNANSWERED:
+				return questionRepository.findAllByAnswersEmpty(pageRequest.of());
+			default:
+				throw new RuntimeException("Unexpected exception occurred.");
+		}
+	}
+
+	public Page<Question> findAllByTag(String tagName, QuestionPageRequest pageRequest) {
+		Tag tag = tagService.findBy(tagName);
+		switch (pageRequest.getSortType()) {
+			case NEWEST:
+				return questionRepository.findAllByTag(tag, pageRequest.of());
+			case UNADOPTED:
+				return questionRepository.findAllByTagAndHasAdoptedAnswerIsFalse(tag, pageRequest.of());
+			case UNANSWERED:
+				return questionRepository.findAllByTagAndAnswersEmpty(tag, pageRequest.of());
+			default:
+				throw new RuntimeException("Unexpected exception occurred.");
+		}
 	}
 
 	public Question findByIdWithoutIncreasingViewCount(Long questionId) {

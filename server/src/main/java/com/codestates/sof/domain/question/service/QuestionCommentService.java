@@ -2,6 +2,9 @@ package com.codestates.sof.domain.question.service;
 
 import java.util.Objects;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +51,12 @@ public class QuestionCommentService {
 		existsComment.setContent(comment.getContent());
 
 		return existsComment;
+	}
+
+	public Page<QuestionComment> findAll(long questionId, int page, int size) {
+		Question question = questionService.findById(questionId);
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
+		return commentRepository.findAllByQuestion(question, pageRequest);
 	}
 
 	@Transactional
