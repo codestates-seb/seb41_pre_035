@@ -1,3 +1,4 @@
+import { Route, Routes } from "react-router-dom";
 import Nav from "./component/Nav";
 import Footer from "./component/Footer";
 import Sidebar from "./component/Sidebar";
@@ -9,7 +10,9 @@ import HeaderMenumodal from "./component/HeaderMenumodal";
 import Login from "./page/Login";
 import Recovery from "./page/Recovery";
 import SignUp from "./page/SignUp";
-import { Routes, Route } from "react-router-dom";
+
+import Questions from "./page/Questions";
+import AskQuestions from "./page/AskQuestions";
 
 function App() {
   return (
@@ -18,6 +21,8 @@ function App() {
       {/* <HeaderLogin /> */}
       {/* <HeaderMenumodal /> */}
       <Routes>
+        <Route path="/" element={<Questions />} />
+        <Route path="/questions" element={<AskQuestions />} />
         <Route path="/login" element={<Login />} />
         <Route path="/recovery" element={<Recovery />} />
         <Route path="/signup" element={<SignUp />} />
