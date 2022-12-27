@@ -34,8 +34,8 @@ public class MemberDto {
 	}
 
 	@Getter
+	@Setter
 	@NoArgsConstructor
-	@AllArgsConstructor
 	public static class Response {
 		private long memberId;
 		private String email;
