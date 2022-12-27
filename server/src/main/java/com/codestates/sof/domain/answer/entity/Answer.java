@@ -1,10 +1,15 @@
 package com.codestates.sof.domain.answer.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.codestates.sof.domain.common.BaseEntity;
 
@@ -22,7 +27,7 @@ public class Answer extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long answerId;
 
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = true, updatable = false)
 	private Long questionId;
 
 	@Column(nullable = false, updatable = false)
@@ -33,6 +38,12 @@ public class Answer extends BaseEntity {
 
 	@Column(nullable = false)
 	private int voteCount;
+
+	@OneToMany(
+		mappedBy = "answer",
+		cascade = {CascadeType.REMOVE, CascadeType.PERSIST},
+		orphanRemoval = true)
+	private List<AnswerComment> comments = new ArrayList<>();
 
 	public Answer(Long questionId, Long writerId, String content) {
 		this.questionId = questionId;

@@ -51,6 +51,10 @@ public class QuestionComment extends BaseEntity {
 		this.question = question;
 	}
 
+	public boolean isItWriter(Long memberId) {
+		return Objects.equals(memberId, member.getMemberId());
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)

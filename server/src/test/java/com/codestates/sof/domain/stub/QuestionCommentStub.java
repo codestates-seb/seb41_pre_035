@@ -16,7 +16,6 @@ public class QuestionCommentStub {
 	public static QuestionCommentDto.Patch getDefaultPatch() {
 		QuestionCommentDto.Patch patch = new QuestionCommentDto.Patch();
 		patch.setModifierId(1L);
-		patch.setCommentId(1L);
 		patch.setContent("modified-comment");
 		return patch;
 	}
