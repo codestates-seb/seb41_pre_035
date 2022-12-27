@@ -24,4 +24,8 @@ public abstract class CustomPageRequest<E extends Enum<?>> {
 	public PageRequest of() {
 		return of(Sort.by("createdAt").descending());
 	}
+
+	public PageRequest unsorted() {
+		return of(Sort.unsorted());
+	}
 }
