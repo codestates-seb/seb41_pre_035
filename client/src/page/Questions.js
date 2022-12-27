@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import "../css/Btn.css";
 import "../css/Questions.css";
 import QuestionItem from "./QuestionItem";
-
 import questionList from "../data/Questions";
 
 function Questions() {

@@ -1,3 +1,49 @@
 .sqContent {
-  margin: 200px;
+  margin: 100px 390px 0px 220px;
+}
+
+.qHeader {
+  display: flex;
+  border-bottom: 1px solid rgb(196, 195, 195);
+}
+
+.qHeader h1 {
+  font-size: 27px;
+  font-weight: 580;
+  margin-right: 820px;
+}
+.postLayout {
+  display: flex;
+  padding: 20px;
+}
+.answers h2 {
+  font-size: 19px;
+  margin: 20px 0px;
+}
+.answer {
+  border-bottom: 1px solid rgb(196, 195, 195);
+}
+.postBody p {
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.qSideBar {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+.qbookMark {
+  margin-left: 8px;
+  margin-top: 10px;
+  color: rgb(196, 195, 195);
+}
+.voteCount {
+  font-size: 50px;
+  color: rgb(196, 195, 195);
+}
+
+.yourAnswer h2 {
+  font-size: 17px;
+  margin: 20px 0px;
 }
