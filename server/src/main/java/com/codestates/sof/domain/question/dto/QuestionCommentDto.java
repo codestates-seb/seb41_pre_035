@@ -1,11 +1,7 @@
 package com.codestates.sof.domain.question.dto;
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
-
-import com.codestates.sof.domain.member.dto.MemberDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,13 +29,4 @@ public class QuestionCommentDto {
 		private String content;
 	}
 
-	@Getter
-	@Setter
-	public static class Response {
-		private MemberDto.Response member;
-		private Long questionId;
-		private String content;
-		private LocalDateTime createdAt;
-		private LocalDateTime lastModifiedAt;
-	}
 }

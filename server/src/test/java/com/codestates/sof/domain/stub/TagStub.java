@@ -8,22 +8,6 @@ import com.codestates.sof.domain.tag.dto.TagDto;
 import com.codestates.sof.domain.tag.entity.Tag;
 
 public class TagStub {
-	public enum Type {
-		DEFAULT(defaultTags()),
-		SIMPLE_RESPONSE(simpleResponses()),
-		RESPONSE(responses());
-
-		private final Object data;
-
-		Type(Object data) {
-			this.data = data;
-		}
-
-		public Object getData() {
-			return data;
-		}
-	}
-
 	public static List<Tag> defaultTags() {
 		return List.of(
 			Tag.Builder.aTag()
