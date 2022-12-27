@@ -46,9 +46,9 @@ public class AnswerController {
 
 		Answer answer =
 			answerService.createAnswer(
-				answerMapper.answerPostToAnswer(requestBody));
+				answerMapper.postToAnswer(requestBody));
 
-		AnswerDto.Response response = answerMapper.answerToAnswerResponse(answer);
+		AnswerDto.Response response = answerMapper.answerToResponse(answer);
 
 		return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
 	}
@@ -59,9 +59,9 @@ public class AnswerController {
 
 		Answer answer =
 			answerService.updateAnswer(
-				answerMapper.answerPatchToAnswer(requestBody));
+				answerMapper.patchToAnswer(requestBody));
 
-		AnswerDto.Response response = answerMapper.answerToAnswerResponse(answer);
+		AnswerDto.Response response = answerMapper.answerToResponse(answer);
 
 		return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
 	}
@@ -71,13 +71,14 @@ public class AnswerController {
 		int size = 30;
 		Page<Answer> pageAnswers = answerService.findAnswers(page - 1, size);
 		List<Answer> answers = pageAnswers.getContent();
-		List<AnswerDto.Response> responses = answerMapper.answersToAnswerResponses(answers);
+		List<AnswerDto.Response> responses = answerMapper.answersToResponses(answers);
 
 		return new ResponseEntity<>(new MultiResponseDto<>(responses, pageAnswers), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{answer-id}")
 	public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId) {
+		answerService.deleteAnswer(answerId);
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
