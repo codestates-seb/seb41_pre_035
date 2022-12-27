@@ -9,6 +9,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
@@ -79,5 +81,15 @@ public class JwtTokenizer {
 		Date expiration = calendar.getTime();
 
 		return expiration;
+	}
+
+	public Jws<Claims> getClaims(String jws, String base64EncodedSecretKey) {
+		Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+
+		Jws<Claims> claims = Jwts.parserBuilder()
+			.setSigningKey(key)
+			.build()
+			.parseClaimsJws(jws);
+		return claims;
 	}
 }
