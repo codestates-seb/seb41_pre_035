@@ -20,6 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.codestates.sof.domain.auth.filter.JwtAuthenticationFilter;
 import com.codestates.sof.domain.auth.filter.JwtVerificationFilter;
+import com.codestates.sof.domain.auth.handler.MemberAuthenticationEntryPoint;
 import com.codestates.sof.domain.auth.handler.MemberAuthenticationFailureHandler;
 import com.codestates.sof.domain.auth.handler.MemberAuthenticationSuccessHandler;
 import com.codestates.sof.domain.auth.jwt.JwtTokenizer;
@@ -44,6 +45,9 @@ public class SecurityConfig {
 			.and()
 			.formLogin().disable()
 			.httpBasic().disable()
+			.exceptionHandling()
+			.authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+			.and()
 			.apply(new CustomFilterConfigure())
 			.and()
 			.authorizeHttpRequests(a -> a
