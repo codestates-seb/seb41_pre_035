@@ -11,9 +11,8 @@ const Header = () => {
     <>
       <header>
         <div className="headerLogo">
-          <Link to="/" className="logoWrapper">
-            <Logo text={true} size={true} />
-          </Link>
+          {/* Logo 컴포넌트에 홈으로 리다이렉션이 되도록 만들어놨습니다. 해당 주석 확인 후 작업하실 때 삭제해주세요 */}
+          <Logo text={true} size={false} />
         </div>
         <div className="headerMenu">
           <p>About</p>

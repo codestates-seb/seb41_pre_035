@@ -7,7 +7,7 @@ import { useState } from "react";
 const Recovery = () => {
   // * 복구 이메일을 받을 상태
   const [reEmail, reEmailBind, reEmailReset] = useInput("");
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [recoveryIsSuccess, setRecoveryIsSuccess] = useState(false);
 
   // * 유효성 검사 상태
   const [reEmailError, setReEmailError] = useState(false);
@@ -48,13 +48,13 @@ const Recovery = () => {
       // ! axios요청보내고 성공하면 요청이 성공했으니 해당 이메일로 가서 확인하라고 띄워야 함
       // ! 작성한 이메일과 서버에 있는 이메일과 일치시에 요청 성공이 되나? 나중에 확인하기
       // ! 일단 페이지 확인해야되서 해놓음
-      setIsSuccess(true);
+      setRecoveryIsSuccess(true);
     }
   };
 
   return (
     <div className="recoveryWraapper">
-      {isSuccess ? (
+      {recoveryIsSuccess ? (
         <div className="recoverySuccess">
           <i className="fa-solid fa-check fa-2x"></i>
           <div>

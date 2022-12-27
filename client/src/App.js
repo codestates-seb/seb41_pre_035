@@ -11,15 +11,20 @@ import Login from "./page/Login";
 import Recovery from "./page/Recovery";
 import SignUp from "./page/SignUp";
 
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { userState } from "./recoil";
 import Questions from "./page/Questions";
 import AskQuestions from "./page/AskQuestions";
 
 function App() {
+  const user = useRecoilValue(userState);
+
   return (
     <div className="App">
-      <Header />
-      {/* <HeaderLogin /> */}
-      {/* <HeaderMenumodal /> */}
+      {user ? <HeaderLogin /> : <Header />}
+      {/* <HeaderMenumodal/> */}
+
       <Routes>
         <Route path="/" element={<Questions />} />
         <Route path="/questions" element={<AskQuestions />} />
@@ -29,6 +34,7 @@ function App() {
       </Routes>
 
       <Nav />
+
       <Sidebar />
       <Footer />
     </div>

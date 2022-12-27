@@ -1,19 +1,22 @@
 import "../css/login.css";
 import SocialBtn from "../component/SocialBtn";
 import Logo from "../component/Logo";
-import { useInput } from "../util/useInput";
 import { InputEmail, InputPw, InputBtn } from "../component/Form";
+import { useInput } from "../util/useInput";
 import { emailValidator } from "../component/validator";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-// import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-// ! 눌렀을 때 인터렉션(소셜 로그인 버튼, 일반 로그인 버튼)은 API 주소 확정 후 하기
-// ! sign up 버튼 클릭시 회원가입 페이지로 이동하기 -> 회원가입 페이지가 만들어지면 주소 추가함
+// recoil
+import { useSetRecoilState } from "recoil";
+import { userState } from "../recoil";
 
 const Login = () => {
   const navigate = useNavigate();
+
+  // * recoil 아톰 변경
+  const setUser = useSetRecoilState(userState);
 
   // * input 관련 상태
   const [loginEmail, loginEmailBind, loginEmailReset] = useInput("");
@@ -23,6 +26,7 @@ const Login = () => {
   const [loginEmailError, setloginEmailError] = useState(false);
   const [loginValidError, setLoginValidError] = useState(false);
   const [loginPasswordError, setloginPasswordError] = useState(false);
+  const [loginError, setLoginError] = useState(false);
 
   // * 입력되었는지 + 유효성 검사하는 함수
   // ! 로그인시에도 비밀번호 유효성 검사가 필요한가?
@@ -56,8 +60,7 @@ const Login = () => {
     }
   };
 
-  // * 버튼을 클릭하면 실행되는 이벤트 핸들러
-  // ! 버튼 클릭 시 서버로 요청가도록 해야 함
+  // * 버튼을 클릭하면 실행되는 이벤트 핸들러 (유효성 검사가 통과되면 서버에 요청을 보내는 함수가 실행됨)
   const handleLoginBtn = (e) => {
     e.preventDefault();
 
@@ -67,43 +70,54 @@ const Login = () => {
 
     if (checkEmail() && checkEmailValid() && checkPassword()) {
       console.log("서버에 데이터를 보내세요!");
-      // postUserData();
+      postLoginData();
     }
   };
 
   // ! 서버로 요청을 보내는 함수 완성해야 됨
-  // const postUserData = () => {
-  //   const loginData = JSON.stringify({
-  //     email: email,
-  //     password: password,
-  //   });
+  const postLoginData = () => {
+    const loginData = JSON.stringify({
+      username: loginEmail,
+      password: loginPassword,
+    });
 
-  //   axios
-  //     .post("서버 주소", loginData)
-  //     .then((res) => {
-  //       const { accessToken } = res.data;
-  //     })
-  //     .then((res) => {
-  //       if (res.status === 200) {
-  //         navigate("/");
-  //         window.location.reload();
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
+    return axios
+      .post("https://6844-121-66-180-162.jp.ngrok.io/", loginData)
+      .then((res) => res)
+      .then((res) => {
+        // ! 응답 오는 형식 보고 반영할 것
+        if (res.headers.authorization) {
+          localStorage.setItem("accessToken", res.headers.authorization);
+          localStorage.setItem("refreshToken", res.headers.refresh);
+        }
+      })
+      .then((res) => {
+        setUser(JSON.parse(res.body));
+        setLoginError(false);
+        loginEmailReset(); // email 상태를 원래 상태로 비워줌
+        loginPasswordReset(); // password 상태를 원래 상태로 비워줌
+        navigate("/");
+      })
+      .catch((err) => {
+        setLoginError(true);
+        console.log(err);
+        console.log("로그인에 실패했습니다.");
+      });
+  };
 
   return (
     <div className="loginWrapper">
       <div className="inputReuse">
         <Logo text={false} size={true} />
-        <SocialBtn text={"log in"} className="loginsocial" />
+        <SocialBtn text={"log in"} />
       </div>
 
       <form className="loginForm">
         <div>
-          <InputEmail value={loginEmailBind} classname={loginEmailError || loginValidError ? "errorInput" : "inputEmailInput"} />
+          <InputEmail value={loginEmailBind} classname={loginEmailError || loginValidError || loginError ? "errorInput" : "inputEmailInput"} />
           {loginEmailError ? <div className="errorMessage">Email을 입력해주세요.</div> : null}
           {loginValidError && !loginEmailError ? <div className="errorMessage">Email 형식으로 입력해주세요.</div> : null}
+          {loginError ? <div className="errorMessage">email이나 password를 확인해주세요.</div> : null}
 
           <InputPw value={loginPasswordBind} classname={loginPasswordError ? "errorInput" : "inputPwInput"} type={"need"} />
           {loginPasswordError ? <div className="errorMessage">Password를 입력해주세요.</div> : null}
