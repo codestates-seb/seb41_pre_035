@@ -12,6 +12,7 @@ const LIMIT = 15; //페이지네이션 값
 
 function Questions() {
   const navigate = useNavigate();
+  const [filterMenu, setFilterMenu] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [order, setOrder] = useState("active");
@@ -50,8 +51,64 @@ function Questions() {
         <button className="sBtn">Bountied</button>
         <button className="sBtn">Unanswered</button>
         <button className="sBtn">More</button>
-        <button className="sBtn filterBtn">Filter</button>
+        <button className="sBtn filterBtn" onClick={() => setFilterMenu(!filterMenu)}>
+          Filter
+        </button>
       </div>
+      {filterMenu && (
+        <div className="filterMenu">
+          <div className="menuOption">
+            <p>Filter by</p>
+            <li>
+              <input type="checkbox" />
+              No answers
+            </li>
+            <li>
+              <input type="checkbox" />
+              No accepted answer
+            </li>
+            <li>
+              <input type="checkbox" />
+              Has bounty
+            </li>
+          </div>
+          <div className="menuOption">
+            <p>Sorted by</p>
+            <li>
+              <input type="checkbox" />
+              Newest
+            </li>
+            <li>
+              <input type="checkbox" />
+              Recent activity
+            </li>
+            <li>
+              <input type="checkbox" />
+              Highest score
+            </li>
+            <li>
+              <input type="checkbox" />
+              Most frequent
+            </li>
+            <li>
+              <input type="checkbox" />
+              Bounty ending soon
+            </li>
+          </div>
+          <div className="menuOption">
+            <p>Tagged with</p>
+            <li>
+              <input type="checkbox" />
+              My watched tags
+            </li>
+            <li>
+              <input type="checkbox" />
+              The following tags:
+            </li>
+            <input placeholder="e.g. javascript or python"></input>
+          </div>
+        </div>
+      )}
       {questionList.map((el, idx) => (
         <li key={idx} className="qListItem">
           <QuestionItem questionItem={el} />
