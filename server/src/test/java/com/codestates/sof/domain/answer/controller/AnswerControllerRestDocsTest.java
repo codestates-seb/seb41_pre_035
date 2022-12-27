@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -30,7 +31,7 @@ import com.codestates.sof.domain.answer.mapper.AnswerMapper;
 import com.codestates.sof.domain.answer.service.AnswerService;
 import com.google.gson.Gson;
 
-@WebMvcTest(AnswerController.class)
+@WebMvcTest(controllers = AnswerController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 public class AnswerControllerRestDocsTest {
@@ -72,13 +73,13 @@ public class AnswerControllerRestDocsTest {
 		// then
 		actions
 			.andExpect(status().isCreated())
-			.andExpect(jsonPath("$.data.writerId").value(post.getWriterId()))
+			.andExpect(jsonPath("$.data.memberId").value(post.getMemberId()))
 			.andExpect(jsonPath("$.data.content").value(post.getContent()))
 			.andDo(document("post-answer",
 					getRequestPreProcessor(),
 					getResponsePreProcessor(),
 					requestFields(
-						fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("작성자 id"),
+						fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
 						fieldWithPath("content").type(JsonFieldType.STRING).description("답변 본문")),
 					responseFields(
 						fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"))
@@ -112,7 +113,7 @@ public class AnswerControllerRestDocsTest {
 		// then
 		actions
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.data.answerId").value(patch.getAnswerId()))
+			.andExpect(jsonPath("$.data.memberId").value(patch.getMemberId()))
 			.andExpect(jsonPath("$.data.content").value(patch.getContent()))
 			.andDo(document("patch-answer",
 					getRequestPreProcessor(),
@@ -121,7 +122,7 @@ public class AnswerControllerRestDocsTest {
 						parameterWithName("answer-id").description("고유 식별자")
 					),
 					requestFields(
-						fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("고유 식별자"),
+						fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
 						fieldWithPath("content").type(JsonFieldType.STRING).description("답변 본문")
 					),
 					responseFields(
