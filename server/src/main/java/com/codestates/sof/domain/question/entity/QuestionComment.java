@@ -51,7 +51,7 @@ public class QuestionComment extends BaseEntity {
 		this.question = question;
 	}
 
-	public boolean isItWriter(Long memberId) {
+	public boolean isWrittenBy(Long memberId) {
 		return Objects.equals(memberId, member.getMemberId());
 	}
 

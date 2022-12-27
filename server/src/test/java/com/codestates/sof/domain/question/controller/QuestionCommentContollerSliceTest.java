@@ -131,6 +131,30 @@ class QuestionCommentContollerSliceTest {
 			);
 	}
 
+	@Test
+	void testForDelete() throws Exception {
+		// given
+		willDoNothing().given(service).delete(anyLong(), anyLong(), anyLong());
+
+		// when
+		ResultActions actions = mvc.perform(
+			delete("/questions/{question-id}/comments/{comment-id}", 1L, 1L)
+		);
+
+		// then
+		actions
+			.andExpect(status().isNoContent())
+			.andDo(
+				getDefaultDocument(
+					"question-comments/delete",
+					pathParameters(
+						parameterWithName("question-id").description("질문 식별자"),
+						parameterWithName("comment-id").description("댓글 식별자")
+					)
+				)
+			);
+	}
+
 	private ResponseFieldsSnippet getResponseFieldsSnippet() {
 		return responseFields(
 			List.of(
