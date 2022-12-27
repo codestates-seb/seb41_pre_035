@@ -63,4 +63,8 @@ public class Member extends BaseEntity {
   
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<Question> questions = new ArrayList<>();
+
+	public boolean getVerificationFlag() {
+		return verificationFlag;
+	}
 }

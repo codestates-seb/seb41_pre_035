@@ -18,6 +18,7 @@ public enum ExceptionCode {
 
 	// 409
 	MEMBER_EXISTS(40901, "Member already exist"),
+	EMAIL_VERIFICATION_REQUIRED(40902,"Member already exist, and email verification is required"),
 
 	// 5xx
 	EMAIL_SEND_FAILURE(50301, "Verification email error. Please try again later.");
