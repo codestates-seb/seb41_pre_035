@@ -5,7 +5,6 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.restdocs.snippet.Attributes.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
@@ -165,8 +164,8 @@ class QuestionCommentContollerRestDocsTest {
 						parameterWithName("question-id").description("질문의 식별자")
 					),
 					requestParameters(
-						parameterWithName("page").description("페이지 번호").attributes(key("default").value("1")),
-						parameterWithName("size").description("개수").attributes(key("default").value("5"))
+						parameterWithName("page").description("페이지 번호").optional(),
+						parameterWithName("size").description("개수").optional()
 
 					),
 					getMultiResponseSnippet()
