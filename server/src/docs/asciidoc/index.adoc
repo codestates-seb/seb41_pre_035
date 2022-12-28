@@ -5,13 +5,10 @@
 :toc-title: Table of Contents
 :source-highlighter: prettify
 
-***
 == 질문
 === 질문 등록
 .http-request
 include::{snippets}/question/post/http-request.adoc[]
-
-***
 
 == Answer
 
