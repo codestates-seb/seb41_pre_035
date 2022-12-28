@@ -1,18 +1,28 @@
 import "../css/signup.css";
 import SocialBtn from "../component/SocialBtn";
+import SignUpModal from "../component/SignUpModal";
 import { InputNick, InputEmail, InputPw, InputBtn } from "../component/Form";
 import { nickValidator, passwordValidator, emailValidator } from "../component/validator";
 import { useInput } from "../util/useInput";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-import SignUpModal from "../component/SignUpModal";
+// recoil
+import { useSetRecoilState } from "recoil";
+import { emailState } from "../recoil";
 
-const SignUp = () => {
+const Signup = () => {
+  const navigate = useNavigate();
+
+  // recoil
+  const setEmail = useSetRecoilState(emailState);
+
   // * input 관련 상태 + 메일 수신 여부
   const [nick, nickBind, nickReset] = useInput("");
   const [email, emailBind, emailReset] = useInput("");
   const [password, passwordBind, passwordReset] = useInput("");
-  const [checkMailAgree, setCheckMailAgree] = useState(false);
+  const [newsletter, setNewsletter] = useState(false);
 
   // * 에러 관련 상태
   const [nickError, setNickError] = useState(false);
@@ -97,9 +107,42 @@ const SignUp = () => {
     checkPasswordValid();
 
     if (checkNick() && checkNickValid() && checkEmail() && checkEmailValid() && checkPassword() && checkPasswordValid()) {
-      console.log("서버에 데이터를 보내세요!");
-      // postUserData();
+      // console.log("서버에 데이터를 보내세요!");
+      postSignupData();
     }
+  };
+
+  // ! 서버로 요청을 보내는 함수 완성해야 됨
+  const postSignupData = () => {
+    const signupData = JSON.stringify({
+      email: email,
+      password: password,
+      name: nick,
+    });
+
+    return axios
+      .post("/members", signupData, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        if (res.status === 201) {
+          nickReset();
+          emailReset();
+          passwordReset();
+          setEmail(email);
+          navigate("/signupsuccess");
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 409) {
+          alert("이미 등록된 계정입니다.");
+          nickReset();
+          emailReset();
+          passwordReset();
+        }
+        console.log(err);
+        console.log("회원가입에 실패했습니다.");
+      });
   };
 
   return (
@@ -154,7 +197,7 @@ const SignUp = () => {
               <input
                 type="checkbox"
                 onClick={(e) => {
-                  setCheckMailAgree(!checkMailAgree);
+                  setNewsletter(!newsletter);
                 }}
               />
               <div className="signUpRightPromoNoticeText">Opt-in to receive occasional product updates, user research invitations, company announcements, and digests.</div>
@@ -184,4 +227,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Signup;

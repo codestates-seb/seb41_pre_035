@@ -147,7 +147,3 @@ a {
   --little-font-size: 13px;
   --little-font-color: #6a737c;
 }
-
-body {
-  background-color: var(--bg);
-}
