@@ -12,7 +12,7 @@ import axios from "axios";
 import { useSetRecoilState } from "recoil";
 import { emailState } from "../recoil";
 
-const Signup = () => {
+const SignUp = () => {
   const navigate = useNavigate();
 
   // recoil
@@ -130,7 +130,7 @@ const Signup = () => {
           emailReset();
           passwordReset();
           setEmail(email);
-          navigate("/signupsuccess");
+          navigate("/signupnotice");
         }
       })
       .catch((err) => {
@@ -227,4 +227,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignUp;

@@ -11,7 +11,6 @@ const HeaderLogin = () => {
     <>
       <header>
         <div className="headerLogo">
-          {/* 로고 컴포넌트 안쓰신거 같아서 제가 가져왔어요 확인 후 삭제해주세요 */}
           <Logo text={true} size={false} />
         </div>
 
@@ -21,7 +20,7 @@ const HeaderLogin = () => {
         </div>
         <div className="headerLink">
           <div className="headerUserProfile">
-            <img src="img/user.png" alt="" />
+            <img src="/img/user.png" alt="" />
             <p>1</p>
           </div>
           <div className="headerUserInfo">

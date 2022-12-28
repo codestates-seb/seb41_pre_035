@@ -12,7 +12,7 @@ import axios from "axios";
 import { useSetRecoilState } from "recoil";
 import { userState } from "../recoil";
 
-const Login = () => {
+const Login = ({ setRefreshToken }) => {
   const navigate = useNavigate();
 
   // * recoil 아톰 변경
@@ -69,7 +69,6 @@ const Login = () => {
     checkPassword();
 
     if (checkEmail() && checkEmailValid() && checkPassword()) {
-      console.log("서버에 데이터를 보내세요!");
       postLoginData();
     }
   };
@@ -82,25 +81,28 @@ const Login = () => {
     });
 
     return axios
-      .post("https://6844-121-66-180-162.jp.ngrok.io/", loginData)
-      .then((res) => res)
-      .then((res) => {
-        // ! 응답 오는 형식 보고 반영할 것
-        if (res.headers.authorization) {
-          localStorage.setItem("accessToken", res.headers.authorization);
-          localStorage.setItem("refreshToken", res.headers.refresh);
-        }
+      .post("/auth/login", loginData, {
+        headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
-        setUser(JSON.parse(res.body));
+        // 엑세스 토큰은 로컬스토리지에 저장, 리프레시 토큰은 쿠키에 저장
+        localStorage.setItem("accessToken", res.headers.authorization);
+        setRefreshToken("refreshToken", res.headers.refresh, {
+          maxAge: 2592000, //한달
+        });
+        setUser(res.data);
         setLoginError(false);
-        loginEmailReset(); // email 상태를 원래 상태로 비워줌
-        loginPasswordReset(); // password 상태를 원래 상태로 비워줌
+        loginEmailReset();
+        loginPasswordReset();
         navigate("/");
+        console.log("로그인에 성공했습니다.");
+        console.log(res);
       })
       .catch((err) => {
-        setLoginError(true);
-        console.log(err);
+        // console.log(err.response);
+        if (err.response.status === 401) {
+          setLoginError(true);
+        }
         console.log("로그인에 실패했습니다.");
       });
   };
