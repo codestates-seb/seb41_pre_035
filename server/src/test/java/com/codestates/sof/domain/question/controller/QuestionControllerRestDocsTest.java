@@ -191,7 +191,7 @@ class QuestionControllerRestDocsTest {
 			.andExpect(jsonPath("$.pageInfo").exists())
 			.andDo(
 				getDefaultDocument(
-					"questions/get-all-by-tag",
+					"question/get-all-by-tag",
 					requestParameters(
 						parameterWithName("page").description("페이지 번호").attributes(key("default").value("1")),
 						parameterWithName("size").description("개수").attributes(key("default").value("10")),
@@ -292,7 +292,7 @@ class QuestionControllerRestDocsTest {
 		).andWithPrefix("data.answers.[].",
 			fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("답변자의 식별자"),
 			fieldWithPath("questionId").type(JsonFieldType.NUMBER).description("답변이 등록된 질문의 식별자"),
-			fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("답변자 이름"),
+			fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("답변자 이름"),
 			fieldWithPath("content").type(JsonFieldType.STRING).description("답변 내용"),
 			fieldWithPath("voteCount").type(JsonFieldType.NUMBER).description("총 투표수"),
 			fieldWithPath("isItWriter").type(JsonFieldType.BOOLEAN).description("작성자여부"),
