@@ -65,6 +65,10 @@ public class Member extends BaseEntity {
 	private List<Question> questions = new ArrayList<>();
 
 	public boolean getVerificationFlag() {
-		return verificationFlag;
+		return this.verificationFlag;
+	}
+
+	public boolean getDeleteFlag() {
+		return this.deleteFlag;
 	}
 }
