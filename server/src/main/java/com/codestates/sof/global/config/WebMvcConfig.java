@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.codestates.sof.domain.question.support.QuestionPageableArgumentResolver;
@@ -24,11 +25,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	private static final String SORT_PARAMETER_NAME = "sort";
 
 	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/docs/**").addResourceLocations("classpath:/static/docs/");
+	}
+
+	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
 		resolvers.add(questionPageableArgumentResolver());
 		resolvers.add(tagPageableArgumentResolver());
 	}
-
 	@Bean
 	public QuestionPageableArgumentResolver questionPageableArgumentResolver() {
 		QuestionPageableArgumentResolver questionResolver = new QuestionPageableArgumentResolver(1, 5);

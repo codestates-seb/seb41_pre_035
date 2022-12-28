@@ -51,6 +51,7 @@ public class SecurityConfig {
 			.apply(new CustomFilterConfigure())
 			.and()
 			.authorizeHttpRequests(a -> a
+				.antMatchers("/docs/index.html").permitAll()
 				.antMatchers("/auth/**", "/h2/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/members").permitAll()
 				.anyRequest().authenticated());  // TODO : 도메인 권한 설정 무조건 필요합니다!
