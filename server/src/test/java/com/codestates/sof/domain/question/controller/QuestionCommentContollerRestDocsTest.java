@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
@@ -28,7 +29,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.codestates.sof.domain.question.dto.QuestionCommentDto;
+import com.codestates.sof.domain.member.entity.Member;
+import com.codestates.sof.domain.question.dto.QuestionCommentRequestDto;
 import com.codestates.sof.domain.question.dto.QuestionCommentResponseDto;
 import com.codestates.sof.domain.question.entity.QuestionComment;
 import com.codestates.sof.domain.question.mapper.QuestionCommentMapper;
@@ -40,7 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ActiveProfiles("local")
 @AutoConfigureMockMvc(addFilters = false)
 @MockBean(JpaMetamodelMappingContext.class)
-@WebMvcTest(value = QuestionCommentContoller.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@WebMvcTest(controllers = QuestionCommentContoller.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class QuestionCommentContollerRestDocsTest {
 	@Autowired
 	MockMvc mvc;
@@ -54,8 +56,8 @@ class QuestionCommentContollerRestDocsTest {
 	@MockBean
 	QuestionCommentService service;
 
-	QuestionCommentDto.Post post;
-	QuestionCommentDto.Patch patch;
+	QuestionCommentRequestDto.Post post;
+	QuestionCommentRequestDto.Patch patch;
 	QuestionCommentResponseDto.Response response;
 
 	@BeforeEach
@@ -69,9 +71,8 @@ class QuestionCommentContollerRestDocsTest {
 	void testForPost() throws Exception {
 		// given
 		QuestionComment temporalEntity = new QuestionComment(null, null, null);
-		given(mapper.postToQuestionComment(any(QuestionCommentDto.Post.class))).willReturn(temporalEntity);
-		given(mapper.commentToResponse(any(QuestionComment.class))).willReturn(response);
-		given(service.comment(anyLong(), any(QuestionComment.class))).willReturn(temporalEntity);
+		given(service.comment(any(Member.class), anyLong(), anyString())).willReturn(temporalEntity);
+		given(mapper.commentToResponse(any())).willReturn(response);
 
 		// when
 		ResultActions actions = mvc.perform(
@@ -83,6 +84,7 @@ class QuestionCommentContollerRestDocsTest {
 
 		// then
 		actions
+			.andDo(print())
 			.andExpect(status().isCreated())
 			.andDo(
 				getDefaultDocument(
@@ -91,10 +93,7 @@ class QuestionCommentContollerRestDocsTest {
 						parameterWithName("question-id").description("질문 식별자")
 					),
 					requestFields(
-						List.of(
-							fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("작성자의 식별자"),
-							fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
-						)
+						fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
 					),
 					getSingleResponseSnippet()
 				)
@@ -105,9 +104,8 @@ class QuestionCommentContollerRestDocsTest {
 	void testForPatch() throws Exception {
 		// given
 		QuestionComment temporalEntity = new QuestionComment(null, null, null);
-		given(mapper.patchToQuestionComment(any(QuestionCommentDto.Patch.class))).willReturn(temporalEntity);
-		given(mapper.commentToResponse(any(QuestionComment.class))).willReturn(response);
-		given(service.modify(anyLong(), anyLong(), any(QuestionComment.class))).willReturn(temporalEntity);
+		given(service.modify(any(Member.class), anyLong(), anyLong(), anyString())).willReturn(temporalEntity);
+		given(mapper.commentToResponse(any())).willReturn(response);
 
 		// when
 		ResultActions actions = mvc.perform(
@@ -128,10 +126,7 @@ class QuestionCommentContollerRestDocsTest {
 						parameterWithName("comment-id").description("댓글 식별자")
 					),
 					requestFields(
-						List.of(
-							fieldWithPath("modifierId").type(JsonFieldType.NUMBER).description("수정을 시도한 회원의 식별자"),
-							fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
-						)
+						fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
 					),
 					getSingleResponseSnippet()
 				)
@@ -166,7 +161,6 @@ class QuestionCommentContollerRestDocsTest {
 					requestParameters(
 						parameterWithName("page").description("페이지 번호").optional(),
 						parameterWithName("size").description("개수").optional()
-
 					),
 					getMultiResponseSnippet()
 				)
@@ -176,7 +170,7 @@ class QuestionCommentContollerRestDocsTest {
 	@Test
 	void testForDelete() throws Exception {
 		// given
-		willDoNothing().given(service).delete(anyLong(), anyLong(), anyLong());
+		willDoNothing().given(service).delete(any(), anyLong(), anyLong());
 
 		// when
 		ResultActions actions = mvc.perform(

@@ -150,7 +150,6 @@ public class Question extends BaseEntity {
 	// *** Comment ***
 
 	public QuestionComment addComment(QuestionComment comment) {
-		comment.setQuestion(this);
 		comments.add(comment);
 		return comment;
 	}

@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -44,7 +43,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ActiveProfiles("local")
 @AutoConfigureMockMvc(addFilters = false)
 @MockBean(JpaMetamodelMappingContext.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @WebMvcTest(controllers = QuestionController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class QuestionControllerRestDocsTest {
 	@Autowired
@@ -65,7 +63,7 @@ class QuestionControllerRestDocsTest {
 	QuestionResponseDto.SimpleResponse simpleResponse;
 
 	@BeforeEach
-	void setUp() {
+	void beforeEach() {
 		post = QuestionStub.getPostRequest();
 		question = QuestionStub.getDefaultQuestion();
 		response = QuestionStub.getSingleResponse();
