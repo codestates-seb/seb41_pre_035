@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import "../css/logo.css";
 
 const Logo = ({ text, size }) => {
+  // text true시 stack overflow가 보입니다
   // size true시 큰 사이즈, false시 작은 사이즈입니다
   return (
     <div>

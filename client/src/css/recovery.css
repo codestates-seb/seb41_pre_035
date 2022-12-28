@@ -5,8 +5,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  background-color: var(--login-bg);
 }
 
 /* 가운데 요소 설정 */

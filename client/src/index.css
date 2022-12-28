@@ -135,7 +135,7 @@ a {
 
 /* 자주 쓰는 설정 */
 :root {
-  --login-bg: #f1f2f3;
+  --bg: #f1f2f3;
   --link: #0074cc;
   --link-hover: #289cf4;
   --border: 1px solid #d6d9dc;

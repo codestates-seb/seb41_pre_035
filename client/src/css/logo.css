@@ -6,14 +6,15 @@
   font-size: 20px;
 }
 
+/* 로고 옆 글자 크기 변경 */
 .logoText {
   display: flex;
-  font-size: 19px;
+  font-size: 18px;
 }
 
 /* 로고 진한 글자 */
 .logoText2 {
-  margin-left: 3px;
+  margin-left: 2px;
   font-weight: 700;
 }
 
@@ -27,6 +28,8 @@
   color: transparent;
   -webkit-text-fill-color: transparent;
 }
+
+/* 로고 아이콘 사이즈 변경 */
 .logoSize1 {
   font-size: 35px;
 }

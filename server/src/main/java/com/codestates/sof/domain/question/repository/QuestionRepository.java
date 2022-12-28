@@ -37,6 +37,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 	@Query("select q from Question q where not exists (select 1 from Answer a where a.question = q)")
 	Page<Question> findAllByAnswersEmpty(Pageable pageable);
 
-	@Query("select q from Question q inner join QuestionTag qt where qt.tag = :tag and q.hasAdoptedAnswer = false and not exists (select 1 from Answer a where a.questionId = q.questionId)")
+	@Query("select q from Question q inner join QuestionTag qt where qt.tag = :tag and q.hasAdoptedAnswer = false and not exists (select 1 from Answer a where a.question = q)")
 	Page<Question> findAllByTagAndAnswersEmpty(Tag tag, Pageable pageable);
 }

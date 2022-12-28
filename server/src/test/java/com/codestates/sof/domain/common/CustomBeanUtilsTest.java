@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.codestates.sof.domain.member.entity.Member;
 
 
-@SpringBootTest
+@SpringBootTest(classes = CustomBeanUtils.class)
 class CustomBeanUtilsTest {
 	@Autowired
 	private CustomBeanUtils<Member> beanUtils;
