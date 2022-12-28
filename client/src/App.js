@@ -7,7 +7,7 @@ import HeaderLogin from "./component/HeaderLogin";
 import HeaderMenumodal from "./component/HeaderMenumodal";
 import Login from "./page/Login";
 import Recovery from "./page/Recovery";
-import Signup from "./page/Signup";
+import Signup from "./page/SignUp";
 import SignupSuccess from "./page/SignupSuccess";
 
 import { useEffect, useState } from "react";
