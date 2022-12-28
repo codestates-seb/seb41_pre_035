@@ -1,22 +1,35 @@
 import { useNavigate } from "react-router-dom";
+import "../css/QuestionItem.css";
+import "../css/Tags.css";
 
-function QuestionItem() {
+function QuestionItem({ questionItem }) {
   const navigate = useNavigate();
-  let questionId = 0;
 
   const handleTitleClick = () => {
-    navigate(`/questions/${questionId}`);
+    navigate(`/questions/${questionItem.id}`);
   };
+
   return (
-    <>
-      <div className="questionSummary">
+    <div className="questionSummary">
+      <div className="postSum qFlexItem">
         <p>0 votes</p>
-        <p>0 answer</p>
+        <p>0 answers</p>
         <p>0 views</p>
-        <p onClick={handleTitleClick}>title</p>
-        <p>content</p>
       </div>
-    </>
+      <div className="qFlexItem qPost">
+        <p onClick={handleTitleClick} id="qPostTitle">
+          {questionItem.title}
+        </p>
+        <p id="qPostCon">{questionItem.content}</p>
+        <div className="tags">
+          {questionItem.tags.map((el, idx) => (
+            <li key={idx} className="tag">
+              <p className="tagTitle sTag">{el}</p>
+            </li>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -1,0 +1,42 @@
+.questionSummary {
+  border-top: 1px solid rgb(196, 195, 195);
+  margin-right: 160px;
+  padding: 16px;
+  height: fit-content;
+  display: flex;
+}
+
+.questionSummary li {
+  list-style-type: none;
+}
+
+.qPost {
+  width: 800px;
+  float: left;
+}
+
+#qPostTitle {
+  font-size: 17px;
+  line-height: 20px;
+  color: rgb(115, 150, 222);
+}
+
+#qPostTitle:hover {
+  cursor: pointer;
+  color: rgb(132, 171, 249);
+}
+
+#qPostCon {
+  font-size: 13px;
+  line-height: 17px;
+  margin: 8px 0px;
+}
+
+.postSum {
+  margin: 0px 16px 10px 10px;
+}
+
+.postSum p {
+  font-size: 13px;
+  margin: 0px 16px 20px 0px;
+}

@@ -22,3 +22,44 @@
 .redBtn:hover {
   background-color: rgb(194, 195, 195);
 }
+
+.sBtn {
+  display: table;
+  background-color: #ffffff;
+  color: rgb(145, 144, 144);
+  text-align: center;
+  padding: 10.4px;
+  cursor: pointer;
+  border: 1px solid rgb(145, 144, 144);
+  border-radius: 5%;
+  border-collapse: collapse;
+}
+.sBtn:hover {
+  background-color: #e1e0e0;
+}
+.filterBtn {
+  margin-left: 20px;
+  background-color: #d5eaf7;
+  color: rgb(93, 161, 216);
+  border: 1px solid rgb(93, 161, 216);
+}
+.filterBtn:hover {
+  background-color: #96c7e5;
+}
+.pageBtn {
+  color: black;
+  background-color: white;
+  border: 1px solid rgb(145, 144, 144);
+  border-radius: 10%;
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 14px;
+  padding: 5px;
+}
+.pageBtn:hover {
+  background-color: rgb(204, 204, 204);
+}
+.applyBtn {
+  border-top: 1px solid rgb(164, 163, 163);
+  display: flex;
+}

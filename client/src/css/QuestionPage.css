@@ -1,0 +1,86 @@
+.sqContent {
+  margin: 100px 390px 0px 220px;
+}
+
+.qHeader {
+  display: flex;
+  border-bottom: 1px solid rgb(196, 195, 195);
+}
+
+.qHeader h1 {
+  font-size: 27px;
+  font-weight: 580;
+  margin-right: 820px;
+}
+.postLayout {
+  display: flex;
+  padding: 20px;
+}
+.answers h2 {
+  font-size: 19px;
+  margin: 20px 0px;
+}
+.answer {
+  border-bottom: 1px solid rgb(196, 195, 195);
+}
+.postBody p {
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.qSideBar {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+.qbookMark {
+  margin-left: 8px;
+  margin-top: 10px;
+  color: rgb(196, 195, 195);
+}
+.voteCount {
+  font-size: 50px;
+  color: rgb(196, 195, 195);
+}
+
+.yourAnswer h2 {
+  font-size: 17px;
+  margin: 20px 0px;
+}
+
+.qPopup {
+  background-color: #fdf7e2;
+  border: 1px solid #f7e7ad;
+  border-radius: 1%;
+  padding: 16px;
+  margin-top: 10px;
+  display: flex;
+}
+
+#popupClose {
+  font-weight: 600;
+  font-size: 20px;
+  background-color: #fdf7e2;
+  border: none;
+  cursor: pointer;
+  height: 40px;
+}
+
+#popupClose:hover {
+  background-color: #fefcf4;
+}
+.popupText {
+  margin-right: 390px;
+}
+.popupText p {
+  font-size: 13px;
+}
+
+.popupText li {
+  font-size: 13px;
+  margin: 10px 30px;
+}
+
+.flexItem {
+  float: left;
+}
