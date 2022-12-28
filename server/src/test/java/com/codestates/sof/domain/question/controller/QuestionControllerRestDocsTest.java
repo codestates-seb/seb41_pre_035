@@ -5,7 +5,6 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.restdocs.snippet.Attributes.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -159,9 +158,9 @@ class QuestionControllerRestDocsTest {
 				getDefaultDocument(
 					"question/get-all",
 					requestParameters(
-						parameterWithName("page").description("페이지 번호").attributes(key("default").value("1")),
-						parameterWithName("size").description("개수").attributes(key("default").value("10")),
-						parameterWithName("sort").description("정렬 종류 (NEWEST | UNADOPTED | UNANSWERED)")
+						parameterWithName("page").description("페이지 번호").optional(),
+						parameterWithName("size").description("개수").optional(),
+						parameterWithName("sort").description("정렬 종류 (NEWEST | UNADOPTED | UNANSWERED)").optional()
 					),
 					getMultiResponseSnippet()
 				)
@@ -193,9 +192,9 @@ class QuestionControllerRestDocsTest {
 				getDefaultDocument(
 					"question/get-all-by-tag",
 					requestParameters(
-						parameterWithName("page").description("페이지 번호").attributes(key("default").value("1")),
-						parameterWithName("size").description("개수").attributes(key("default").value("10")),
-						parameterWithName("sort").description("정렬 종류 (NEWEST | UNADOPTED | UNANSWERED)")
+						parameterWithName("page").description("페이지 번호").optional(),
+						parameterWithName("size").description("개수").optional(),
+						parameterWithName("sort").description("정렬 종류 (NEWEST | UNADOPTED | UNANSWERED)").optional()
 					),
 					getMultiResponseSnippet()
 				)
