@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 @AutoConfigureMockMvc
 @ActiveProfiles("local")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class QuestionControllerIntegralTest {
+class QuestionControllerIntegrationTest {
 	@Nested
 	@DisplayName("질문 등록")
 	class Post {

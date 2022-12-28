@@ -6,10 +6,12 @@ import com.codestates.sof.domain.member.dto.MemberDto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 public class QuestionCommentResponseDto {
 	@Getter
 	@Setter
+	@ToString
 	public static class Response {
 		private MemberDto.Response member;
 		private Long questionId;

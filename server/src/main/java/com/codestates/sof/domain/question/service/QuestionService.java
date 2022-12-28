@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.question.entity.Question;
 import com.codestates.sof.domain.question.repository.QuestionRepository;
 import com.codestates.sof.domain.question.support.QuestionPageRequest;
@@ -26,8 +27,9 @@ public class QuestionService {
 	private final TagService tagService;
 
 	@Transactional
-	public Question write(Question question) {
-		replaceTagNameToTag(question);
+	public Question write(Question question, Member member) {
+		List<Tag> tags = tagService.findAllBy(question.getTagNames());
+		question = new Question(member, question.getTitle(), question.getContent(), tags);
 		question = save(question);
 		question.increaseTaggedCountForAllTags();
 		return question;
@@ -72,10 +74,10 @@ public class QuestionService {
 	}
 
 	@Transactional
-	public Question patch(Long questionId, Long memberId, Question newQuestion) {
+	public Question patch(Long questionId, Member member, Question newQuestion) {
 		Question question = findExistsQuestion(questionId);
 
-		if (!question.isWrittenBy(memberId)) {
+		if (!question.isWrittenBy(member)) {
 			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
 		}
 
@@ -86,24 +88,13 @@ public class QuestionService {
 		return question;
 	}
 
-	public void delete(Long memberId, Long questionId) {
+	public void delete(Member member, Long questionId) {
 		Question question = findExistsQuestion(questionId);
 
-		if (!question.isWrittenBy(memberId))
+		if (!question.isWrittenBy(member))
 			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
 
-		// TODO (AUTH, COMMENT)
-
 		questionRepository.delete(question);
-	}
-
-	private void replaceTagNameToTag(Question question) {
-		question.getTags()
-			.forEach(questionTag -> {
-				Tag tag = tagService.findBy(questionTag.getTag().getName());
-				questionTag.setTag(tag);
-				questionTag.setQuestion(question);
-			});
 	}
 
 	private Question findExistsQuestion(Long questionId) {

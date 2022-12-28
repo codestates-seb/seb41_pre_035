@@ -73,27 +73,16 @@ public class Question extends BaseEntity {
 		this(writer, title, content, new ArrayList<>());
 	}
 
-	public Question(Member writer, String title, String content, List<QuestionTag> tags) {
+	public Question(Member writer, String title, String content, List<Tag> tags) {
 		this.member = writer;
 		this.title = title;
 		this.content = content;
-		this.tags = tags;
+		this.tags = new ArrayList<>();
+		tags.forEach(this::addTag);
 	}
 
-	public void increaseTaggedCountForAllTags() {
-		tags.forEach(tag -> tag.getTag().increaseTaggedCount());
-	}
-
-	public void increaseViewCount() {
-		this.viewCount++;
-	}
-
-	public boolean isWrittenBy(Long memberId) {
-		return memberId.equals(member.getMemberId());
-	}
-
-	public boolean isItWriter() {
-		return false;
+	public boolean isWrittenBy(Member member) {
+		return Objects.equals(this.member, member);
 	}
 
 	public boolean hasAlreadyVoted() {
@@ -114,7 +103,15 @@ public class Question extends BaseEntity {
 		// adopted Answer
 	}
 
+
 	// *** Tag ***
+	public void increaseTaggedCountForAllTags() {
+		tags.forEach(tag -> tag.getTag().increaseTaggedCount());
+	}
+
+	public void increaseViewCount() {
+		this.viewCount++;
+	}
 
 	public void update(List<Tag> newTags) {
 		List<Tag> oldTags = tags.stream().map(QuestionTag::getTag).collect(Collectors.toList());
@@ -136,10 +133,9 @@ public class Question extends BaseEntity {
 			});
 	}
 
-	public Tag addTag(String tagName) {
+	public void addTag(String tagName) {
 		Tag tag = new Tag(tagName.toLowerCase());
 		tags.add(new QuestionTag(tag, this));
-		return tag;
 	}
 
 	public Tag addTag(Tag tag) {
@@ -151,14 +147,9 @@ public class Question extends BaseEntity {
 		return tags.stream().map(QuestionTag::getTagName).collect(Collectors.toList());
 	}
 
-	public void setTags(List<QuestionTag> tags) {
-		this.tags = tags;
-	}
-
 	// *** Comment ***
 
 	public QuestionComment addComment(QuestionComment comment) {
-		comment.setQuestion(this);
 		comments.add(comment);
 		return comment;
 	}

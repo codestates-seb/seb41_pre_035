@@ -19,10 +19,8 @@ import com.codestates.sof.domain.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(
@@ -51,8 +49,16 @@ public class QuestionComment extends BaseEntity {
 		this.question = question;
 	}
 
-	public boolean isWrittenBy(Long memberId) {
-		return Objects.equals(memberId, member.getMemberId());
+	public boolean isWrittenBy(Member member) {
+		return Objects.equals(this.member, member);
+	}
+
+	public boolean isGroupOf(long questionId) {
+		return Objects.equals(question.getQuestionId(), questionId);
+	}
+
+	public void modify(String content) {
+		this.content = content;
 	}
 
 	@Override
@@ -68,45 +74,5 @@ public class QuestionComment extends BaseEntity {
 	@Override
 	public int hashCode() {
 		return questionCommentId != null ? questionCommentId.hashCode() : 0;
-	}
-
-	public static final class Builder {
-		private Long questionCommentId;
-		private Member member;
-		private Question question;
-		private String content;
-
-		private Builder() {
-		}
-
-		public static Builder aQuestionComment() {
-			return new Builder();
-		}
-
-		public Builder questionCommentId(Long questionCommentId) {
-			this.questionCommentId = questionCommentId;
-			return this;
-		}
-
-		public Builder member(Member member) {
-			this.member = member;
-			return this;
-		}
-
-		public Builder question(Question question) {
-			this.question = question;
-			return this;
-		}
-
-		public Builder content(String content) {
-			this.content = content;
-			return this;
-		}
-
-		public QuestionComment build() {
-			QuestionComment questionComment = new QuestionComment(member, question, content);
-			questionComment.questionCommentId = this.questionCommentId;
-			return questionComment;
-		}
 	}
 }

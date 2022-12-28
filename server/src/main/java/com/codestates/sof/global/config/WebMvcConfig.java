@@ -34,6 +34,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		resolvers.add(questionPageableArgumentResolver());
 		resolvers.add(tagPageableArgumentResolver());
 	}
+
 	@Bean
 	public QuestionPageableArgumentResolver questionPageableArgumentResolver() {
 		QuestionPageableArgumentResolver questionResolver = new QuestionPageableArgumentResolver(1, 5);
