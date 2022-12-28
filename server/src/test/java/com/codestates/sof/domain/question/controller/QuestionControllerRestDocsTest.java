@@ -75,9 +75,9 @@ class QuestionControllerRestDocsTest {
 	@Test
 	void testForWrite() throws Exception {
 		// given
-		given(service.write(any(Question.class))).willReturn(question);
-		given(mapper.questionToResponse(any(Question.class))).willReturn(response);
-		given(mapper.postToQuestion(any(QuestionRequestDto.Post.class))).willReturn(question);
+		given(service.write(any(), any())).willReturn(question);
+		given(mapper.questionToResponse(any())).willReturn(response);
+		given(mapper.postToQuestion(any())).willReturn(question);
 
 		// when
 		ResultActions actions = mvc.perform(TestUtils.POST.apply("/questions", om.writeValueAsString(post)));
@@ -93,7 +93,6 @@ class QuestionControllerRestDocsTest {
 					"question/post",
 					requestFields(
 						List.of(
-							fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("작성자의 식별자"),
 							fieldWithPath("title").type(JsonFieldType.STRING).description("질문 제목"),
 							fieldWithPath("content").type(JsonFieldType.STRING).description("질문 내용"),
 							fieldWithPath("tags").type(JsonFieldType.ARRAY).description("질문에 등록된 태그들의 이름")
@@ -184,7 +183,6 @@ class QuestionControllerRestDocsTest {
 
 		// then
 		actions
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.data").isArray())
 			.andExpect(jsonPath("$.pageInfo").exists())
@@ -204,13 +202,10 @@ class QuestionControllerRestDocsTest {
 	@Test
 	void testForPatch() throws Exception {
 		// given
-		QuestionRequestDto.Patch patch = new QuestionRequestDto.Patch();
-		patch.setMemberId(1L);
-		patch.setTitle("title");
-		patch.setContent("content");
+		QuestionRequestDto.Patch patch = QuestionStub.getPatchRequest();
 
-		given(service.patch(anyLong(), anyLong(), any())).willReturn(question);
-		given(mapper.questionToResponse(any(Question.class))).willReturn(response);
+		given(service.patch(anyLong(), any(), any())).willReturn(question);
+		given(mapper.questionToResponse(any())).willReturn(response);
 
 		// when
 		ResultActions actions = mvc.perform(
@@ -222,9 +217,7 @@ class QuestionControllerRestDocsTest {
 
 		// then
 		actions
-			.andDo(print())
-			.andExpect(jsonPath("$.data.title").value(patch.getTitle()))
-			.andExpect(jsonPath("$.data.content").value(patch.getContent()))
+			.andExpect(status().isOk())
 			.andDo(
 				getDefaultDocument(
 					"question/patch",
@@ -233,9 +226,9 @@ class QuestionControllerRestDocsTest {
 					),
 					requestFields(
 						List.of(
-							fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("질문 수정을 시도한 사용자의 식별자"),
-							fieldWithPath("title").type(JsonFieldType.STRING).description("수정된 질문 제목").optional(),
-							fieldWithPath("content").type(JsonFieldType.STRING).description("수정된 질문 내용").optional()
+							fieldWithPath("title").type(JsonFieldType.STRING).description("수정된 질문 제목"),
+							fieldWithPath("content").type(JsonFieldType.STRING).description("수정된 질문 내용"),
+							fieldWithPath("tags").type(JsonFieldType.ARRAY).description("수정할 태그들")
 						)
 					),
 					getSingleResponseSnippet()
@@ -246,7 +239,7 @@ class QuestionControllerRestDocsTest {
 	@Test
 	void testForDelete() throws Exception {
 		// given
-		willDoNothing().given(service).delete(anyLong(), anyLong());
+		willDoNothing().given(service).delete(any(), any());
 
 		// when
 		ResultActions actions = mvc.perform(delete("/questions/{question-id}", 1L));

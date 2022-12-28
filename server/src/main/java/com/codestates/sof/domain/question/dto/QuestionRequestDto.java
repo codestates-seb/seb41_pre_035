@@ -3,7 +3,6 @@ package com.codestates.sof.domain.question.dto;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +13,6 @@ public class QuestionRequestDto {
 	@Setter
 	@NoArgsConstructor
 	public static class Post {
-		@Positive(message = "WriterId must be greater than 0")
-		private Long writerId;
-
 		@NotBlank(message = "Title must not be null")
 		private String title;
 
@@ -30,9 +26,6 @@ public class QuestionRequestDto {
 	@Setter
 	@NoArgsConstructor
 	public static class Patch {
-		@Positive(message = "MemberId must be greater than 0")
-		private Long memberId;
-
 		@NotBlank(message = "Title must not be null")
 		private String title;
 

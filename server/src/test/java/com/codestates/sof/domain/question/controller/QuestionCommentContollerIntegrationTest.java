@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 @AutoConfigureMockMvc
 @ActiveProfiles("local")
 @DisplayName("질문 댓글 기능 테스트")
-public class QuestionCommentContollerIntegralTest {
+public class QuestionCommentContollerIntegrationTest {
 	@Nested
 	@DisplayName("댓글 등록")
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
