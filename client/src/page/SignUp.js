@@ -130,7 +130,7 @@ const SignUp = () => {
           emailReset();
           passwordReset();
           setEmail(email);
-          navigate("/signupsuccess");
+          navigate("/signupnotice");
         }
       })
       .catch((err) => {

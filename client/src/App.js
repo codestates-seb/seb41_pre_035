@@ -1,7 +1,5 @@
 import { Route, Routes, useParams } from "react-router-dom";
-import Nav from "./component/Nav";
-import Footer from "./component/Footer";
-import Sidebar from "./component/Sidebar";
+
 import Header from "./component/Header";
 import HeaderLogin from "./component/HeaderLogin";
 import HeaderMenumodal from "./component/HeaderMenumodal";
