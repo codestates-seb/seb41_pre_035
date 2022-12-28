@@ -9,11 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.codestates.sof.domain.auth.dto.MemberDetails;
 import com.codestates.sof.domain.auth.jwt.JwtTokenizer;
+import com.codestates.sof.domain.auth.service.MemberDetailsService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -21,6 +23,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class JwtVerificationFilter extends OncePerRequestFilter {
+	private final MemberDetailsService detailsService;
 	private final JwtTokenizer jwtTokenizer;
 
 	@Override
@@ -28,7 +31,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 		FilterChain filterChain) throws ServletException, IOException {
 		try {
 			Map<String, Object> claims = verifyJws(request);
-			setAuthenticationToContext(claims);
+			setAuthenticationToContext(claims, request);
 		} catch (SignatureException se) {
 			request.setAttribute("exception", se);
 		} catch (ExpiredJwtException ee) {
@@ -47,9 +50,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 		return authorization == null || !authorization.startsWith("Bearer");
 	}
 
-	private void setAuthenticationToContext(Map<String, Object> claims) {
+	private void setAuthenticationToContext(Map<String, Object> claims, HttpServletRequest request) {
 		String username = (String)claims.get("username");
-		Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, null);
+
+		MemberDetails userDetails = (MemberDetails) detailsService.loadUserByUsername(username);
+
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, null);
+		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
