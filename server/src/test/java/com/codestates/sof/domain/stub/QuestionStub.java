@@ -3,7 +3,6 @@ package com.codestates.sof.domain.stub;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.codestates.sof.domain.answer.controller.AnswerStubData;
 import com.codestates.sof.domain.member.controller.StubData;
 import com.codestates.sof.domain.member.dto.MemberDto;
 import com.codestates.sof.domain.member.entity.Member;
