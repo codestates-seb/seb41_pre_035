@@ -102,7 +102,7 @@ public class AnswerControllerRestDocsTest {
 		AnswerDto.Response response = getAnswerResponseDto();
 
 		given(answerMapper.patchToAnswer(any(AnswerDto.Patch.class))).willReturn(new Answer());
-		given(answerService.updateAnswer(any(Answer.class), any(Member.class))).willReturn(new Answer());
+		given(answerService.updateAnswer(any(Answer.class), any())).willReturn(new Answer());
 		given(answerMapper.answerToResponse(any(Answer.class))).willReturn(response);
 
 		// when
