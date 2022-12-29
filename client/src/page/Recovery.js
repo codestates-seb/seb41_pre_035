@@ -3,6 +3,7 @@ import { useInput } from "../util/useInput";
 import { InputEmail, InputBtn } from "../component/Form";
 import { emailValidator } from "../component/validator";
 import { useState } from "react";
+import axios from "axios";
 
 const Recovery = () => {
   // * 복구 이메일을 받을 상태
@@ -45,11 +46,30 @@ const Recovery = () => {
 
     if (checkReEmail() && checkReEmailValid()) {
       console.log("서버에 데이터를 보내세요!");
-      // ! axios요청보내고 성공하면 요청이 성공했으니 해당 이메일로 가서 확인하라고 띄워야 함
-      // ! 작성한 이메일과 서버에 있는 이메일과 일치시에 요청 성공이 되나? 나중에 확인하기
-      // ! 일단 페이지 확인해야되서 해놓음
-      setRecoveryIsSuccess(true);
+      postRecovery();
     }
+  };
+
+  // * 서버로 비밀번호 초기화 요청을 보내는 함수
+  const postRecovery = () => {
+    const Data = JSON.stringify({
+      email: reEmail,
+    });
+
+    return axios
+      .post("/auth/recovery", Data, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((res) => {
+        setRecoveryIsSuccess(true);
+        reEmailReset();
+        console.log("비밀번호 초기화 요청에 성공했습니다.");
+      })
+      .catch((err) => {
+        setRecoveryIsSuccess(false);
+        console.log(err.response);
+        console.log("비밀번호 초기화 요청에 실패했습니다.");
+      });
   };
 
   return (
@@ -71,6 +91,7 @@ const Recovery = () => {
           <InputEmail value={reEmailBind} classname={reEmailError || reEmailValidError ? "errorInput" : "inputEmailInput"} />
           {reEmailError ? <div className="errorMessage">Email을 입력해주세요.</div> : null}
           {reEmailValidError && !reEmailError ? <div className="errorMessage">Email 형식으로 입력해주세요.</div> : null}
+          {recoveryIsSuccess ? <div className="errorMessage">Email을 다시 확인해주세요.</div> : null}
 
           <InputBtn text={"Send recovery email"} onclick={handleReEmailBtn} className="recoveryBtn" />
         </form>

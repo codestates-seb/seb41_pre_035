@@ -10,6 +10,7 @@ import Questions from "./page/Questions";
 import AskQuestions from "./page/AskQuestions";
 import QuestionPage from "./page/QuestionPage";
 import Main from "./page/Main";
+import TagsBoard from "./page/TagsBoard";
 import { useCookies } from "react-cookie";
 import { useRecoilValue } from "recoil";
 import { userState } from "./recoil";
@@ -32,6 +33,7 @@ function App() {
         <Route path="/recovery" element={<Recovery />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signupnotice" element={<SignUpNotice />} />
+        <Route path="/tags" element={<TagsBoard />} />
       </Routes>
     </div>
   );
