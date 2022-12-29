@@ -2,6 +2,7 @@ package com.codestates.sof.domain.question.controller;
 
 import static com.codestates.sof.global.utils.AsciiUtils.*;
 import static org.mockito.BDDMockito.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -78,7 +79,10 @@ class QuestionControllerRestDocsTest {
 		given(mapper.postToQuestion(any())).willReturn(question);
 
 		// when
-		ResultActions actions = mvc.perform(TestUtils.POST.apply("/questions", om.writeValueAsString(post)));
+		ResultActions actions = mvc.perform(
+			TestUtils.POST.apply("/questions", om.writeValueAsString(post))
+				.header("Authorization", "Required JWT access token")
+		);
 
 		// then
 		actions
@@ -89,6 +93,7 @@ class QuestionControllerRestDocsTest {
 			.andExpect(jsonPath("$.data.lastModifiedAt").exists())
 			.andDo(getDefaultDocument(
 					"question/post",
+				requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
 					requestFields(
 						List.of(
 							fieldWithPath("title").type(JsonFieldType.STRING).description("질문 제목"),
@@ -122,9 +127,7 @@ class QuestionControllerRestDocsTest {
 			.andDo(
 				getDefaultDocument(
 					"question/get",
-					pathParameters(
-						parameterWithName("question-id").description("질문 식별자")
-					),
+					pathParameters(parameterWithName("question-id").description("질문 식별자")),
 					getSingleResponseSnippet()
 				)
 			);
@@ -211,6 +214,7 @@ class QuestionControllerRestDocsTest {
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(patch))
+				.header("Authorization", "Required JWT access token")
 		);
 
 		// then
@@ -219,9 +223,8 @@ class QuestionControllerRestDocsTest {
 			.andDo(
 				getDefaultDocument(
 					"question/patch",
-					pathParameters(
-						parameterWithName("question-id").description("질문 식별자")
-					),
+					requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
+					pathParameters(parameterWithName("question-id").description("질문 식별자")),
 					requestFields(
 						List.of(
 							fieldWithPath("title").type(JsonFieldType.STRING).description("수정된 질문 제목"),
@@ -240,7 +243,10 @@ class QuestionControllerRestDocsTest {
 		willDoNothing().given(service).delete(any(), any());
 
 		// when
-		ResultActions actions = mvc.perform(delete("/questions/{question-id}", 1L));
+		ResultActions actions = mvc.perform(
+			delete("/questions/{question-id}", 1L)
+				.header("Authorization", "Required JWT access token")
+		);
 
 		// then
 		actions
@@ -248,6 +254,7 @@ class QuestionControllerRestDocsTest {
 			.andDo(
 				getDefaultDocument(
 					"question/delete",
+					requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
 					pathParameters(parameterWithName("question-id").description("질문 식별자"))
 				)
 			);
