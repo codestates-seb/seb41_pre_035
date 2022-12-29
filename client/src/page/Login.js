@@ -29,7 +29,6 @@ const Login = ({ setRefreshToken }) => {
   const [loginError, setLoginError] = useState(false);
 
   // * 입력되었는지 + 유효성 검사하는 함수
-  // ! 로그인시에도 비밀번호 유효성 검사가 필요한가?
   const checkEmail = () => {
     if (loginEmail === "") {
       setloginEmailError(true); // 에러가 있음으로 바꿈
@@ -73,7 +72,7 @@ const Login = ({ setRefreshToken }) => {
     }
   };
 
-  // ! 서버로 요청을 보내는 함수 완성해야 됨
+  // * 서버로 로그인 요청을 보내는 함수
   const postLoginData = () => {
     const loginData = JSON.stringify({
       username: loginEmail,

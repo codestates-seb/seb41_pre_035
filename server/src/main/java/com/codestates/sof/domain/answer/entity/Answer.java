@@ -37,7 +37,7 @@ public class Answer extends BaseEntity {
 	private String content;
 
 	@Column(nullable = false)
-	private int voteCount;
+	private int voteCount = 0;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", nullable = false)
