@@ -34,7 +34,6 @@ public class AnswerService {
 	}
 
 	public Answer createAnswer(Answer answer) {
-		// 필요하다면 verify 추가
 		Member findMember = memberService.findMember(answer.getMember().getMemberId());
 		answer.setMember(findMember);
 
@@ -62,8 +61,9 @@ public class AnswerService {
 			Sort.by("answerId").descending()));
 	}
 
-	public void deleteAnswer(long answerId) {
+	public void deleteAnswer(long answerId, Member member) {
 		Answer findAnswer = findVerifiedAnswer(answerId);
+		verifyExistMember(findAnswer, member.getMemberId());
 
 		answerRepository.delete(findAnswer);
 	}
@@ -76,5 +76,15 @@ public class AnswerService {
 			optionalAnswer.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_ANSWER));
 
 		return findAnswer;
+	}
+
+	private void verifyExistMember(Answer answer, long memberId) {
+		long memberIdByAnswer = answer.getMember().getMemberId();
+
+		if (memberIdByAnswer == memberId) {
+			return;
+		}
+
+		throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_ANSWER);
 	}
 }
