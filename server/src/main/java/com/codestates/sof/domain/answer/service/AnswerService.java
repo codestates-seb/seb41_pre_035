@@ -46,9 +46,9 @@ public class AnswerService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
-	public Answer updateAnswer(Answer answer) {
-		// Update는 본인만 가능하므로 작성자 본인 확인 verify 추가
+	public Answer updateAnswer(Answer answer, Member member) {
 		Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+		verifyExistMember(findAnswer, member.getMemberId());
 
 		Optional.ofNullable(answer.getContent())
 			.ifPresent(findAnswer::setContent);
