@@ -29,13 +29,21 @@ public class QuestionVoteService {
 
 		vote.modify(voteType);
 
-		return question.getVoteCount();
+		return getVoteCount(question.getQuestionId());
+	}
+
+	@Transactional
+	public int getVoteCount(long questionId) {
+		return voteRepository.getTypesByQuestion(questionId)
+			.stream()
+			.mapToInt(VoteType::getValue)
+			.sum();
 	}
 
 	private int delete(Member member, Question question) {
 		voteRepository.findByMemberAndQuestion(member, question)
 			.ifPresent(voteRepository::delete);
 
-		return question.getVoteCount();
+		return getVoteCount(question.getQuestionId());
 	}
 }

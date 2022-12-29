@@ -74,14 +74,8 @@ class QuestionVoteServiceTest {
 
 	@Test
 	void NONE이_아닌_타입으로_투표한다() {
-		// given
-		Member member = memberRepository.findByEmail(this.member.getEmail()).get();
-		Question question = questionRepository.findById(this.question.getQuestionId()).get();
-
-		// when
 		voteService.update(member, question.getQuestionId(), VoteType.UP);
 
-		// then
 		Optional<QuestionVote> optVote = voteRepository.findByMemberAndQuestion(member, question);
 		assertTrue(optVote.isPresent());
 
@@ -92,57 +86,41 @@ class QuestionVoteServiceTest {
 
 	@Test
 	void NONE타입으로_투표하면_무시한다() {
-		// given
-		Member member = memberRepository.findByEmail(this.member.getEmail()).get();
-		Question question = questionRepository.findById(this.question.getQuestionId()).get();
+		int sum = voteService.update(member, question.getQuestionId(), VoteType.NONE);
 
-		// when
-		voteService.update(member, question.getQuestionId(), VoteType.NONE);
-
-		// then
+		assertEquals(0, sum);
 		assertFalse(voteRepository.existsByMemberAndQuestion(member, question));
 	}
 
 	@Test
 	void NONE이_아닌_타입으로_변경한다() {
-		// given
-		Member member = memberRepository.findByEmail(this.member.getEmail()).get();
-		Question question = questionRepository.findById(this.question.getQuestionId()).get();
-		voteService.update(member, question.getQuestionId(), VoteType.UP);
+		int sum1 = voteService.update(member, question.getQuestionId(), VoteType.UP);
+		int sum2 = voteService.update(member, question.getQuestionId(), VoteType.DOWN);
 
-		// when
-		voteService.update(member, question.getQuestionId(), VoteType.DOWN);
-
-		// then
+		assertEquals(1, sum1);
+		assertEquals(-1, sum2);
 		assertTrue(voteRepository.existsByMemberAndQuestion(member, question));
 		assertEquals(VoteType.DOWN, voteRepository.findByMemberAndQuestion(member, question).get().getType());
 	}
 
 	@Test
 	void NONE타입으로_변경하면_삭제된다() {
-		// given
-		Member member = memberRepository.findByEmail(this.member.getEmail()).get();
-		Question question = questionRepository.findById(this.question.getQuestionId()).get();
-		voteService.update(member, question.getQuestionId(), VoteType.UP);
+		int sum1 = voteService.update(member, question.getQuestionId(), VoteType.UP);
+		int sum2 = voteService.update(member, question.getQuestionId(), VoteType.NONE);
 
-		// when
-		voteService.update(member, question.getQuestionId(), VoteType.NONE);
-
-		// then
+		assertEquals(1, sum1);
+		assertEquals(0, sum2);
 		assertFalse(voteRepository.existsByMemberAndQuestion(member, question));
 	}
 
 	@Test
 	void 같은_타입으로_투표하면_변경되지_않는다() {
-		// given
-		Member member = memberRepository.findByEmail(this.member.getEmail()).get();
-		Question question = questionRepository.findById(this.question.getQuestionId()).get();
-		voteService.update(member, question.getQuestionId(), VoteType.UP);
+		int sum1 = voteService.update(member, question.getQuestionId(), VoteType.UP);
+		int sum2 = voteService.update(member, question.getQuestionId(), VoteType.UP);
 
-		// when
-		voteService.update(member, question.getQuestionId(), VoteType.UP);
+		assertEquals(1, sum1);
+		assertEquals(1, sum2);
 
-		// then
 		Optional<QuestionVote> optVote = voteRepository.findByMemberAndQuestion(member, question);
 		assertTrue(optVote.isPresent());
 		assertEquals(VoteType.UP, optVote.get().getType());

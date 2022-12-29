@@ -80,7 +80,7 @@ public class Question extends BaseEntity {
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<QuestionTag> tags = new ArrayList<>();
 
-	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<QuestionVote> votes = new ArrayList<>();
 
 	public Question(Member writer, String title, String content) {
