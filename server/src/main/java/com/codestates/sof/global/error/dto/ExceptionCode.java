@@ -6,6 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ExceptionCode {
+	// 400
+	INVALID_TOKEN(40001, "Invalid token"),
+
 	// 403
 	NO_PERMISSION_EDITING_QUESTION(40301, "Only a writer can edit this question."),
 	NO_PERMISSION_EDITING_COMMENT(40302, "Only a writer can edit this comment."),

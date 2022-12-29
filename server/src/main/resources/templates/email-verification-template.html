@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Please Activate your account</title>
+</head>
+<body style="background-color:#ffffff;">
+<table align="center">
+    <tr>
+        <td style="padding:64px 16px 16px; word-break:break-word;">
+            <p style="border-top:solid 2px #555555; margin:0 auto; width:100%;"></p>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding:10px 25px; word-break:break-word; vertical-align:top; width:480px;">
+            <div style="font-family:helvetica,serif; font-size:20px; line-height:1; text-align:left; color:#555555;"
+                 th:text="${subject}">
+                Please Activate your account!
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding:10px 25px; word-break:break-word;">
+            <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif; font-size:16px; line-height:1; text-align:left; color:#555555;"
+                 th:text="${message}">
+                Thank you for signing up to Stackoverflow clone, please click on the below to activate your
+                account.
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" style="padding:36px 0; word-break:break-word;">
+            <table>
+                <tr>
+                    <td style="border:none; border-radius:3px; cursor:pointer; padding:10px 25px; background:#414141;">
+                        <a th:href="${accountVerificationLink}"
+                           style="background:#414141; color:#ffffff; font-family:Ubuntu, Helvetica, Arial, sans-serif; font-size:13px; font-weight:bold;"
+                           target="_blank">Verify Account</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="font-size:0px;padding:10px 25px;word-break:break-word;">
+            <p style="border-top:solid 2px #555555; margin:0 auto; width:100%;"></p>
+        </td>
+    </tr>
+
+    <tr>
+        <td align="left" style="padding:0 25px; word-break:break-word;">
+            <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif; font-size:12px; line-height:1; text-align:left; color:#555555;">
+                * This email is valid for only <span th:text="${expiration}">60</span> minute(s).
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -37,6 +37,9 @@ dependencies {
 	// sql 쿼리 파라미터에 실제 값을 넣기 위한 라이브러리
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
 
+	// 랜덤 비밀번호 생성하기위한 utility
+	implementation 'org.apache.commons:commons-lang3'
+
 	// 인증 관련
 	 implementation 'org.springframework.boot:spring-boot-starter-security'
 //	 implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
