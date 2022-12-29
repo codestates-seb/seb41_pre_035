@@ -17,12 +17,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.common.BaseEntity;
+import com.codestates.sof.domain.common.VoteType;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.tag.entity.Tag;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,6 +48,7 @@ public class Question extends BaseEntity {
 	private Long questionId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "member_id", updatable = false)
 	private Member member;
 
@@ -60,6 +67,10 @@ public class Question extends BaseEntity {
 	@Column(name = "has_adopted_answer")
 	private boolean hasAdoptedAnswer;
 
+	@Transient
+	@Getter(value = AccessLevel.NONE)
+	private boolean hasAlreadyVoted;
+
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 	private List<Answer> answers = new ArrayList<>();
 
@@ -69,7 +80,7 @@ public class Question extends BaseEntity {
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<QuestionTag> tags = new ArrayList<>();
 
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<QuestionVote> votes = new ArrayList<>();
 
 	public Question(Member writer, String title, String content) {
@@ -88,10 +99,6 @@ public class Question extends BaseEntity {
 		return Objects.equals(this.member, member);
 	}
 
-	public boolean hasAlreadyVoted() {
-		return false;
-	}
-
 	public void update(Question newQuestion, List<Tag> tags) {
 		if (newQuestion.getTitle() != null)
 			title = newQuestion.getTitle();
@@ -105,7 +112,6 @@ public class Question extends BaseEntity {
 		// bookmark
 		// adopted Answer
 	}
-
 
 	// *** Tag ***
 	public void increaseTaggedCountForAllTags() {
@@ -159,7 +165,21 @@ public class Question extends BaseEntity {
 
 	// *** Vote ***
 	public int getVoteCount() {
-		return votes.size();
+		return votes.stream()
+			.mapToInt(vote -> vote.getType().getValue())
+			.sum();
+	}
+
+	public boolean hasAlreadyVoted() {
+		return hasAlreadyVoted;
+	}
+
+	public void setHasAlreadyVoted(boolean hasAlreadyVoted) {
+		this.hasAlreadyVoted = hasAlreadyVoted;
+	}
+
+	public void vote(Member member, VoteType vote) {
+		votes.add(new QuestionVote(this, member, vote));
 	}
 
 	@Override

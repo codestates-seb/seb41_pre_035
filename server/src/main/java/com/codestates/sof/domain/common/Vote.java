@@ -32,4 +32,8 @@ public abstract class Vote extends BaseEntity {
 		this.member = member;
 		this.type = type;
 	}
+
+	public void modify(VoteType type) {
+		this.type = type;
+	}
 }
