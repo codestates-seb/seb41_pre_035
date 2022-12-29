@@ -95,7 +95,6 @@ const SignUp = () => {
   };
 
   // * 버튼을 클릭하면 실행되는 이벤트 핸들러
-  // ! 버튼 클릭시 서버로 요청이 가도록 해야 함
   const handleSumbitBtn = (e) => {
     e.preventDefault();
 
@@ -112,7 +111,8 @@ const SignUp = () => {
     }
   };
 
-  // ! 서버로 요청을 보내는 함수 완성해야 됨
+  // * 서버로 회원가입 요청을 보내는 함수
+
   const postSignupData = () => {
     const signupData = JSON.stringify({
       email: email,

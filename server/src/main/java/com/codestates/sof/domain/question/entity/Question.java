@@ -61,9 +61,6 @@ public class Question extends BaseEntity {
 	@Column(name = "view_count", nullable = false)
 	private int viewCount;
 
-	@Column(name = "vote_count", nullable = false)
-	private int voteCount;
-
 	@Getter(value = AccessLevel.NONE)
 	@Column(name = "has_accepted_answer")
 	private boolean hasAcceptedAnswer;
@@ -165,12 +162,23 @@ public class Question extends BaseEntity {
 		comments.add(comment);
 		return comment;
 	}
+
 	// *** Vote ***
 
 	public int getVoteCount() {
 		return votes.stream()
 			.mapToInt(vote -> vote.getType().getValue())
 			.sum();
+	}
+
+	public VoteType getVoteType(Member member) {
+		if (member == null) return VoteType.NONE;
+
+		return votes.stream()
+			.filter(vote -> vote.getMember().getMemberId() == member.getMemberId())
+			.findFirst()
+			.map(Vote::getType)
+			.orElse(VoteType.NONE);
 	}
 
 	public boolean hasAlreadyVoted() {
@@ -181,11 +189,8 @@ public class Question extends BaseEntity {
 		this.hasAlreadyVoted = hasAlreadyVoted;
 	}
 
-	public void vote(Member member, VoteType vote) {
-		votes.add(new QuestionVote(this, member, vote));
-	}
-
 	// *** 답변 채택 ***
+
 	public boolean hasAcceptedAnswer() {
 		return hasAcceptedAnswer;
 	}
@@ -215,7 +220,6 @@ public class Question extends BaseEntity {
 		private String title;
 		private String content;
 		private int viewCount;
-		private int voteCount;
 		private List<QuestionTag> tags;
 
 		private Builder() {
@@ -250,11 +254,6 @@ public class Question extends BaseEntity {
 			return this;
 		}
 
-		public Builder voteCount(int voteCount) {
-			this.voteCount = voteCount;
-			return this;
-		}
-
 		public Builder tags(List<QuestionTag> tags) {
 			this.tags = tags;
 			return this;
@@ -264,7 +263,6 @@ public class Question extends BaseEntity {
 			Question question = new Question(writer, title, content);
 			question.questionId = this.questionId;
 			question.viewCount = this.viewCount;
-			question.voteCount = this.voteCount;
 			question.tags = this.tags;
 			return question;
 		}

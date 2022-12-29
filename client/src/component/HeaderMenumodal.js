@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../css/headerMenumodal.css";
+import "../css/header.css";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
@@ -21,21 +21,26 @@ const HeaderMenumodal = () => {
           </p>
         </div>
         <div className="headerLogo">
-          <Link to="/" className="logoWrapper">
-            <Logo text={true} size={true} />
-          </Link>
+          <Logo text={true} size={true} />
         </div>
-        <div className="headerMenu">
-          <p>About</p>
-          <p>Products</p>
-          <p>For Teams</p>
+
+        <div className="headerMenu headerMenuM">
+          <a href="https://stackoverflow.co/" target="__blank" className="headerMenuText">
+            About
+          </a>
+          <p className="headerMenuText">Products</p>
+          <a href="https://stackoverflow.co/teams/" target="__blank" className="headerMenuText">
+            For Teams
+          </a>
         </div>
-        <div className="search">
-          <input className="headerSearch" type="search" placeholder="Search...." />
-        </div>
-        <div className="headerLoginSignup">
+
+        <form className="headerSearch">
+          <input className="headerSearchInput" type="search" placeholder="Search...." />
+        </form>
+
+        <div className="headerBtns">
           <button
-            className="headerLogin"
+            className="headerLoginBtn"
             onClick={() => {
               navigate("/login");
             }}
@@ -43,7 +48,7 @@ const HeaderMenumodal = () => {
             Log in
           </button>
           <button
-            className="headerSignup"
+            className="headerSignupBtn"
             onClick={() => {
               navigate("/signup");
             }}

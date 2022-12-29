@@ -1,11 +1,15 @@
 package com.codestates.sof.domain.question.mapper;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
 
 import com.codestates.sof.domain.answer.mapper.AnswerMapper;
+import com.codestates.sof.domain.common.VoteType;
+import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.member.mapper.MemberMapper;
 import com.codestates.sof.domain.question.dto.QuestionRequestDto;
 import com.codestates.sof.domain.question.dto.QuestionResponseDto;
@@ -16,7 +20,6 @@ import com.codestates.sof.domain.tag.mapper.TagMapper;
 public interface QuestionMapper {
 	@Mapping(target = "writer", source = "member")
 	@Mapping(target = "voteCount", expression = "java(question.getVoteCount())")
-	@Mapping(target = "hasAlreadyVoted", expression = "java(question.hasAlreadyVoted())")
 	QuestionResponseDto.Response questionToResponse(Question question);
 
 	@Mapping(target = "writerId", source = "member.memberId")
@@ -37,5 +40,13 @@ public interface QuestionMapper {
 		Optional.ofNullable(patch.getTags())
 			.ifPresent(tags -> patch.getTags().forEach(question::addTag));
 		return question;
+	}
+
+	default List<QuestionResponseDto.SimpleResponse> questionsToResponses(Page<Question> questions, Member member) {
+		return questions.map(question -> {
+			QuestionResponseDto.SimpleResponse response = questionToSimpleResponse(question);
+			response.setHasAlreadyVoted(question.getVoteType(member) != VoteType.NONE);
+			return response;
+		}).toList();
 	}
 }
