@@ -292,6 +292,20 @@ include::{snippets}/login/response-headers.adoc[]
 .response-fields
 include::{snippets}/login/response-fields.adoc[]
 
+=== 비밀번호 분실
+
+.curl-request
+include::{snippets}/forget-password/curl-request.adoc[]
+
+.http-request
+include::{snippets}/forget-password/http-request.adoc[]
+
+.request-fields
+include::{snippets}/forget-password/request-fields.adoc[]
+
+.http-response
+include::{snippets}/forget-password/http-response.adoc[]
+
 == 회원
 
 === 회원 등록(회원 가입)
