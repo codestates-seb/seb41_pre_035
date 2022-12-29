@@ -1,7 +1,6 @@
 import { Route, Routes, useParams } from "react-router-dom";
 
 import Header from "./component/Header";
-import HeaderLogin from "./component/HeaderLogin";
 import HeaderMenumodal from "./component/HeaderMenumodal";
 import Login from "./page/Login";
 import Recovery from "./page/Recovery";
@@ -21,8 +20,8 @@ function App() {
 
   return (
     <div className="App">
-      {user ? <HeaderLogin /> : <Header />}
-      {/* <HeaderMenumodal/> */}
+      <Header removeRefreshToken={removeRefreshToken} />
+      {/* <HeaderMenumodal /> */}
 
       <Routes>
         <Route path="/" element={<Main />} />

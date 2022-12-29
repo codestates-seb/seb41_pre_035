@@ -1,30 +1,64 @@
 import React from "react";
-import "../css/header.css";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { userState } from "../recoil";
+import LogoutModal from "./LogoutModal";
 import Logo from "./Logo";
+import "../css/header.css";
 
-const Header = () => {
+const Header = ({ removeRefreshToken }) => {
   const navigate = useNavigate();
+  const user = useRecoilValue(userState);
+  const [on, setOn] = useState(false);
 
   return (
-    <>
-      <header>
-        <div className="headerLogo">
-          {/* Logo 컴포넌트에 홈으로 리다이렉션이 되도록 만들어놨습니다. 해당 주석 확인 후 작업하실 때 삭제해주세요 */}
-          <Logo text={true} size={false} />
+    <header>
+      <div className="headerLogo">
+        <Logo text={true} size={false} />
+      </div>
+
+      {/* 유저 정보가 있다면 products만 / 유저 정보가 없다면 여러개 있던 것으로 */}
+      {user ? (
+        <div className="headerMenu headerMenuS">
+          <div className="headerMenuText">products</div>
         </div>
-        <div className="headerMenu">
-          <p>About</p>
-          <p>Products</p>
-          <p>For Teams</p>
+      ) : (
+        <div className="headerMenu headerMenuM">
+          <a href="https://stackoverflow.co/" target="__blank" className="headerMenuText">
+            About
+          </a>
+          <p className="headerMenuText">Products</p>
+          <a href="https://stackoverflow.co/teams/" target="__blank" className="headerMenuText">
+            For Teams
+          </a>
         </div>
-        <div className="search">
-          <input className="headerSearch" type="search" placeholder="Search...." />
+      )}
+
+      <form className="headerSearch">
+        <input className="headerSearchInput" type="search" placeholder="Search...." />
+      </form>
+
+      {/* 유저 정보가 있다면 아이콘 메뉴로 / 유저 정보가 없다면 로그인 회원가입 버튼으로 */}
+      {user ? (
+        <div className="headerLink">
+          <div className="headerUserProfile">
+            <img src="/img/user.png" alt="" />
+            <p>1</p>
+          </div>
+          <div className="headerUserInfo">
+            <i className="fa-solid fa-inbox"></i>
+            <i className="fa-solid fa-trophy"></i>
+            <i className="fa-solid fa-circle-question"></i>
+            <i className="fa-solid fa-snowflake"></i>
+            <i className="fa-solid fa-right-from-bracket" onClick={() => setOn(!on)}></i>
+            {on ? <LogoutModal removeRefreshToken={removeRefreshToken} /> : null}
+          </div>
         </div>
-        <div className="headerLoginSignup">
+      ) : (
+        <div className="headerBtns">
           <button
-            className="headerLogin"
+            className="headerLoginBtn"
             onClick={() => {
               navigate("/login");
             }}
@@ -32,7 +66,7 @@ const Header = () => {
             Log in
           </button>
           <button
-            className="headerSignup"
+            className="headerSignupBtn"
             onClick={() => {
               navigate("/signup");
             }}
@@ -40,8 +74,8 @@ const Header = () => {
             Sign up
           </button>
         </div>
-      </header>
-    </>
+      )}
+    </header>
   );
 };
 

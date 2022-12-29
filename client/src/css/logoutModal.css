@@ -1,0 +1,13 @@
+.logoutModal {
+  position: absolute;
+  left: 145px;
+}
+.logoutModal > button {
+  color: var(--link);
+  background-color: white;
+  border: var(--border);
+  border-radius: 10px;
+  padding: 8px;
+  width: 70px;
+  cursor: pointer;
+}
