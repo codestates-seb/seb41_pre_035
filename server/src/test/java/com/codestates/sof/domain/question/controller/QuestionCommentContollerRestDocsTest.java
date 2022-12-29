@@ -2,6 +2,7 @@ package com.codestates.sof.domain.question.controller;
 
 import static com.codestates.sof.global.utils.AsciiUtils.*;
 import static org.mockito.BDDMockito.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -80,6 +81,7 @@ class QuestionCommentContollerRestDocsTest {
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(post))
+				.header("Authorization", "Required JWT access token")
 		);
 
 		// then
@@ -89,12 +91,9 @@ class QuestionCommentContollerRestDocsTest {
 			.andDo(
 				getDefaultDocument(
 					"question-comments/post",
-					pathParameters(
-						parameterWithName("question-id").description("질문 식별자")
-					),
-					requestFields(
-						fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
-					),
+					requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
+					pathParameters(parameterWithName("question-id").description("질문 식별자")),
+					requestFields(fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")),
 					getSingleResponseSnippet()
 				)
 			);
@@ -113,6 +112,7 @@ class QuestionCommentContollerRestDocsTest {
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(om.writeValueAsString(patch))
+				.header("Authorization", "Required JWT access token")
 		);
 
 		// then
@@ -125,9 +125,8 @@ class QuestionCommentContollerRestDocsTest {
 						parameterWithName("question-id").description("질문 식별자"),
 						parameterWithName("comment-id").description("댓글 식별자")
 					),
-					requestFields(
-						fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")
-					),
+					requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
+					requestFields(fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용")),
 					getSingleResponseSnippet()
 				)
 			);
@@ -155,9 +154,7 @@ class QuestionCommentContollerRestDocsTest {
 			.andDo(
 				getDefaultDocument(
 					"question-comments/get-all",
-					pathParameters(
-						parameterWithName("question-id").description("질문의 식별자")
-					),
+					pathParameters(parameterWithName("question-id").description("질문의 식별자")),
 					requestParameters(
 						parameterWithName("page").description("페이지 번호").optional(),
 						parameterWithName("size").description("개수").optional()
@@ -175,6 +172,7 @@ class QuestionCommentContollerRestDocsTest {
 		// when
 		ResultActions actions = mvc.perform(
 			delete("/questions/{question-id}/comments/{comment-id}", 1L, 1L)
+				.header("Authorization", "Required JWT access token")
 		);
 
 		// then
@@ -183,6 +181,7 @@ class QuestionCommentContollerRestDocsTest {
 			.andDo(
 				getDefaultDocument(
 					"question-comments/delete",
+					requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
 					pathParameters(
 						parameterWithName("question-id").description("질문 식별자"),
 						parameterWithName("comment-id").description("댓글 식별자")

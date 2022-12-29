@@ -15,11 +15,13 @@ import com.codestates.sof.domain.tag.mapper.TagMapper;
 @Mapper(componentModel = "spring", uses = {MemberMapper.class, TagMapper.class, AnswerMapper.class})
 public interface QuestionMapper {
 	@Mapping(target = "writer", source = "member")
+	@Mapping(target = "voteCount", expression = "java(question.getVoteCount())")
 	@Mapping(target = "hasAlreadyVoted", expression = "java(question.hasAlreadyVoted())")
 	QuestionResponseDto.Response questionToResponse(Question question);
 
 	@Mapping(target = "writerId", source = "member.memberId")
 	@Mapping(target = "writerName", source = "member.name")
+	@Mapping(target = "voteCount", expression = "java(question.getVoteCount())")
 	@Mapping(target = "answerCount", expression = "java(question.getAnswers().size())")
 	QuestionResponseDto.SimpleResponse questionToSimpleResponse(Question question);
 
