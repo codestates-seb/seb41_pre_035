@@ -27,7 +27,7 @@ public class AuthController {
 	private final MemberService memberService;
 
 	@GetMapping("/accountVerification/{token}")
-	public ResponseEntity<?> verifyAccount(@PathVariable String token) {
+	public ResponseEntity<?> verifyAccount(@PathVariable("token") String token) {
 		return authService.verifyAccount(token);
 	}
 
@@ -43,7 +43,7 @@ public class AuthController {
 	}
 
 	@GetMapping("/password/{token}")
-	public ResponseEntity<?> resetPassword(@PathVariable String token) {
+	public ResponseEntity<?> resetPassword(@PathVariable("token") String token) {
 		authService.resetPassword(token);
 
 		return new ResponseEntity<>("Password reset Successfully. Please check your email", HttpStatus.OK);
