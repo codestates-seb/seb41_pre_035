@@ -40,7 +40,7 @@ public class QuestionCommentService {
 
 	@Transactional(readOnly = true)
 	public Page<QuestionComment> findAll(long questionId, int page, int size) {
-		Question question = questionService.findById(questionId);
+		Question question = questionService.findByIdWithoutIncreasingViewCount(questionId);
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
 		return commentRepository.findAllByQuestion(question, pageRequest);
 	}
