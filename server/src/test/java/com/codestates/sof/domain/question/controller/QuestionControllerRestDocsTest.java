@@ -160,7 +160,7 @@ class QuestionControllerRestDocsTest {
 					requestParameters(
 						parameterWithName("page").description("페이지 번호").optional(),
 						parameterWithName("size").description("개수").optional(),
-						parameterWithName("sort").description("정렬 종류 (NEWEST | UNADOPTED | UNANSWERED)").optional()
+						parameterWithName("sort").description("정렬 종류 (NEWEST | UNACCEPTED | UNANSWERED)").optional()
 					),
 					getMultiResponseSnippet()
 				)
@@ -193,7 +193,7 @@ class QuestionControllerRestDocsTest {
 					requestParameters(
 						parameterWithName("page").description("페이지 번호").optional(),
 						parameterWithName("size").description("개수").optional(),
-						parameterWithName("sort").description("정렬 종류 (NEWEST | UNADOPTED | UNANSWERED)").optional()
+						parameterWithName("sort").description("정렬 종류 (NEWEST | UNACCEPTED | UNANSWERED)").optional()
 					),
 					getMultiResponseSnippet()
 				)
@@ -207,6 +207,7 @@ class QuestionControllerRestDocsTest {
 
 		given(service.patch(anyLong(), any(), any())).willReturn(question);
 		given(mapper.questionToResponse(any())).willReturn(response);
+		// TODO 컨트롤러에 있는거 매퍼로 옮기기
 
 		// when
 		ResultActions actions = mvc.perform(
@@ -312,6 +313,7 @@ class QuestionControllerRestDocsTest {
 			fieldWithPath("voteCount").type(JsonFieldType.NUMBER).description("총 투표수"),
 			fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수"),
 			fieldWithPath("answerCount").type(JsonFieldType.NUMBER).description("답변 수"),
+			fieldWithPath("hasAcceptedAnswer").type(JsonFieldType.BOOLEAN).description("답변 채택여부"),
 			fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),
 			fieldWithPath("lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자"),
 			fieldWithPath("tags").type(JsonFieldType.ARRAY).description("태그들의 정보")
