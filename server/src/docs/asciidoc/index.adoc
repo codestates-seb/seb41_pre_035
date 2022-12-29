@@ -343,6 +343,17 @@ include::{snippets}/login/response-headers.adoc[]
 .response-fields
 include::{snippets}/login/response-fields.adoc[]
 
+=== 사용자 로그아웃
+
+.curl-request
+include::{snippets}/logout/curl-request.adoc[]
+
+.http-request
+include::{snippets}/logout/http-request.adoc[]
+
+.http-response
+include::{snippets}/logout/http-response.adoc[]
+
 === 비밀번호 분실
 
 .curl-request

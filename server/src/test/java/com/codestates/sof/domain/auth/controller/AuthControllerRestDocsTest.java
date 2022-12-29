@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +69,6 @@ public class AuthControllerRestDocsTest {
 	public void init() {
 		// 로그인에 필요한 기존 사용자 추가
 		Member member = new Member();
-		member.setMemberId(1L);
 		member.setEmail("user01@hello.com");
 		member.setName("user01");
 		member.setEncryptedPassword(passwordEncoder.encode("1111"));
@@ -148,6 +148,23 @@ public class AuthControllerRestDocsTest {
 				requestFields(
 					List.of(fieldWithPath("email").type(JsonFieldType.STRING).description("로그인 id(이메일)"))
 				)
+			));
+	}
+
+	@Test
+	public void logoutTest() throws Exception {
+		// given
+		doNothing().when(authService).logout(Mockito.any(HttpServletRequest.class));
+
+		// when
+		ResultActions actions = mockMvc.perform(
+			post("/auth/logout"));
+
+		// then
+		actions.andExpect(status().isNoContent())
+			.andDo(document("logout",
+				getRequestPreProcessor(),
+				getResponsePreProcessor()
 			));
 	}
 }
