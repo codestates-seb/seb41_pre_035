@@ -39,8 +39,8 @@ public class QuestionService {
 		switch (pageRequest.getSortType()) {
 			case NEWEST:
 				return questionRepository.findAll(pageRequest.of());
-			case UNADOPTED:
-				return questionRepository.findAllByHasAdoptedAnswerIsFalse(pageRequest.of());
+			case UNACCEPTED:
+				return questionRepository.findAllByHasAcceptedAnswerIsFalse(pageRequest.of());
 			case UNANSWERED:
 				return questionRepository.findAllByAnswersEmpty(pageRequest.of());
 			default:
@@ -53,8 +53,8 @@ public class QuestionService {
 		switch (pageRequest.getSortType()) {
 			case NEWEST:
 				return questionRepository.findAllByTag(tag, pageRequest.of());
-			case UNADOPTED:
-				return questionRepository.findAllByTagAndHasAdoptedAnswerIsFalse(tag, pageRequest.of());
+			case UNACCEPTED:
+				return questionRepository.findAllByTagAndHasAcceptedAnswerIsFalse(tag, pageRequest.of());
 			case UNANSWERED:
 				return questionRepository.findAllByTagAndAnswersEmpty(tag, pageRequest.of());
 			default:
@@ -75,11 +75,7 @@ public class QuestionService {
 
 	@Transactional
 	public Question patch(Long questionId, Member member, Question newQuestion) {
-		Question question = findExistsQuestion(questionId);
-
-		if (!question.isWrittenBy(member)) {
-			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
-		}
+		Question question = findEdditableQuestion(member, questionId);
 
 		List<Tag> tags = tagService.findAllBy(newQuestion.getTagNames());
 
@@ -89,10 +85,7 @@ public class QuestionService {
 	}
 
 	public void delete(Member member, Long questionId) {
-		Question question = findExistsQuestion(questionId);
-
-		if (!question.isWrittenBy(member))
-			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
+		Question question = findEdditableQuestion(member, questionId);
 
 		questionRepository.delete(question);
 	}
@@ -100,6 +93,15 @@ public class QuestionService {
 	private Question findExistsQuestion(Long questionId) {
 		return questionRepository.findByQuestionId(questionId)
 			.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_QUESTION));
+	}
+
+	private Question findEdditableQuestion(Member member, Long questionId) {
+		Question question = findExistsQuestion(questionId);
+
+		if (!question.isEdditable(member))
+			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
+
+		return question;
 	}
 
 	private Question save(Question question) {
