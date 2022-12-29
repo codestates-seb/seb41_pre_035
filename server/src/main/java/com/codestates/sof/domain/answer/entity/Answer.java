@@ -53,6 +53,12 @@ public class Answer extends BaseEntity {
 		orphanRemoval = true)
 	private List<AnswerComment> comments = new ArrayList<>();
 
+	@OneToMany(
+		mappedBy = "answer",
+		cascade = {CascadeType.REMOVE, CascadeType.PERSIST},
+		orphanRemoval = true)
+	private List<AnswerVote> votes = new ArrayList<>();
+
 	public Answer(Question question, Member member, String content) {
 		this.question = question;
 		this.member = member;

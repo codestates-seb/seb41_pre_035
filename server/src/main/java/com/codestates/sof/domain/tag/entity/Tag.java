@@ -41,6 +41,11 @@ public class Tag {
 		this.name = name;
 	}
 
+	public Tag(String name, String description) {
+		this.name = name;
+		this.description = description;
+	}
+
 	public void increaseTaggedCount() {
 		this.taggedCount++;
 	}
