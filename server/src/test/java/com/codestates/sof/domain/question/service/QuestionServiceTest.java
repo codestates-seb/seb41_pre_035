@@ -165,7 +165,6 @@ class QuestionServiceTest {
 	@Nested
 	@DisplayName("질문 삭제")
 	class Delete {
-		// TODO (Auth, Comment)
 		@Test
 		void 작성자는_질문을_삭제할수있다() throws Exception {
 		}

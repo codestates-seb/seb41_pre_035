@@ -213,7 +213,6 @@ class QuestionControllerRestDocsTest {
 
 		given(service.patch(anyLong(), any(), any())).willReturn(question);
 		given(mapper.questionToResponse(any())).willReturn(response);
-		// TODO 컨트롤러에 있는거 매퍼로 옮기기
 
 		// when
 		ResultActions actions = mvc.perform(

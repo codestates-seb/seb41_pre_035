@@ -24,6 +24,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.common.BaseEntity;
+import com.codestates.sof.domain.common.Vote;
 import com.codestates.sof.domain.common.VoteType;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.tag.entity.Tag;
