@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -29,9 +30,12 @@ import com.codestates.sof.domain.answer.dto.AnswerDto;
 import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.answer.mapper.AnswerMapper;
 import com.codestates.sof.domain.answer.service.AnswerService;
+import com.codestates.sof.domain.member.entity.Member;
 import com.google.gson.Gson;
 
-@WebMvcTest(controllers = AnswerController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@AutoConfigureMockMvc(addFilters = false)
+@WebMvcTest(controllers = AnswerController.class,
+	excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
 public class AnswerControllerRestDocsTest {
@@ -98,7 +102,7 @@ public class AnswerControllerRestDocsTest {
 		AnswerDto.Response response = getAnswerResponseDto();
 
 		given(answerMapper.patchToAnswer(any(AnswerDto.Patch.class))).willReturn(new Answer());
-		given(answerService.updateAnswer(any(Answer.class))).willReturn(new Answer());
+		given(answerService.updateAnswer(any(Answer.class), any())).willReturn(new Answer());
 		given(answerMapper.answerToResponse(any(Answer.class))).willReturn(response);
 
 		// when
@@ -173,7 +177,7 @@ public class AnswerControllerRestDocsTest {
 		// given
 		long answerId = 1L;
 
-		doNothing().when(answerService).deleteAnswer(answerId);
+		doNothing().when(answerService).deleteAnswer(anyLong(), any(Member.class));
 
 		// when
 		ResultActions actions =
