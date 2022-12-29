@@ -24,6 +24,7 @@ public class QuestionResponseDto {
 		private int voteCount;
 		private int viewCount;
 		private int answerCount;
+		private boolean hasAcceptedAnswer;
 		private LocalDateTime createdAt;
 		private LocalDateTime lastModifiedAt;
 		private List<TagDto.Response> tags;

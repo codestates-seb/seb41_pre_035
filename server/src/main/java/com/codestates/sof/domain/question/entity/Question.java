@@ -64,8 +64,9 @@ public class Question extends BaseEntity {
 	@Column(name = "vote_count", nullable = false)
 	private int voteCount;
 
-	@Column(name = "has_adopted_answer")
-	private boolean hasAdoptedAnswer;
+	@Getter(value = AccessLevel.NONE)
+	@Column(name = "has_accepted_answer")
+	private boolean hasAcceptedAnswer;
 
 	@Transient
 	@Getter(value = AccessLevel.NONE)
@@ -95,8 +96,13 @@ public class Question extends BaseEntity {
 		tags.forEach(this::addTag);
 	}
 
+	// *** 편의 ***
 	public boolean isWrittenBy(Member member) {
-		return Objects.equals(this.member, member);
+		return this.member.getMemberId() == member.getMemberId();
+	}
+
+	public boolean isEdditable(Member member) {
+		return isWrittenBy(member) && !hasAcceptedAnswer;
 	}
 
 	public void update(Question newQuestion, List<Tag> tags) {
@@ -107,13 +113,10 @@ public class Question extends BaseEntity {
 			content = newQuestion.getContent();
 
 		update(tags);
-
-		// comment
-		// bookmark
-		// adopted Answer
 	}
 
 	// *** Tag ***
+
 	public void increaseTaggedCountForAllTags() {
 		tags.forEach(tag -> tag.getTag().increaseTaggedCount());
 	}
@@ -162,8 +165,8 @@ public class Question extends BaseEntity {
 		comments.add(comment);
 		return comment;
 	}
-
 	// *** Vote ***
+
 	public int getVoteCount() {
 		return votes.stream()
 			.mapToInt(vote -> vote.getType().getValue())
@@ -180,6 +183,15 @@ public class Question extends BaseEntity {
 
 	public void vote(Member member, VoteType vote) {
 		votes.add(new QuestionVote(this, member, vote));
+	}
+
+	// *** 답변 채택 ***
+	public boolean hasAcceptedAnswer() {
+		return hasAcceptedAnswer;
+	}
+
+	public void acceptAnswer() {
+		this.hasAcceptedAnswer = true;
 	}
 
 	@Override
