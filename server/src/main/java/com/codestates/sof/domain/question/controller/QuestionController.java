@@ -32,9 +32,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 // TODO(얘기 필요): Response Dto는 Find 메서드에서만 반환하고, 나머지는 Http Status만 주기
-// TODO (Auth, Adoption)
-// - Auth: 작성자와 요청자가 일치하는지 확인필요
-// - Adoption: 채택만을 위한 핸들러 작성
 // - GET ALL: 전체 조회시 Simple Response Dto로 응답
 
 @Slf4j
@@ -70,6 +67,13 @@ public class QuestionController {
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
 	}
 
+	@DeleteMapping("/{question-id}")
+	public ResponseEntity<?> delete(@AuthenticationPrincipal Member member, @PathVariable("question-id") @Positive Long questionId) {
+		questionService.delete(member, questionId);
+
+		return ResponseEntity.noContent().build();
+	}
+
 	@GetMapping("/{question-id}")
 	public ResponseEntity<SingleResponseDto<QuestionResponseDto.Response>> get(
 		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
@@ -99,12 +103,5 @@ public class QuestionController {
 		List<QuestionResponseDto.SimpleResponse> response = page.map(mapper::questionToSimpleResponse).toList();
 
 		return new ResponseEntity<>(new MultiResponseDto<>(response, page), HttpStatus.OK);
-	}
-
-	@DeleteMapping("/{question-id}")
-	public ResponseEntity<?> delete(@AuthenticationPrincipal Member member, @PathVariable("question-id") @Positive Long questionId) {
-		questionService.delete(member, questionId);
-
-		return ResponseEntity.noContent().build();
 	}
 }
