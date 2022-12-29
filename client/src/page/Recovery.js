@@ -62,6 +62,7 @@ const Recovery = () => {
       })
       .then((res) => {
         setRecoveryIsSuccess(true);
+        reEmailReset();
         console.log("비밀번호 초기화 요청에 성공했습니다.");
       })
       .catch((err) => {
