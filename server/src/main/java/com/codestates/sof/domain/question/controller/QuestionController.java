@@ -8,6 +8,7 @@ import javax.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.question.dto.QuestionRequestDto;
 import com.codestates.sof.domain.question.dto.QuestionResponseDto;
 import com.codestates.sof.domain.question.entity.Question;
@@ -44,28 +46,39 @@ public class QuestionController {
 	private final QuestionMapper mapper;
 
 	@PostMapping
-	public ResponseEntity<SingleResponseDto<QuestionResponseDto.Response>> post(@Valid @RequestBody QuestionRequestDto.Post post) {
-		Question question = mapper.postToQuestion(post);
-		QuestionResponseDto.Response response = mapper.questionToResponse(questionService.write(question));
-		response.setIsItWriter(true);
+	public ResponseEntity<SingleResponseDto<QuestionResponseDto.Response>> post(
+		@AuthenticationPrincipal Member member,
+		@Valid @RequestBody QuestionRequestDto.Post post
+	) {
+		Question question = questionService.write(mapper.postToQuestion(post), member);
+		QuestionResponseDto.Response response = mapper.questionToResponse(question);
+		response.setIsItWriter(question.isWrittenBy(member));
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResponseDto<>(response));
 	}
 
 	@PatchMapping("/{question-id}")
 	public ResponseEntity<SingleResponseDto<QuestionResponseDto.Response>> patch(
+		@AuthenticationPrincipal Member member,
 		@PathVariable("question-id") @Positive Long questionId,
-		@RequestBody @Valid QuestionRequestDto.Patch patch) {
-
-		Question question = questionService.patch(questionId, patch.getMemberId(), mapper.patchToQuestion(patch));
+		@RequestBody @Valid QuestionRequestDto.Patch patch
+	) {
+		Question question = questionService.patch(questionId, member, mapper.patchToQuestion(patch));
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
+		response.setIsItWriter(question.isWrittenBy(member));
 
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
 	}
 
 	@GetMapping("/{question-id}")
-	public ResponseEntity<SingleResponseDto<QuestionResponseDto.Response>> get(@PathVariable("question-id") @Positive Long questionId) {
+	public ResponseEntity<SingleResponseDto<QuestionResponseDto.Response>> get(
+		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
+		@PathVariable("question-id") @Positive Long questionId
+	) {
 		Question question = questionService.findById(questionId);
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
+		response.setIsItWriter(question.isWrittenBy(member));
+
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
 	}
 
@@ -73,23 +86,24 @@ public class QuestionController {
 	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAll(QuestionPageRequest pageRequest) {
 		Page<Question> page = questionService.findAll(pageRequest);
 		List<QuestionResponseDto.SimpleResponse> response = page.map(mapper::questionToSimpleResponse).toList();
+
 		return new ResponseEntity<>(new MultiResponseDto<>(response, page), HttpStatus.OK);
 	}
 
 	@GetMapping("/tags/{tag-name}")
 	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAllByTag(
-		@PathVariable("tag-name") String tagName, QuestionPageRequest pageRequest
+		@PathVariable("tag-name") String tagName,
+		QuestionPageRequest pageRequest
 	) {
 		Page<Question> page = questionService.findAllByTag(tagName, pageRequest);
 		List<QuestionResponseDto.SimpleResponse> response = page.map(mapper::questionToSimpleResponse).toList();
+
 		return new ResponseEntity<>(new MultiResponseDto<>(response, page), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{question-id}")
-	public ResponseEntity<?> delete(@PathVariable("question-id") @Positive Long questionId) {
-		Long memberId = 0L;
-
-		questionService.delete(memberId, questionId);
+	public ResponseEntity<?> delete(@AuthenticationPrincipal Member member, @PathVariable("question-id") @Positive Long questionId) {
+		questionService.delete(member, questionId);
 
 		return ResponseEntity.noContent().build();
 	}

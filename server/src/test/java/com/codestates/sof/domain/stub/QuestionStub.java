@@ -27,7 +27,6 @@ public class QuestionStub {
 
 	public static QuestionRequestDto.Post getPostRequest() {
 		QuestionRequestDto.Post post = new QuestionRequestDto.Post();
-		post.setWriterId(1L);
 		post.setTitle("title");
 		post.setContent("content");
 		post.setTags(List.of("java", "javascript", "python"));
@@ -36,7 +35,6 @@ public class QuestionStub {
 
 	public static QuestionRequestDto.Patch getPatchRequest() {
 		QuestionRequestDto.Patch patch = new QuestionRequestDto.Patch();
-		patch.setMemberId(1L);
 		patch.setTitle("modified-title");
 		patch.setContent("modified-content");
 		patch.setTags(List.of("java", "javascript"));

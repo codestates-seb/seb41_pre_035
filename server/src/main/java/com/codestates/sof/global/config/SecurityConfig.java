@@ -25,12 +25,14 @@ import com.codestates.sof.domain.auth.handler.MemberAuthenticationFailureHandler
 import com.codestates.sof.domain.auth.handler.MemberAuthenticationSuccessHandler;
 import com.codestates.sof.domain.auth.jwt.JwtTokenizer;
 import com.codestates.sof.domain.auth.mapper.LoginMapper;
+import com.codestates.sof.domain.auth.service.MemberDetailsService;
 
 import lombok.AllArgsConstructor;
 
 @Configuration
 @AllArgsConstructor
 public class SecurityConfig {
+	private final MemberDetailsService detailsService;
 	private final JwtTokenizer jwtTokenizer;
 	private final LoginMapper mapper;
 
@@ -50,6 +52,7 @@ public class SecurityConfig {
 			.and()
 			.apply(new CustomFilterConfigure())
 			.and()
+			.userDetailsService(detailsService)
 			.authorizeHttpRequests(a -> a
 				.antMatchers("/docs/index.html").permitAll()
 				.antMatchers("/auth/**", "/h2/**").permitAll()
@@ -79,7 +82,7 @@ public class SecurityConfig {
 
 	private class CustomFilterConfigure extends AbstractHttpConfigurer<CustomFilterConfigure, HttpSecurity> {
 		@Override
-		public void configure(HttpSecurity httpSecurity) {
+		public void configure(HttpSecurity httpSecurity) throws Exception {
 			AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
 
 			JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager,
@@ -90,7 +93,7 @@ public class SecurityConfig {
 			jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 			httpSecurity.addFilter(jwtAuthenticationFilter);
 
-			JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer);
+			JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(detailsService, jwtTokenizer);
 
 			httpSecurity
 				.addFilter(jwtAuthenticationFilter)

@@ -1,4 +1,4 @@
-.signupSuccess {
+.signUpNotice {
   height: 99vh;
   width: 100%;
 
@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: center;
 }
-.signupSuccessWrapper {
+.signUpNoticeWrapper {
   display: flex;
   justify-content: center;
   align-items: center;

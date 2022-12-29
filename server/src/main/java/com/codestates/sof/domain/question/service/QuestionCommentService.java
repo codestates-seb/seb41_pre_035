@@ -1,7 +1,5 @@
 package com.codestates.sof.domain.question.service;
 
-import java.util.Objects;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -9,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.codestates.sof.domain.member.entity.Member;
-import com.codestates.sof.domain.member.service.MemberService;
 import com.codestates.sof.domain.question.entity.Question;
 import com.codestates.sof.domain.question.entity.QuestionComment;
 import com.codestates.sof.domain.question.repository.QuestionCommentRepository;
@@ -20,39 +17,28 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class QuestionCommentService {
 	private final QuestionCommentRepository commentRepository;
 	private final QuestionService questionService;
-	private final MemberService memberService;
 
 	@Transactional
-	public QuestionComment comment(long questionId, QuestionComment comment) {
-		Member member = memberService.findMember(comment.getMember().getMemberId());
+	public QuestionComment comment(Member member, long questionId, String content) {
 		Question question = questionService.findByIdWithoutIncreasingViewCount(questionId);
-
-		comment.setMember(member);
+		QuestionComment comment = new QuestionComment(member, question, content);
 
 		return question.addComment(comment);
 	}
 
 	@Transactional
-	public QuestionComment modify(long questionId, long modifierId, QuestionComment comment) {
-		QuestionComment existsComment = getExistsComment(comment);
+	public QuestionComment modify(Member member, long questionId, long commentId, String content) {
+		QuestionComment comment = getVerifiedComment(commentId, questionId, member);
 
-		if (!existsComment.isWrittenBy(modifierId)) {
-			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_COMMENT);
-		}
+		comment.modify(content);
 
-		if (!existsComment.getQuestion().getQuestionId().equals(questionId)) {
-			throw new BusinessLogicException(ExceptionCode.NOT_FOUND_QUESTION);
-		}
-
-		existsComment.setContent(comment.getContent());
-
-		return existsComment;
+		return comment;
 	}
 
+	@Transactional(readOnly = true)
 	public Page<QuestionComment> findAll(long questionId, int page, int size) {
 		Question question = questionService.findById(questionId);
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
@@ -60,25 +46,24 @@ public class QuestionCommentService {
 	}
 
 	@Transactional
-	public void delete(long memberId, long questionId, long commentId) {
-		QuestionComment comment = getExistsComment(commentId);
-
-		if (!comment.isWrittenBy(memberId)) {
-			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_COMMENT);
-		}
+	public void delete(Member member, long questionId, long commentId) {
+		QuestionComment comment = getVerifiedComment(commentId, questionId, member);
 
 		commentRepository.delete(comment);
 	}
 
-	private QuestionComment getExistsComment(QuestionComment comment) {
-		if (Objects.isNull(comment.getQuestionCommentId()))
-			throw new BusinessLogicException(ExceptionCode.NOT_FOUND_COMMENT);
-
-		return getExistsComment(comment.getQuestionCommentId());
-	}
-
-	private QuestionComment getExistsComment(long commentId) {
-		return commentRepository.findById(commentId)
+	private QuestionComment getVerifiedComment(long commentId, long questionId, Member member) {
+		QuestionComment comment = commentRepository.findById(commentId)
 			.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_COMMENT));
+
+		if (!comment.isWrittenBy(member)) {
+			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_COMMENT);
+		}
+
+		if (!comment.isGroupOf(questionId)) {
+			throw new BusinessLogicException(ExceptionCode.NOT_FOUND_QUESTION);
+		}
+
+		return comment;
 	}
 }

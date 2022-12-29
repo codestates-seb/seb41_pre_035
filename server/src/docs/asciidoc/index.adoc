@@ -130,6 +130,20 @@ include::{snippets}/question-comments/get-all/http-response.adoc[]
 .request-fields
 include::{snippets}/question-comments/get-all/response-fields.adoc[]
 
+== 태그
+=== 태그 목록 조회
+.http-request
+include::{snippets}/tag/get-all/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/tag/get-all/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/tag/get-all/http-response.adoc[]
+
+.request-fields
+include::{snippets}/tag/get-all/response-fields.adoc[]
+
 == Answer
 
 === 답변 등록
@@ -269,3 +283,95 @@ include::{snippets}/delete-answer-comment/http-request.adoc[]
 
 .http-response
 include::{snippets}/delete-answer-comment/http-response.adoc[]
+
+== 인증
+
+=== 사용자 로그인
+
+.curl-request
+include::{snippets}/login/curl-request.adoc[]
+
+.http-request
+include::{snippets}/login/http-request.adoc[]
+
+.request-fields
+include::{snippets}/login/request-fields.adoc[]
+
+.http-response
+include::{snippets}/login/http-response.adoc[]
+
+.response-headers
+include::{snippets}/login/response-headers.adoc[]
+
+.response-fields
+include::{snippets}/login/response-fields.adoc[]
+
+== 회원
+
+=== 회원 등록(회원 가입)
+
+.curl-request
+include::{snippets}/post-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/post-member/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-member/response-fields.adoc[]
+
+=== 회원 정보 수정
+
+.curl-request
+include::{snippets}/patch-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/patch-member/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/patch-member/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/patch-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/patch-member/response-fields.adoc[]
+
+=== 전체 회원 조회
+
+.curl-request
+include::{snippets}/get-members/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-members/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/get-members/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-members/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-members/response-fields.adoc[]
+
+=== 회원 삭제(회원 탈퇴)
+
+.curl-request
+include::{snippets}/delete-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/delete-member/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-member/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-member/http-response.adoc[]
