@@ -93,7 +93,7 @@ class QuestionControllerRestDocsTest {
 			.andExpect(jsonPath("$.data.lastModifiedAt").exists())
 			.andDo(getDefaultDocument(
 					"question/post",
-				requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
+					requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
 					requestFields(
 						List.of(
 							fieldWithPath("title").type(JsonFieldType.STRING).description("질문 제목"),
@@ -115,6 +115,7 @@ class QuestionControllerRestDocsTest {
 		// when
 		ResultActions actions = mvc.perform(
 			get("/questions/{question-id}", question.getQuestionId())
+				.header("Authorization", "Required JWT access token")
 		);
 
 		// then
@@ -127,6 +128,7 @@ class QuestionControllerRestDocsTest {
 			.andDo(
 				getDefaultDocument(
 					"question/get",
+					requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
 					pathParameters(parameterWithName("question-id").description("질문 식별자")),
 					getSingleResponseSnippet()
 				)
@@ -138,7 +140,7 @@ class QuestionControllerRestDocsTest {
 		// given
 		Page<Question> page = new PageImpl<>(List.of(question), Pageable.ofSize(5), 10);
 		given(service.findAll(any(QuestionPageRequest.class))).willReturn(page);
-		given(mapper.questionToSimpleResponse(any(Question.class))).willReturn(simpleResponse);
+		given(mapper.questionsToResponses(any(), any())).willReturn(List.of(simpleResponse));
 
 		// when
 		ResultActions actions = mvc.perform(
@@ -146,6 +148,7 @@ class QuestionControllerRestDocsTest {
 				.param("page", "1")
 				.param("size", "5")
 				.param("sort", "NEWEST")
+				.header("Authorization", "Required JWT access token")
 		);
 
 		// then
@@ -157,6 +160,7 @@ class QuestionControllerRestDocsTest {
 			.andDo(
 				getDefaultDocument(
 					"question/get-all",
+					requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
 					requestParameters(
 						parameterWithName("page").description("페이지 번호").optional(),
 						parameterWithName("size").description("개수").optional(),
@@ -172,7 +176,7 @@ class QuestionControllerRestDocsTest {
 		// given
 		Page<Question> page = new PageImpl<>(List.of(question), Pageable.ofSize(5), 10);
 		given(service.findAllByTag(anyString(), any(QuestionPageRequest.class))).willReturn(page);
-		given(mapper.questionToSimpleResponse(any(Question.class))).willReturn(simpleResponse);
+		given(mapper.questionsToResponses(any(), any())).willReturn(List.of(simpleResponse));
 
 		// when
 		ResultActions actions = mvc.perform(
@@ -180,6 +184,7 @@ class QuestionControllerRestDocsTest {
 				.param("page", "1")
 				.param("size", "5")
 				.param("sort", "POPULAR")
+				.header("Authorization", "Required JWT access token")
 		);
 
 		// then
@@ -190,6 +195,7 @@ class QuestionControllerRestDocsTest {
 			.andDo(
 				getDefaultDocument(
 					"question/get-all-by-tag",
+					requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
 					requestParameters(
 						parameterWithName("page").description("페이지 번호").optional(),
 						parameterWithName("size").description("개수").optional(),
@@ -269,8 +275,8 @@ class QuestionControllerRestDocsTest {
 			fieldWithPath("content").type(JsonFieldType.STRING).description("질문 내용"),
 			fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수"),
 			fieldWithPath("voteCount").type(JsonFieldType.NUMBER).description("총 투표수"),
+			fieldWithPath("voteType").type(JsonFieldType.STRING).description("투표여부 [UP | DOWN | NONE]"),
 			fieldWithPath("isItWriter").type(JsonFieldType.BOOLEAN).description("작성자여부"),
-			fieldWithPath("hasAlreadyVoted").type(JsonFieldType.BOOLEAN).description("투표여부"),
 			fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),
 			fieldWithPath("lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자"),
 			fieldWithPath("writer").type(JsonFieldType.OBJECT).description("질문자의 정보"),
@@ -309,9 +315,10 @@ class QuestionControllerRestDocsTest {
 			fieldWithPath("writerName").type(JsonFieldType.STRING).description("작성자의 이름"),
 			fieldWithPath("title").type(JsonFieldType.STRING).description("질문 제목"),
 			fieldWithPath("content").type(JsonFieldType.STRING).description("질문 내용"),
-			fieldWithPath("voteCount").type(JsonFieldType.NUMBER).description("총 투표수"),
-			fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수"),
 			fieldWithPath("answerCount").type(JsonFieldType.NUMBER).description("답변 수"),
+			fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수"),
+			fieldWithPath("voteCount").type(JsonFieldType.NUMBER).description("총 투표수"),
+			fieldWithPath("hasAlreadyVoted").type(JsonFieldType.BOOLEAN).description("투표여부"),
 			fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),
 			fieldWithPath("lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자"),
 			fieldWithPath("tags").type(JsonFieldType.ARRAY).description("태그들의 정보")

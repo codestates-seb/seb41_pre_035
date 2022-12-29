@@ -17,18 +17,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.common.BaseEntity;
+import com.codestates.sof.domain.common.Vote;
 import com.codestates.sof.domain.common.VoteType;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.tag.entity.Tag;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -61,15 +60,8 @@ public class Question extends BaseEntity {
 	@Column(name = "view_count", nullable = false)
 	private int viewCount;
 
-	@Column(name = "vote_count", nullable = false)
-	private int voteCount;
-
 	@Column(name = "has_adopted_answer")
 	private boolean hasAdoptedAnswer;
-
-	@Transient
-	@Getter(value = AccessLevel.NONE)
-	private boolean hasAlreadyVoted;
 
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 	private List<Answer> answers = new ArrayList<>();
@@ -170,16 +162,14 @@ public class Question extends BaseEntity {
 			.sum();
 	}
 
-	public boolean hasAlreadyVoted() {
-		return hasAlreadyVoted;
-	}
+	public VoteType getVoteType(Member member) {
+		if (member == null) return VoteType.NONE;
 
-	public void setHasAlreadyVoted(boolean hasAlreadyVoted) {
-		this.hasAlreadyVoted = hasAlreadyVoted;
-	}
-
-	public void vote(Member member, VoteType vote) {
-		votes.add(new QuestionVote(this, member, vote));
+		return votes.stream()
+			.filter(vote -> vote.getMember().getMemberId() == member.getMemberId())
+			.findFirst()
+			.map(Vote::getType)
+			.orElse(VoteType.NONE);
 	}
 
 	@Override
@@ -203,7 +193,6 @@ public class Question extends BaseEntity {
 		private String title;
 		private String content;
 		private int viewCount;
-		private int voteCount;
 		private List<QuestionTag> tags;
 
 		private Builder() {
@@ -238,11 +227,6 @@ public class Question extends BaseEntity {
 			return this;
 		}
 
-		public Builder voteCount(int voteCount) {
-			this.voteCount = voteCount;
-			return this;
-		}
-
 		public Builder tags(List<QuestionTag> tags) {
 			this.tags = tags;
 			return this;
@@ -252,7 +236,6 @@ public class Question extends BaseEntity {
 			Question question = new Question(writer, title, content);
 			question.questionId = this.questionId;
 			question.viewCount = this.viewCount;
-			question.voteCount = this.voteCount;
 			question.tags = this.tags;
 			return question;
 		}

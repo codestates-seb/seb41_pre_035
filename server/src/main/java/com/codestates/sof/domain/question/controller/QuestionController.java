@@ -52,7 +52,7 @@ public class QuestionController {
 	) {
 		Question question = questionService.write(mapper.postToQuestion(post), member);
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
-		response.setIsItWriter(question.isWrittenBy(member));
+		setProperties(member, question, response);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResponseDto<>(response));
 	}
@@ -65,7 +65,7 @@ public class QuestionController {
 	) {
 		Question question = questionService.patch(questionId, member, mapper.patchToQuestion(patch));
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
-		response.setIsItWriter(question.isWrittenBy(member));
+		setProperties(member, question, response);
 
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
 	}
@@ -77,28 +77,32 @@ public class QuestionController {
 	) {
 		Question question = questionService.findById(questionId);
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
-		response.setIsItWriter(question.isWrittenBy(member));
+		setProperties(member, question, response);
 
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
 	}
 
 	@GetMapping
-	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAll(QuestionPageRequest pageRequest) {
+	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAll(
+		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
+		QuestionPageRequest pageRequest
+	) {
 		Page<Question> page = questionService.findAll(pageRequest);
-		List<QuestionResponseDto.SimpleResponse> response = page.map(mapper::questionToSimpleResponse).toList();
+		List<QuestionResponseDto.SimpleResponse> responses = mapper.questionsToResponses(page, member);
 
-		return new ResponseEntity<>(new MultiResponseDto<>(response, page), HttpStatus.OK);
+		return new ResponseEntity<>(new MultiResponseDto<>(responses, page), HttpStatus.OK);
 	}
 
 	@GetMapping("/tags/{tag-name}")
 	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAllByTag(
+		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
 		@PathVariable("tag-name") String tagName,
 		QuestionPageRequest pageRequest
 	) {
 		Page<Question> page = questionService.findAllByTag(tagName, pageRequest);
-		List<QuestionResponseDto.SimpleResponse> response = page.map(mapper::questionToSimpleResponse).toList();
+		List<QuestionResponseDto.SimpleResponse> responses = mapper.questionsToResponses(page, member);
 
-		return new ResponseEntity<>(new MultiResponseDto<>(response, page), HttpStatus.OK);
+		return new ResponseEntity<>(new MultiResponseDto<>(responses, page), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{question-id}")
@@ -106,5 +110,10 @@ public class QuestionController {
 		questionService.delete(member, questionId);
 
 		return ResponseEntity.noContent().build();
+	}
+
+	private void setProperties(Member member, Question question, QuestionResponseDto.Response response) {
+		response.setIsItWriter(question.isWrittenBy(member));
+		response.setVoteType(question.getVoteType(member));
 	}
 }
