@@ -53,6 +53,8 @@ public class AnswerService {
 		Optional.ofNullable(answer.getContent())
 			.ifPresent(findAnswer::setContent);
 
+		findAnswer.setVoteCount(getAnswerVoteCount(answer));
+
 		return answerRepository.save(findAnswer);
 	}
 
@@ -66,6 +68,13 @@ public class AnswerService {
 		verifyExistMember(findAnswer, member.getMemberId());
 
 		answerRepository.delete(findAnswer);
+	}
+
+	public int getAnswerVoteCount(Answer answer) {
+		return answer.getVotes()
+			.stream()
+			.mapToInt(vote -> vote.getType().getValue())
+			.sum();
 	}
 
 	@Transactional(readOnly = true)

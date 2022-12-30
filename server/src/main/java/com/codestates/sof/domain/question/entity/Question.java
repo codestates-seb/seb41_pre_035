@@ -173,7 +173,8 @@ public class Question extends BaseEntity {
 	}
 
 	public VoteType getVoteType(Member member) {
-		if (member == null) return VoteType.NONE;
+		if (member == null)
+			return VoteType.NONE;
 
 		return votes.stream()
 			.filter(vote -> vote.getMember().getMemberId() == member.getMemberId())

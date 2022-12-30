@@ -1,14 +1,23 @@
 package com.codestates.sof.domain.auth.service;
 
+import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
+
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.codestates.sof.domain.auth.entity.VerificationToken;
+import com.codestates.sof.domain.auth.jwt.JwtTokenizer;
 import com.codestates.sof.domain.auth.repository.VerificationTokenRepository;
 import com.codestates.sof.domain.common.RandomPasswordGenerator;
 import com.codestates.sof.domain.member.entity.Member;
@@ -27,6 +36,8 @@ public class AuthService {
 	private final MemberRepository memberRepository;
 	private final EmailService emailService;
 	private final PasswordEncoder passwordEncoder;
+	private final RedisTemplate<String, String> redisTemplate;
+	private final JwtTokenizer jwtTokenizer;
 
 	public String generateToken(Member member, int expirationHour, VerificationToken.tokenType tokenType) {
 		String token = UUID.randomUUID().toString();
@@ -97,5 +108,29 @@ public class AuthService {
 			throw new BusinessLogicException(ExceptionCode.NOT_FOUND_MEMBER);
 		}
 		return member;
+	}
+
+	@Transactional
+	public void logout(HttpServletRequest request) {
+		// 요청한 access token의 유효성 확인
+		String accessToken = request.getHeader("Authorization");
+		if (accessToken == null || !accessToken.startsWith("Bearer ")) {
+			throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
+		}
+
+		String jws = accessToken.replace("Bearer ", "");
+		String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+		Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
+
+		// Redis에서 해당 username로 저장된 refresh token이 있는지 여부를 확인 후, 있을 경우 삭제
+		if (redisTemplate.opsForValue().get("RTK:" + claims.get("username")) != null) {
+			redisTemplate.delete("RTK:" + claims.get("username"));
+		}
+
+		// access token의 남은 시간을 redis에 남은 시간을 만료시간으로 하는 blacklist 데이터로 저장힙니다.
+		long expiration = (Long)claims.get("expiration") - new Date().getTime();
+		redisTemplate.opsForValue().set(jws, "blacklist", expiration, TimeUnit.MILLISECONDS);
+
+		SecurityContextHolder.clearContext();
 	}
 }
