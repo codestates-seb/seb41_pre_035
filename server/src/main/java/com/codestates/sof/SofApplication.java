@@ -18,14 +18,14 @@ import com.codestates.sof.domain.tag.repository.TagRepository;
 @EnableJpaAuditing
 @SpringBootApplication
 @PropertySource("classpath:/env.properties")
-public class SofApplication extends SpringBootServletInitializer implements CommandLineRunner {
-	@Autowired
+public class SofApplication extends SpringBootServletInitializer {
+	// @Autowired
 	private MemberRepository memberRepository;
 
-	@Autowired
+	// @Autowired
 	private TagRepository tagRepository;
 
-	@Autowired
+	// @Autowired
 	private PasswordEncoder encoder;
 
 	public static void main(String[] args) {
@@ -37,16 +37,16 @@ public class SofApplication extends SpringBootServletInitializer implements Comm
 		return builder.sources(SofApplication.class);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-		Member member = new Member();
-		member.setName("name");
-		member.setEmail("email@email.com");
-		member.setEncryptedPassword(encoder.encode("password"));
-		member.setVerificationFlag(true);
-		memberRepository.save(member);
-
-		tagRepository.save(new Tag("tag1", "description1"));
-		tagRepository.save(new Tag("tag2", "description2"));
-	}
+	// @Override
+	// public void run(String... args) throws Exception {
+	// 	Member member = new Member();
+	// 	member.setName("name");
+	// 	member.setEmail("email@email.com");
+	// 	member.setEncryptedPassword(encoder.encode("password"));
+	// 	member.setVerificationFlag(true);
+	// 	memberRepository.save(member);
+	//
+	// 	tagRepository.save(new Tag("tag1", "description1"));
+	// 	tagRepository.save(new Tag("tag2", "description2"));
+	// }
 }
