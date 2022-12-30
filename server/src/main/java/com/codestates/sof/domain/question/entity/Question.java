@@ -157,28 +157,20 @@ public class Question extends BaseEntity {
 
 	// *** Vote ***
 	public int getVoteCount() {
-<<<<<<< HEAD
-		return votes.size();
-=======
 		return votes.stream()
 			.mapToInt(vote -> vote.getType().getValue())
 			.sum();
 	}
 
 	public VoteType getVoteType(Member member) {
-		if (member == null) return VoteType.NONE;
+		if (member == null)
+			return VoteType.NONE;
 
-<<<<<<< HEAD
-	public void vote(Member member, VoteType vote) {
-		votes.add(new QuestionVote(this, member, vote));
->>>>>>> a9fa0e2d90b300552a108513091169a6d873aa20
-=======
 		return votes.stream()
 			.filter(vote -> vote.getMember().getMemberId() == member.getMemberId())
 			.findFirst()
 			.map(Vote::getType)
 			.orElse(VoteType.NONE);
->>>>>>> abca2ca5d644ca5b62f0c8b15da07dd81021cdb2
 	}
 
 	@Override
