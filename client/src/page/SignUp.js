@@ -121,7 +121,7 @@ const SignUp = () => {
     });
 
     return axios
-      .post("/members", signupData, {
+      .post("http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/members", signupData, {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {

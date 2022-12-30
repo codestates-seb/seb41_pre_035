@@ -6,6 +6,8 @@ import "../css/Btn.css";
 import "../css/QuestionPage.css";
 import questionList from "../data/Questions";
 import MDEditor from "@uiw/react-md-editor";
+import { userState } from "../recoil";
+import { useRecoilValue } from "recoil";
 
 const axios = require("axios");
 
@@ -14,18 +16,30 @@ function QuestionPage() {
   const navigate = useNavigate();
   const [answer, setAnswer] = useState("");
   const [pop, setPop] = useState(true);
+  const user = useRecoilValue(userState); //로그인 유저 정보
 
   const question = questionList.filter((el) => el.id === Number(questionId))[0];
   const handleClick = () => {
-    navigate("/questions");
+    navigate("/askquestions");
   };
-  const AnswerBody = JSON.stringify({
-    memberId: 0,
-    title: "title",
-    body: answer,
-    tags: [],
-  });
 
+  /*const handleLoad = async (questionId) => {
+    const response = await axios
+      .get(`http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/questions/${questionId}`)
+      .then((res) => {
+        if (res.ok) {
+
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });*
+  };*/
+  const AnswerBody = JSON.stringify({
+    questionId: 1,
+    memberId: user.memberId,
+    content: answer,
+  });
   const handleClear = () => {
     if (window.confirm("Discard question")) {
       setAnswer("");
@@ -33,6 +47,24 @@ function QuestionPage() {
     } else {
       alert("Cancel");
     }
+  };
+  const handleVoteClick = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://34.64.179.131:8080/questions/{question-id}/votes", {
+        headers: { "Content-Type": "application/json", Authorization: "test1234" },
+      })
+      .then((res) => {
+        if (res.ok) {
+          alert("투표가 완료 되었습니다.");
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+        if (err.response.status === 404) {
+          //console.log(err);
+        }
+      });
   };
 
   const handleAnswerSubmit = (e) => {
@@ -72,9 +104,9 @@ function QuestionPage() {
         {question.answer.map((el) => (
           <div className="postLayout answer">
             <div className="qSideBar">
-              <i className="voteCount fa-solid fa-sort-up"></i>
+              <i className="voteCount fa-solid fa-sort-up" onClick={handleVoteClick}></i>
               <p>vote num</p>
-              <i className="voteCount fa-solid fa-sort-down"></i>
+              <i className="voteCount fa-solid fa-sort-down" onClick={handleVoteClick}></i>
               <i className="qbookMark fa-regular fa-bookmark"></i>
             </div>
             <div className="postBody">

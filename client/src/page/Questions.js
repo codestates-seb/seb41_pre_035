@@ -22,13 +22,21 @@ function Questions() {
   //const sortedQuestions = questions.sort((a, b) => b[order] - a[order]);
 
   const handleClick = () => {
-    navigate("/questions");
+    navigate("/askquestions");
   };
 
   const handleLoad = async (questionId) => {
     setIsLoading(true); //"로딩 중이다"
-    const response = await axios.get(`/questions/${questionId}`);
-    setQuestions(response.data);
+    const response = await axios
+      .get(`http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/questions/${questionId}`)
+      .then((res) => {
+        if (res.ok) {
+          setQuestions(response.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
     setIsLoading(false); //"로딩 중이 아니다"
   };
 
@@ -46,11 +54,13 @@ function Questions() {
       </div>
       <div className="qTopBar">
         <p>{questionList.length} questions</p>
-        <button className="sBtn">Newest</button>
-        <button className="sBtn">Active</button>
-        <button className="sBtn">Bountied</button>
-        <button className="sBtn">Unanswered</button>
-        <button className="sBtn">More</button>
+        <div className="filterBtns">
+          <button className="sBtn">Newest</button>
+          <button className="sBtn">Active</button>
+          <button className="sBtn">Bountied</button>
+          <button className="sBtn">Unanswered</button>
+          <button className="sBtn">More</button>
+        </div>
         <button className="sBtn filterBtn" onClick={() => setFilterMenu(!filterMenu)}>
           Filter
         </button>

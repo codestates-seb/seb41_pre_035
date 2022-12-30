@@ -80,7 +80,7 @@ const Login = ({ setRefreshToken }) => {
     });
 
     return axios
-      .post("/auth/login", loginData, {
+      .post("http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/auth/login", loginData, {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {

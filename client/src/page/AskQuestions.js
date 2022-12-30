@@ -7,7 +7,10 @@ import "../css/Tags.css";
 import "../css/Editer.css";
 import "../css/Btn.css";
 import TAGS from "../data/Tags";
-const axios = require("axios");
+import { userState } from "../recoil";
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function AskQuestions() {
   const [question, setQuestion] = useState("");
@@ -25,6 +28,10 @@ function AskQuestions() {
   const titleInput = useRef();
   const tagsInput = useRef();
   const reviewBtn = useRef();
+
+  const user = useRecoilValue(userState); //로그인 유저 정보
+  const token = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
 
   const handleTitleInput = (e) => {
     setTitle(e.target.value);
@@ -95,22 +102,28 @@ function AskQuestions() {
     }
   };
   const questionBody = JSON.stringify({
-    memberId: 0,
+    writerId: user.memberId,
     title: title,
-    body: `${question}\n\n ${result}`,
+    content: `${question}\n\n ${result}`,
     tags: tagList,
   });
+
   const handleQuestionSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://34.64.179.131:8080/questions", questionBody, {
-        "Accept-Language": "ko",
-        "Content-Type": "application/json",
+      .post("http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/questions", questionBody, {
+        headers: { "Content-Type": "application/json", Authorization: token },
       })
       .then((res) => {
-        if (res.ok) {
+        console.log(res);
+        if (res.status === 201) {
           alert("생성이 완료 되었습니다.");
+          console.log("success");
+          navigate("/questions");
         }
+      })
+      .catch((err) => {
+        console.log(err.response);
       });
   };
   return (
