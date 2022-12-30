@@ -25,6 +25,7 @@ import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.answer.mapper.AnswerMapper;
 import com.codestates.sof.domain.answer.service.AnswerService;
 import com.codestates.sof.domain.auth.dto.MemberDetails;
+import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.global.dto.MultiResponseDto;
 import com.codestates.sof.global.dto.SingleResponseDto;
 
@@ -86,5 +87,15 @@ public class AnswerController {
 		answerService.deleteAnswer(answerId, memberDetails);
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@PatchMapping("/accepted-answers/{answer-id}")
+	public ResponseEntity<?> accept(
+		@PathVariable("answer-id") @Positive Long questionId,
+		@RequestBody @Valid AnswerDto.Acceptance acceptance,
+		@AuthenticationPrincipal Member member
+	) {
+		answerService.accept(member, questionId, acceptance.getAnswerId());
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

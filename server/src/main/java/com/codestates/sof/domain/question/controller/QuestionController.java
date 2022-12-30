@@ -32,9 +32,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 // TODO(얘기 필요): Response Dto는 Find 메서드에서만 반환하고, 나머지는 Http Status만 주기
-// TODO (Auth, Adoption)
-// - Auth: 작성자와 요청자가 일치하는지 확인필요
-// - Adoption: 채택만을 위한 핸들러 작성
 // - GET ALL: 전체 조회시 Simple Response Dto로 응답
 
 @Slf4j
@@ -52,7 +49,7 @@ public class QuestionController {
 	) {
 		Question question = questionService.write(mapper.postToQuestion(post), member);
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
-		setProperties(member, question, response);
+		mapper.setPropertiesToResponse(member, question, response);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResponseDto<>(response));
 	}
@@ -65,9 +62,17 @@ public class QuestionController {
 	) {
 		Question question = questionService.patch(questionId, member, mapper.patchToQuestion(patch));
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
-		setProperties(member, question, response);
+		mapper.setPropertiesToResponse(member, question, response);
 
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
+	}
+
+	@DeleteMapping("/{question-id}")
+	public ResponseEntity<?> delete(@AuthenticationPrincipal Member member,
+		@PathVariable("question-id") @Positive Long questionId) {
+		questionService.delete(member, questionId);
+
+		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("/{question-id}")
@@ -77,7 +82,7 @@ public class QuestionController {
 	) {
 		Question question = questionService.findById(questionId);
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
-		setProperties(member, question, response);
+		mapper.setPropertiesToResponse(member, question, response);
 
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
 	}
@@ -103,17 +108,5 @@ public class QuestionController {
 		List<QuestionResponseDto.SimpleResponse> responses = mapper.questionsToResponses(page, member);
 
 		return new ResponseEntity<>(new MultiResponseDto<>(responses, page), HttpStatus.OK);
-	}
-
-	@DeleteMapping("/{question-id}")
-	public ResponseEntity<?> delete(@AuthenticationPrincipal Member member, @PathVariable("question-id") @Positive Long questionId) {
-		questionService.delete(member, questionId);
-
-		return ResponseEntity.noContent().build();
-	}
-
-	private void setProperties(Member member, Question question, QuestionResponseDto.Response response) {
-		response.setIsItWriter(question.isWrittenBy(member));
-		response.setVoteType(question.getVoteType(member));
 	}
 }

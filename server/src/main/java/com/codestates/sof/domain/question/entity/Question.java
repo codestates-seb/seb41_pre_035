@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -28,6 +29,7 @@ import com.codestates.sof.domain.common.VoteType;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.tag.entity.Tag;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -60,8 +62,13 @@ public class Question extends BaseEntity {
 	@Column(name = "view_count", nullable = false)
 	private int viewCount;
 
-	@Column(name = "has_adopted_answer")
-	private boolean hasAdoptedAnswer;
+	@Getter(value = AccessLevel.NONE)
+	@Column(name = "has_accepted_answer")
+	private boolean hasAcceptedAnswer;
+
+	@Transient
+	@Getter(value = AccessLevel.NONE)
+	private boolean hasAlreadyVoted;
 
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 	private List<Answer> answers = new ArrayList<>();
@@ -87,8 +94,13 @@ public class Question extends BaseEntity {
 		tags.forEach(this::addTag);
 	}
 
+	// *** 편의 ***
 	public boolean isWrittenBy(Member member) {
-		return Objects.equals(this.member, member);
+		return this.member.getMemberId() == member.getMemberId();
+	}
+
+	public boolean isEdditable(Member member) {
+		return isWrittenBy(member) && !hasAcceptedAnswer;
 	}
 
 	public void update(Question newQuestion, List<Tag> tags) {
@@ -99,13 +111,10 @@ public class Question extends BaseEntity {
 			content = newQuestion.getContent();
 
 		update(tags);
-
-		// comment
-		// bookmark
-		// adopted Answer
 	}
 
 	// *** Tag ***
+
 	public void increaseTaggedCountForAllTags() {
 		tags.forEach(tag -> tag.getTag().increaseTaggedCount());
 	}
@@ -156,6 +165,7 @@ public class Question extends BaseEntity {
 	}
 
 	// *** Vote ***
+
 	public int getVoteCount() {
 		return votes.stream()
 			.mapToInt(vote -> vote.getType().getValue())
@@ -171,6 +181,24 @@ public class Question extends BaseEntity {
 			.findFirst()
 			.map(Vote::getType)
 			.orElse(VoteType.NONE);
+	}
+
+	public boolean hasAlreadyVoted() {
+		return hasAlreadyVoted;
+	}
+
+	public void setHasAlreadyVoted(boolean hasAlreadyVoted) {
+		this.hasAlreadyVoted = hasAlreadyVoted;
+	}
+
+	// *** 답변 채택 ***
+
+	public boolean hasAcceptedAnswer() {
+		return hasAcceptedAnswer;
+	}
+
+	public void acceptAnswer() {
+		this.hasAcceptedAnswer = true;
 	}
 
 	@Override

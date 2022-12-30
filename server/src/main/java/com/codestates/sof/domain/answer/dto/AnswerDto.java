@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -58,5 +58,13 @@ public class AnswerDto {
 		public void setIsItWriter(boolean isItWriter) {
 			this.isItWriter = isItWriter;
 		}
+	}
+
+	@Getter
+	@Setter
+	@NoArgsConstructor
+	public static class Acceptance {
+		@Positive(message = "Id of the answer to be accepted must be greater than 0")
+		private long answerId;
 	}
 }
