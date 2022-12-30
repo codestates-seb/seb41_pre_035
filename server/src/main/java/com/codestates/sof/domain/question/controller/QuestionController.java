@@ -98,7 +98,7 @@ public class QuestionController {
 		return new ResponseEntity<>(new MultiResponseDto<>(responses, page), HttpStatus.OK);
 	}
 
-	@GetMapping("/tags/{tag-name}")
+	@GetMapping("/tagged/{tag-name}")
 	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAllByTag(
 		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
 		@PathVariable("tag-name") String tagName,
