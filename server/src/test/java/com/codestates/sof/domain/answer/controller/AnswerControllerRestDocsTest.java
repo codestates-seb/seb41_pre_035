@@ -142,7 +142,7 @@ public class AnswerControllerRestDocsTest {
 		Page<Answer> pageAnswers = getPageAnswers();
 		List<AnswerDto.Response> responses = getMultiAnswerResponseDto();
 
-		given(answerService.findAnswers(anyInt(), anyInt())).willReturn(pageAnswers);
+		given(answerService.findAnswers(anyInt(), anyInt(), any())).willReturn(pageAnswers);
 		given(answerMapper.answersToResponses(anyList())).willReturn(responses);
 
 		// when
@@ -150,6 +150,7 @@ public class AnswerControllerRestDocsTest {
 			mockMvc.perform(
 				get("/answers")
 					.param("page", String.valueOf(pageAnswers.getNumber() + 1))
+					.param("sort", "HIGH_SCORE")
 					.accept(MediaType.APPLICATION_JSON)
 			);
 
@@ -162,7 +163,8 @@ public class AnswerControllerRestDocsTest {
 					getRequestPreProcessor(),
 					getResponsePreProcessor(),
 					requestParameters(
-						parameterWithName("page").description("페이지 번호")),
+						parameterWithName("page").description("페이지 번호"),
+						parameterWithName("sort").description("정렬 방식 [NEWEST, OLDEST, HIGH_SCORE]")),
 					responseFields(
 						fieldWithPath("data").type(JsonFieldType.ARRAY).description("결과 데이터"),
 						fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"))
