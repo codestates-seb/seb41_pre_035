@@ -58,8 +58,8 @@ public class SecurityConfig {
 				.antMatchers("/docs/index.html").permitAll()
 				.antMatchers("/auth/**", "/h2/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/members").permitAll()
-				.antMatchers(HttpMethod.GET, "/tags", "/questions").permitAll()
-				.antMatchers(HttpMethod.GET, "/tags/**", "/questions/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/tags", "/questions", "/answers").permitAll()
+				.antMatchers(HttpMethod.GET, "/tags/**", "/questions/**", "/answers/**").permitAll()
 				.anyRequest().authenticated());  // TODO : 도메인 권한 설정 무조건 필요합니다!
 
 		return httpSecurity.build();
