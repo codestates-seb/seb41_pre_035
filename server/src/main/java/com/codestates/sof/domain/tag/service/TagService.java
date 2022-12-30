@@ -1,6 +1,7 @@
 package com.codestates.sof.domain.tag.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,12 @@ public class TagService {
 		return findExistsTagBy(tagName);
 	}
 
+	public List<Tag> findAllBy(List<String> tagNames) {
+		return tagRepository.findAllByNameIn(
+			tagNames.stream().map(String::toLowerCase).collect(Collectors.toList())
+		);
+	}
+
 	public Page<Tag> findAll(TagPageRequest pageRequest) {
 		if (pageRequest.getSortType() == TagSortingType.POPULAR)
 			return tagRepository.findAllByOrderByTaggedCountDesc(pageRequest.unsorted());
@@ -32,12 +39,17 @@ public class TagService {
 		return tagRepository.findAllByOrderByNameAsc(pageRequest.unsorted());
 	}
 
-	public List<Tag> findAllBy(List<String> tagNames) {
-		return tagRepository.findAllByNameIn(tagNames);
+	public Page<Tag> search(String query, TagPageRequest pageRequest) {
+		query = query.toLowerCase();
+
+		if (pageRequest.getSortType() == TagSortingType.POPULAR)
+			return tagRepository.findAllByNameLikeOrderByTaggedCountDesc(query, pageRequest.unsorted());
+
+		return tagRepository.findAllByNameLikeOrderByNameAsc(query, pageRequest.unsorted());
 	}
 
 	private Tag findExistsTagBy(String tagName) {
-		return tagRepository.findByName(tagName)
+		return tagRepository.findByName(tagName.toLowerCase())
 			.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_TAG));
 	}
 }
