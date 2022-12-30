@@ -25,7 +25,7 @@ public class QuestionVoteService {
 			return delete(member, question);
 
 		QuestionVote vote = voteRepository.findByMemberAndQuestion(member, question)
-			.orElse(voteRepository.save(new QuestionVote(question, member, voteType)));
+			.orElseGet(() -> voteRepository.save(new QuestionVote(question, member, voteType)));
 
 		vote.modify(voteType);
 
