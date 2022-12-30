@@ -39,6 +39,9 @@ public class Answer extends BaseEntity {
 	@Column(nullable = false)
 	private int voteCount;
 
+	@Column(name = "is_accepted", nullable = false)
+	private boolean isAccepted;
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
@@ -58,5 +61,9 @@ public class Answer extends BaseEntity {
 		this.member = member;
 		this.content = content;
 		this.voteCount = 0;
+	}
+
+	public boolean isGroupOf(Question question) {
+		return this.question.equals(question);
 	}
 }

@@ -164,7 +164,7 @@ class QuestionControllerRestDocsTest {
 					requestParameters(
 						parameterWithName("page").description("페이지 번호").optional(),
 						parameterWithName("size").description("개수").optional(),
-						parameterWithName("sort").description("정렬 종류 (NEWEST | UNADOPTED | UNANSWERED)").optional()
+						parameterWithName("sort").description("정렬 종류 (NEWEST | UNACCEPTED | UNANSWERED)").optional()
 					),
 					getMultiResponseSnippet()
 				)
@@ -199,7 +199,7 @@ class QuestionControllerRestDocsTest {
 					requestParameters(
 						parameterWithName("page").description("페이지 번호").optional(),
 						parameterWithName("size").description("개수").optional(),
-						parameterWithName("sort").description("정렬 종류 (NEWEST | UNADOPTED | UNANSWERED)").optional()
+						parameterWithName("sort").description("정렬 종류 (NEWEST | UNACCEPTED | UNANSWERED)").optional()
 					),
 					getMultiResponseSnippet()
 				)
@@ -319,6 +319,7 @@ class QuestionControllerRestDocsTest {
 			fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수"),
 			fieldWithPath("voteCount").type(JsonFieldType.NUMBER).description("총 투표수"),
 			fieldWithPath("hasAlreadyVoted").type(JsonFieldType.BOOLEAN).description("투표여부"),
+			fieldWithPath("hasAcceptedAnswer").type(JsonFieldType.BOOLEAN).description("답변 채택여부"),
 			fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),
 			fieldWithPath("lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자"),
 			fieldWithPath("tags").type(JsonFieldType.ARRAY).description("태그들의 정보")

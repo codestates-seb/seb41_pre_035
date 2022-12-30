@@ -78,6 +78,22 @@ public class AnswerService {
 		return findAnswer;
 	}
 
+	@Transactional
+	public void accept(Member member, Long questionId, long answerId) {
+		Question question = questionService.findByIdWithoutIncreasingViewCount(questionId);
+
+		if (!question.isEdditable(member))
+			throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_EDITING_QUESTION);
+
+		Answer answer = findVerifiedAnswer(answerId);
+
+		if (!answer.isGroupOf(question))
+			throw new BusinessLogicException(ExceptionCode.NOT_FOUND_QUESTION);
+
+		answer.setAccepted(true);
+		question.acceptAnswer();
+	}
+
 	private void verifyExistMember(Answer answer, long memberId) {
 		long memberIdByAnswer = answer.getMember().getMemberId();
 
