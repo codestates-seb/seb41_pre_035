@@ -298,6 +298,7 @@ class QuestionControllerRestDocsTest {
 			fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("답변자 이름"),
 			fieldWithPath("content").type(JsonFieldType.STRING).description("답변 내용"),
 			fieldWithPath("voteCount").type(JsonFieldType.NUMBER).description("총 투표수"),
+			fieldWithPath("isAccepted").type(JsonFieldType.BOOLEAN).description("답변채택여부"),
 			fieldWithPath("isItWriter").type(JsonFieldType.BOOLEAN).description("작성자여부"),
 			fieldWithPath("hasAlreadyVoted").type(JsonFieldType.BOOLEAN).description("투표여부"),
 			fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),

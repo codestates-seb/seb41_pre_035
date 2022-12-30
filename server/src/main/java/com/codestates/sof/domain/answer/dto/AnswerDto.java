@@ -46,6 +46,7 @@ public class AnswerDto {
 		private Long memberId;
 		private String content;
 		private int voteCount;
+		private boolean isAccepted;
 		private boolean isItWriter;
 		private boolean hasAlreadyVoted;
 		private LocalDateTime createdAt;
