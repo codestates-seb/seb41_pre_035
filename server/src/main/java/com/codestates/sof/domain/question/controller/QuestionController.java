@@ -32,9 +32,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 // TODO(얘기 필요): Response Dto는 Find 메서드에서만 반환하고, 나머지는 Http Status만 주기
-// TODO (Auth, Adoption)
-// - Auth: 작성자와 요청자가 일치하는지 확인필요
-// - Adoption: 채택만을 위한 핸들러 작성
 // - GET ALL: 전체 조회시 Simple Response Dto로 응답
 
 @Slf4j
@@ -52,7 +49,7 @@ public class QuestionController {
 	) {
 		Question question = questionService.write(mapper.postToQuestion(post), member);
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
-		response.setIsItWriter(question.isWrittenBy(member));
+		mapper.setPropertiesToResponse(member, question, response);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(new SingleResponseDto<>(response));
 	}
@@ -65,9 +62,17 @@ public class QuestionController {
 	) {
 		Question question = questionService.patch(questionId, member, mapper.patchToQuestion(patch));
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
-		response.setIsItWriter(question.isWrittenBy(member));
+		mapper.setPropertiesToResponse(member, question, response);
 
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
+	}
+
+	@DeleteMapping("/{question-id}")
+	public ResponseEntity<?> delete(@AuthenticationPrincipal Member member,
+		@PathVariable("question-id") @Positive Long questionId) {
+		questionService.delete(member, questionId);
+
+		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("/{question-id}")
@@ -77,34 +82,31 @@ public class QuestionController {
 	) {
 		Question question = questionService.findById(questionId);
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
-		response.setIsItWriter(question.isWrittenBy(member));
+		mapper.setPropertiesToResponse(member, question, response);
 
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
 	}
 
 	@GetMapping
-	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAll(QuestionPageRequest pageRequest) {
+	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAll(
+		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
+		QuestionPageRequest pageRequest
+	) {
 		Page<Question> page = questionService.findAll(pageRequest);
-		List<QuestionResponseDto.SimpleResponse> response = page.map(mapper::questionToSimpleResponse).toList();
+		List<QuestionResponseDto.SimpleResponse> responses = mapper.questionsToResponses(page, member);
 
-		return new ResponseEntity<>(new MultiResponseDto<>(response, page), HttpStatus.OK);
+		return new ResponseEntity<>(new MultiResponseDto<>(responses, page), HttpStatus.OK);
 	}
 
 	@GetMapping("/tags/{tag-name}")
 	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAllByTag(
+		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
 		@PathVariable("tag-name") String tagName,
 		QuestionPageRequest pageRequest
 	) {
 		Page<Question> page = questionService.findAllByTag(tagName, pageRequest);
-		List<QuestionResponseDto.SimpleResponse> response = page.map(mapper::questionToSimpleResponse).toList();
+		List<QuestionResponseDto.SimpleResponse> responses = mapper.questionsToResponses(page, member);
 
-		return new ResponseEntity<>(new MultiResponseDto<>(response, page), HttpStatus.OK);
-	}
-
-	@DeleteMapping("/{question-id}")
-	public ResponseEntity<?> delete(@AuthenticationPrincipal Member member, @PathVariable("question-id") @Positive Long questionId) {
-		questionService.delete(member, questionId);
-
-		return ResponseEntity.noContent().build();
+		return new ResponseEntity<>(new MultiResponseDto<>(responses, page), HttpStatus.OK);
 	}
 }

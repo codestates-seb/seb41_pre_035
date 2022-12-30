@@ -3,6 +3,7 @@ package com.codestates.sof.domain.stub;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.codestates.sof.domain.common.VoteType;
 import com.codestates.sof.domain.member.controller.StubData;
 import com.codestates.sof.domain.member.dto.MemberDto;
 import com.codestates.sof.domain.member.entity.Member;
@@ -21,7 +22,6 @@ public class QuestionStub {
 			.title("title")
 			.content("content")
 			.viewCount(0)
-			.voteCount(0)
 			.build();
 	}
 
@@ -52,7 +52,7 @@ public class QuestionStub {
 		response.setViewCount(0);
 		response.setVoteCount(0);
 		response.setIsItWriter(false);
-		response.setHasAlreadyVoted(false);
+		response.setVoteType(VoteType.UP);
 		response.setCreatedAt(LocalDateTime.now());
 		response.setLastModifiedAt(LocalDateTime.now());
 		response.setTags(TagStub.simpleResponses());
@@ -69,9 +69,10 @@ public class QuestionStub {
 		response.setWriterName(member.getName());
 		response.setTitle("title");
 		response.setContent("content");
-		response.setVoteCount(0);
-		response.setViewCount(0);
 		response.setAnswerCount(1);
+		response.setViewCount(0);
+		response.setVoteCount(0);
+		response.setHasAlreadyVoted(false);
 		response.setCreatedAt(LocalDateTime.now());
 		response.setLastModifiedAt(LocalDateTime.now());
 		response.setTags(TagStub.simpleResponses());

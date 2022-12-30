@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,6 +37,10 @@ public class VerificationToken {
 	@Column(nullable = false)
 	private Date expiryDate;
 
+	@Enumerated(value = EnumType.STRING)
+	@Column(nullable = false, length = 20)
+	private tokenType tokenType;
+
 	public boolean isExpired() {
 		return new Date().after(expiryDate);
 	}
@@ -43,5 +49,17 @@ public class VerificationToken {
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.MINUTE, minutes);
 		this.expiryDate = now.getTime();
+	}
+
+	public enum tokenType {
+		VERIFICATION(1),
+		PASSWORD_RESET(2);
+
+		@Getter
+		private final int tokenTypeId;
+
+		tokenType(int tokenTypeId) {
+			this.tokenTypeId = tokenTypeId;
+		}
 	}
 }

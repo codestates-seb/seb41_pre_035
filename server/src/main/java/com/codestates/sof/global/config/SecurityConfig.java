@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,6 +36,7 @@ public class SecurityConfig {
 	private final MemberDetailsService detailsService;
 	private final JwtTokenizer jwtTokenizer;
 	private final LoginMapper mapper;
+	private final RedisTemplate<String, String> redisTemplate;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -86,14 +88,15 @@ public class SecurityConfig {
 			AuthenticationManager authenticationManager = httpSecurity.getSharedObject(AuthenticationManager.class);
 
 			JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager,
-				jwtTokenizer);
+				jwtTokenizer, redisTemplate);
 			jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
 			jwtAuthenticationFilter.setAuthenticationSuccessHandler(
 				new MemberAuthenticationSuccessHandler(mapper));
 			jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 			httpSecurity.addFilter(jwtAuthenticationFilter);
 
-			JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(detailsService, jwtTokenizer);
+			JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(detailsService, jwtTokenizer,
+				redisTemplate);
 
 			httpSecurity
 				.addFilter(jwtAuthenticationFilter)

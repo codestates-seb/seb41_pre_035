@@ -8,6 +8,7 @@ import javax.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,8 @@ import com.codestates.sof.domain.answer.dto.AnswerDto;
 import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.answer.mapper.AnswerMapper;
 import com.codestates.sof.domain.answer.service.AnswerService;
+import com.codestates.sof.domain.auth.dto.MemberDetails;
+import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.global.dto.MultiResponseDto;
 import com.codestates.sof.global.dto.SingleResponseDto;
 
@@ -55,11 +58,12 @@ public class AnswerController {
 
 	@PatchMapping("/{answer-id}")
 	public ResponseEntity patchAnswer(@Valid @RequestBody AnswerDto.Patch requestBody,
-		@PathVariable("answer-id") @Positive long answerId) {
+		@PathVariable("answer-id") @Positive long answerId,
+		@AuthenticationPrincipal MemberDetails memberDetails) {
 
 		Answer answer =
 			answerService.updateAnswer(
-				answerMapper.patchToAnswer(requestBody));
+				answerMapper.patchToAnswer(requestBody), memberDetails);
 
 		AnswerDto.Response response = answerMapper.answerToResponse(answer);
 
@@ -77,9 +81,21 @@ public class AnswerController {
 	}
 
 	@DeleteMapping("/{answer-id}")
-	public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId) {
-		answerService.deleteAnswer(answerId);
+	public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Positive long answerId,
+		@AuthenticationPrincipal MemberDetails memberDetails) {
+
+		answerService.deleteAnswer(answerId, memberDetails);
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@PatchMapping("/accepted-answers/{answer-id}")
+	public ResponseEntity<?> accept(
+		@PathVariable("answer-id") @Positive Long questionId,
+		@RequestBody @Valid AnswerDto.Acceptance acceptance,
+		@AuthenticationPrincipal Member member
+	) {
+		answerService.accept(member, questionId, acceptance.getAnswerId());
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

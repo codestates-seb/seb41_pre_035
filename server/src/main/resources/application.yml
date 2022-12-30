@@ -5,6 +5,9 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+  redis:
+    host: localhost
+    port: 6379
 
 server:
   port: 8080

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.codestates.sof.domain.answer.dto.AnswerDto;
+import com.codestates.sof.domain.common.VoteType;
 import com.codestates.sof.domain.member.dto.MemberDto;
 import com.codestates.sof.domain.tag.dto.TagDto;
 
@@ -21,9 +22,11 @@ public class QuestionResponseDto {
 		private String writerName;
 		private String title;
 		private String content;
-		private int voteCount;
-		private int viewCount;
 		private int answerCount;
+		private int viewCount;
+		private int voteCount;
+		private boolean hasAlreadyVoted;
+		private boolean hasAcceptedAnswer;
 		private LocalDateTime createdAt;
 		private LocalDateTime lastModifiedAt;
 		private List<TagDto.Response> tags;
@@ -40,7 +43,7 @@ public class QuestionResponseDto {
 		private int viewCount;
 		private int voteCount;
 		private Boolean isItWriter;
-		private Boolean hasAlreadyVoted;
+		private VoteType voteType;
 		private LocalDateTime createdAt;
 		private LocalDateTime lastModifiedAt;
 		private List<TagDto.Response> tags;

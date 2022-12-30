@@ -14,6 +14,9 @@ include::{snippets}/question/patch/response-fields.adoc[]
 .http-request
 include::{snippets}/question/post/http-request.adoc[]
 
+.request-headers
+include::{snippets}/question/post/request-headers.adoc[]
+
 .request-fields
 include::{snippets}/question/post/request-fields.adoc[]
 
@@ -24,6 +27,9 @@ include::{snippets}/question/post/http-response.adoc[]
 .http-request
 include::{snippets}/question/patch/http-request.adoc[]
 
+.request-headers
+include::{snippets}/question/patch/request-headers.adoc[]
+
 .request-fields
 include::{snippets}/question/patch/request-fields.adoc[]
 
@@ -33,6 +39,9 @@ include::{snippets}/question/patch/http-response.adoc[]
 === 질문 삭제
 .http-request
 include::{snippets}/question/delete/http-request.adoc[]
+
+.request-headers
+include::{snippets}/question/delete/request-headers.adoc[]
 
 .path-parameters
 include::{snippets}/question/delete/path-parameters.adoc[]
@@ -52,12 +61,12 @@ include::{snippets}/question/get/path-parameters.adoc[]
 .http-response
 include::{snippets}/question/get/http-response.adoc[]
 
-== 질문 목록 조회
-=== 공통 응답 필드
+=== 질문 목록 조회
+==== 공통 응답 필드
 .request-fields
 include::{snippets}/question/get-all/response-fields.adoc[]
 
-=== 질문 목록 조회
+==== 질문 목록 조회
 .http-request
 include::{snippets}/question/get-all/http-request.adoc[]
 
@@ -67,7 +76,7 @@ include::{snippets}/question/get-all/request-parameters.adoc[]
 .http-response
 include::{snippets}/question/get-all/http-response.adoc[]
 
-=== 질문 목록 태그별 조회
+==== 질문 목록 태그별 조회
 .http-request
 include::{snippets}/question/get-all-by-tag/http-request.adoc[]
 
@@ -77,10 +86,32 @@ include::{snippets}/question/get-all-by-tag/request-parameters.adoc[]
 .http-response
 include::{snippets}/question/get-all-by-tag/http-response.adoc[]
 
-== 질문 댓글 조회
+== 질문 투표
+
+CAUTION: 동일한 타입으로 다시 투표할 경우 voteType이 None이어야 합니다.
+
+.http-request
+include::{snippets}/question-vote/patch/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/question-vote/patch/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/question-vote/patch/request-fields.adoc[]
+
+.http-response
+include::{snippets}/question-vote/patch/http-response.adoc[]
+
+.response-fields
+include::{snippets}/question-vote/patch/response-fields.adoc[]
+
+== 질문 댓글
 === 댓글 등록
 .http-request
 include::{snippets}/question-comments/post/http-request.adoc[]
+
+.request-headers
+include::{snippets}/question-comments/post/request-headers.adoc[]
 
 .request-fields
 include::{snippets}/question-comments/post/request-fields.adoc[]
@@ -95,6 +126,9 @@ include::{snippets}/question-comments/post/response-fields.adoc[]
 .http-request
 include::{snippets}/question-comments/patch/http-request.adoc[]
 
+.request-headers
+include::{snippets}/question-comments/patch/request-headers.adoc[]
+
 .request-fields
 include::{snippets}/question-comments/patch/request-fields.adoc[]
 
@@ -107,6 +141,9 @@ include::{snippets}/question-comments/patch/response-fields.adoc[]
 === 댓글 삭제
 .http-request
 include::{snippets}/question-comments/delete/http-request.adoc[]
+
+.request-headers
+include::{snippets}/question-comments/delete/request-headers.adoc[]
 
 .path-parameters
 include::{snippets}/question-comments/delete/path-parameters.adoc[]
@@ -305,6 +342,31 @@ include::{snippets}/login/response-headers.adoc[]
 
 .response-fields
 include::{snippets}/login/response-fields.adoc[]
+
+=== 사용자 로그아웃
+
+.curl-request
+include::{snippets}/logout/curl-request.adoc[]
+
+.http-request
+include::{snippets}/logout/http-request.adoc[]
+
+.http-response
+include::{snippets}/logout/http-response.adoc[]
+
+=== 비밀번호 분실
+
+.curl-request
+include::{snippets}/forget-password/curl-request.adoc[]
+
+.http-request
+include::{snippets}/forget-password/http-request.adoc[]
+
+.request-fields
+include::{snippets}/forget-password/request-fields.adoc[]
+
+.http-response
+include::{snippets}/forget-password/http-response.adoc[]
 
 == 회원
 

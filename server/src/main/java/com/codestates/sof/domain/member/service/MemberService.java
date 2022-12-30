@@ -8,7 +8,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.codestates.sof.domain.auth.entity.VerificationToken;
 import com.codestates.sof.domain.auth.service.AuthService;
+import com.codestates.sof.domain.auth.service.EmailService;
 import com.codestates.sof.domain.common.CustomBeanUtils;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.member.entity.Profile;
@@ -25,6 +27,7 @@ public class MemberService {
 	private final CustomBeanUtils<Member> memberCustomBeanUtils;
 	private final CustomBeanUtils<Profile> profileCustomBeanUtils;
 	private final PasswordEncoder passwordEncoder;
+	private final EmailService emailService;
 	private final AuthService authService;
 
 	public Member createMember(Member member) {
@@ -34,7 +37,8 @@ public class MemberService {
 		member.setEncryptedPassword(encode);
 		Member saveMember = memberRepository.save(member);
 
-		authService.sendActivationEmail(saveMember);
+		String token = authService.generateToken(member, 60, VerificationToken.tokenType.VERIFICATION);
+		emailService.sendActivationEmail(saveMember, token);
 
 		return saveMember;
 	}
@@ -86,11 +90,25 @@ public class MemberService {
 		// 유저가 등록이 되어있지만 아직 이메일 인증을 하지 않은 경우 해당 메일로 한 번 더 이메일을 전송합니다.
 		Member member = optionalMember.get();
 		if (!member.getVerificationFlag()) {
-			authService.sendActivationEmail(member);
+			String token = authService.generateToken(member, 60, VerificationToken.tokenType.VERIFICATION);
+			emailService.sendActivationEmail(member, token);
 			throw new BusinessLogicException(ExceptionCode.EMAIL_VERIFICATION_REQUIRED);
 		}
 
 		throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
 	}
+
+	public Member findMemberByEmail(String email) {
+		Optional<Member> optionalMember = memberRepository.findByEmail(email);
+
+		Member member = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND_MEMBER));
+		if (member.getDeleteFlag()) {
+			throw new BusinessLogicException(ExceptionCode.NOT_FOUND_MEMBER);
+		}
+
+		return member;
+	}
+
+
 }
 
