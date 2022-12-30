@@ -14,6 +14,7 @@ import { emailState } from "../recoil";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  // const url = process.env.REACT_APP_EC2_URL;
 
   // recoil
   const setEmail = useSetRecoilState(emailState);
@@ -121,7 +122,7 @@ const SignUp = () => {
     });
 
     return axios
-      .post("/members", signupData, {
+      .post(`/members`, signupData, {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
@@ -131,6 +132,7 @@ const SignUp = () => {
           passwordReset();
           setEmail(email);
           navigate("/signupnotice");
+          console.log(res);
         }
       })
       .catch((err) => {

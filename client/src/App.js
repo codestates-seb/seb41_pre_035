@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header removeRefreshToken={removeRefreshToken} />
+      <Header />
       {/* <HeaderMenumodal /> */}
 
       <Routes>

@@ -6,7 +6,7 @@
   color: var(--link);
   background-color: white;
   border: var(--border);
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 8px;
   width: 70px;
   cursor: pointer;
