@@ -201,6 +201,44 @@ class QuestionControllerRestDocsTest {
 						parameterWithName("size").description("개수").optional(),
 						parameterWithName("sort").description("정렬 종류 (NEWEST | UNACCEPTED | UNANSWERED)").optional()
 					),
+					pathParameters(parameterWithName("tag-name").description("태그명")),
+					getMultiResponseSnippet()
+				)
+			);
+	}
+
+	@Test
+	void testForGetAllByQuery() throws Exception {
+		// given
+		Page<Question> page = new PageImpl<>(List.of(question), Pageable.ofSize(5), 10);
+		given(service.search(anyString(), any(QuestionPageRequest.class))).willReturn(page);
+		given(mapper.questionsToResponses(any(), any())).willReturn(List.of(simpleResponse));
+
+		// when
+		ResultActions actions = mvc.perform(
+			get("/questions/search")
+				.param("q", "text")
+				.param("page", "1")
+				.param("size", "5")
+				.param("sort", "POPULAR")
+				.header("Authorization", "Required JWT access token")
+		);
+
+		// then
+		actions
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.data").isArray())
+			.andExpect(jsonPath("$.pageInfo").exists())
+			.andDo(
+				getDefaultDocument(
+					"question/search",
+					requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
+					requestParameters(
+						parameterWithName("q").description("검색할 내용"),
+						parameterWithName("page").description("페이지 번호").optional(),
+						parameterWithName("size").description("개수").optional(),
+						parameterWithName("sort").description("정렬 종류 (NEWEST | UNACCEPTED | UNANSWERED)").optional()
+					),
 					getMultiResponseSnippet()
 				)
 			);

@@ -86,6 +86,16 @@ include::{snippets}/question/get-all-by-tag/request-parameters.adoc[]
 .http-response
 include::{snippets}/question/get-all-by-tag/http-response.adoc[]
 
+==== 질문 검색
+.http-request
+include::{snippets}/question/search/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/question/search/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/question/search/http-response.adoc[]
+
 == 질문 댓글
 === 댓글 등록
 .http-request
