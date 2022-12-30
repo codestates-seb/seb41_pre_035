@@ -24,6 +24,7 @@ import com.codestates.sof.domain.answer.dto.AnswerDto;
 import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.answer.mapper.AnswerMapper;
 import com.codestates.sof.domain.answer.service.AnswerService;
+import com.codestates.sof.domain.answer.support.AnswerSortingType;
 import com.codestates.sof.domain.auth.dto.MemberDetails;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.global.dto.MultiResponseDto;
@@ -71,9 +72,9 @@ public class AnswerController {
 	}
 
 	@GetMapping
-	public ResponseEntity getAnswers(@RequestParam @Positive int page) {
+	public ResponseEntity getAnswers(@RequestParam @Positive int page, @RequestParam AnswerSortingType sort) {
 		int size = 30;
-		Page<Answer> pageAnswers = answerService.findAnswers(page - 1, size);
+		Page<Answer> pageAnswers = answerService.findAnswers(page - 1, size, sort);
 		List<Answer> answers = pageAnswers.getContent();
 		List<AnswerDto.Response> responses = answerMapper.answersToResponses(answers);
 

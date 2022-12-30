@@ -118,4 +118,9 @@
 }
 .errorInput {
   border: var(--border-red);
+  padding-right: 30px;
+  background-image: url("../../public/img/alert-circle.svg");
+  background-position: 233px center;
+  background-size: 20px;
+  background-repeat: no-repeat;
 }

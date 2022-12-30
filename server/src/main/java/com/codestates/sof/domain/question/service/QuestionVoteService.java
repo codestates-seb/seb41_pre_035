@@ -32,7 +32,7 @@ public class QuestionVoteService {
 		return getVoteCount(question.getQuestionId());
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public int getVoteCount(long questionId) {
 		return voteRepository.getTypesByQuestion(questionId)
 			.stream()

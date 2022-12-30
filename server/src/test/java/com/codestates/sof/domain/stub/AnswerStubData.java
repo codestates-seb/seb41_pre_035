@@ -10,8 +10,10 @@ import org.springframework.data.domain.Sort;
 
 import com.codestates.sof.domain.answer.dto.AnswerCommentDto;
 import com.codestates.sof.domain.answer.dto.AnswerDto;
+import com.codestates.sof.domain.answer.dto.AnswerVoteDto;
 import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.answer.entity.AnswerComment;
+import com.codestates.sof.domain.common.VoteType;
 import com.codestates.sof.domain.member.controller.StubData;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.question.entity.Question;
@@ -44,6 +46,7 @@ public class AnswerStubData {
 			response.setMemberId(1L);
 			response.setContent("답변");
 			response.setVoteCount(0);
+			response.setAccepted(false);
 			response.setIsItWriter(true);
 			response.setHasAlreadyVoted(false);
 			response.setCreatedAt(LocalDateTime.now());
@@ -83,6 +86,7 @@ public class AnswerStubData {
 			response1.setMemberId(1L);
 			response1.setContent("답변1");
 			response1.setVoteCount(0);
+			response1.setAccepted(false);
 			response1.setIsItWriter(true);
 			response1.setHasAlreadyVoted(false);
 			response1.setCreatedAt(LocalDateTime.now());
@@ -94,6 +98,7 @@ public class AnswerStubData {
 			response2.setMemberId(2L);
 			response2.setContent("답변2");
 			response2.setVoteCount(0);
+			response1.setAccepted(false);
 			response2.setIsItWriter(true);
 			response2.setHasAlreadyVoted(false);
 			response2.setCreatedAt(LocalDateTime.now());
@@ -159,6 +164,29 @@ public class AnswerStubData {
 			response2.setLastModifiedAt(LocalDateTime.now());
 
 			return List.of(response1, response2);
+		}
+	}
+
+	public static class MockAnswerVote {
+
+		public static AnswerVoteDto.Patch getAnswerVotePatchDto() {
+			AnswerVoteDto.Patch patch = new AnswerVoteDto.Patch();
+			patch.setMemberId(1L);
+			patch.setVoteType(VoteType.UP);
+
+			return patch;
+		}
+
+		public static AnswerVoteDto.Response getAnswerVoteResponseDto() {
+			AnswerVoteDto.Response response = new AnswerVoteDto.Response();
+			response.setAnswerVoteId(1L);
+			response.setMemberId(1L);
+			response.setAnswerId(1L);
+			response.setVoteType(VoteType.UP);
+			response.setCreatedAt(LocalDateTime.now());
+			response.setLastModifiedAt(LocalDateTime.now());
+
+			return response;
 		}
 	}
 }

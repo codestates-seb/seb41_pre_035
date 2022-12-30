@@ -25,7 +25,7 @@ function QuestionPage() {
   }, []);
 
   const handleClick = () => {
-    navigate("/askquestions");
+    navigate("/questions");
   };
 
   const handleLoad = async (questionId) => {

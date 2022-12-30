@@ -12,6 +12,7 @@ public class AnswerFieldDescriptor {
 		fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
 		fieldWithPath("content").type(JsonFieldType.STRING).description("답변 본문"),
 		fieldWithPath("voteCount").type(JsonFieldType.NUMBER).description("투표 횟수"),
+		fieldWithPath("isAccepted").type(JsonFieldType.BOOLEAN).description("답변 채택여부"),
 		fieldWithPath("isItWriter").type(JsonFieldType.BOOLEAN).description("작성자 여부"),
 		fieldWithPath("hasAlreadyVoted").type(JsonFieldType.BOOLEAN).description("투표 여부"),
 		fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),
@@ -43,6 +44,15 @@ public class AnswerFieldDescriptor {
 		fieldWithPath("member.profile.twitterLink").type(JsonFieldType.STRING).description("트위터 링크"),
 		fieldWithPath("member.profile.githubLink").type(JsonFieldType.STRING).description("깃헙 링크"),
 		fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용"),
+		fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),
+		fieldWithPath("lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자")
+	};
+
+	public static FieldDescriptor[] answerVoteResponseFields = new FieldDescriptor[] {
+		fieldWithPath("answerVoteId").type(JsonFieldType.NUMBER).description("고유 식별자"),
+		fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
+		fieldWithPath("answerId").type(JsonFieldType.NUMBER).description("답변 id"),
+		fieldWithPath("voteType").type(JsonFieldType.STRING).description("투표 타입 [UP, DOWN, NONE]"),
 		fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),
 		fieldWithPath("lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자")
 	};

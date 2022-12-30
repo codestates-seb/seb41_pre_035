@@ -1,5 +1,6 @@
 package com.codestates.sof.domain.auth.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,15 +35,17 @@ public class AuthController {
 		return authService.verifyAccount(token);
 	}
 
-	@GetMapping("/password")
-	public ResponseEntity<?> forgetPassword(@RequestBody Map<String,String> map) {
+	@PostMapping("/password")
+	public ResponseEntity<?> forgetPassword(@RequestBody Map<String, String> map) {
 		String email = map.get("email");
 
 		Member member = memberService.findMemberByEmail(email);
 		String token = authService.generateToken(member, 60, VerificationToken.tokenType.PASSWORD_RESET);
 		emailService.sendPasswordResetVerifyEmail(member, token);
+		Map<String, String> response = new HashMap<>();
+		response.put("message", "Send password reset email successfully.");
 
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@GetMapping("/password/{token}")
@@ -53,9 +56,11 @@ public class AuthController {
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<Void> logout(HttpServletRequest request) {
+	public ResponseEntity<?> logout(HttpServletRequest request) {
 		authService.logout(request);
+		Map<String, String> response = new HashMap<>();
+		response.put("message", "Bye~");
 
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 	}
 }

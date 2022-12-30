@@ -28,7 +28,7 @@ public class Tag {
 	@Column(name = "name", nullable = false, updatable = false, unique = true)
 	private String name;
 
-	@Column(name = "description", nullable = false)
+	@Column(name = "description", nullable = false, columnDefinition = "MEDIUMTEXT")
 	private String description;
 
 	@Column(name = "tagged_count", nullable = false)

@@ -138,11 +138,11 @@ a {
   --bg: #f1f2f3;
   --link: #0074cc;
   --link-hover: #289cf4;
-  --border: 1px solid #d6d9dc;
-  --border-blue: 1px solid #0074cc;
+  --border: 1px solid #bbbfc4;
+  --border-blue: 1px solid #6bbbf7;
   --border-red: 1px solid rgb(216, 18, 18);
   --outline-gray: 4px solid #ddddde;
-  --outline-blue: 4px solid #d2dfed;
+  --outline-blue: 4px solid #d7e5f2;
   --box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   --little-font-size: 13px;
   --little-font-color: ##5e656b;

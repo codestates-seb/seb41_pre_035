@@ -134,7 +134,7 @@ public class AuthControllerRestDocsTest {
 
 		// when
 		ResultActions actions = mockMvc.perform(
-			get("/auth/password")
+			post("/auth/password")
 				.accept(MediaType.APPLICATION_JSON)
 				.characterEncoding("utf-8")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -147,6 +147,9 @@ public class AuthControllerRestDocsTest {
 				getResponsePreProcessor(),
 				requestFields(
 					List.of(fieldWithPath("email").type(JsonFieldType.STRING).description("로그인 id(이메일)"))
+				),
+				responseFields(
+					List.of(fieldWithPath("message").type(JsonFieldType.STRING).description("성공 메세지"))
 				)
 			));
 	}
@@ -161,10 +164,13 @@ public class AuthControllerRestDocsTest {
 			post("/auth/logout"));
 
 		// then
-		actions.andExpect(status().isNoContent())
+		actions.andExpect(status().isAccepted())
 			.andDo(document("logout",
 				getRequestPreProcessor(),
-				getResponsePreProcessor()
+				getResponsePreProcessor(),
+				responseFields(
+					List.of(fieldWithPath("message").type(JsonFieldType.STRING).description("성공 메세지"))
+				)
 			));
 	}
 }

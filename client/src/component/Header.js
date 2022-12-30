@@ -7,7 +7,7 @@ import LogoutModal from "./LogoutModal";
 import Logo from "./Logo";
 import "../css/header.css";
 
-const Header = ({ removeRefreshToken }) => {
+const Header = ({ refreshToken, removeRefreshToken }) => {
   const navigate = useNavigate();
   const user = useRecoilValue(userState);
   const [on, setOn] = useState(false);
@@ -52,7 +52,7 @@ const Header = ({ removeRefreshToken }) => {
             <i className="fa-solid fa-circle-question"></i>
             <i className="fa-solid fa-snowflake"></i>
             <i className="fa-solid fa-right-from-bracket" onClick={() => setOn(!on)}></i>
-            {on ? <LogoutModal removeRefreshToken={removeRefreshToken} /> : null}
+            {on ? <LogoutModal /> : null}
           </div>
         </div>
       ) : (

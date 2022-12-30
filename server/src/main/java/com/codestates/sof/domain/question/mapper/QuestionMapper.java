@@ -53,5 +53,6 @@ public interface QuestionMapper {
 	default void setPropertiesToResponse(Member member, Question question, QuestionResponseDto.Response response) {
 		response.setIsItWriter(question.isWrittenBy(member));
 		response.setVoteType(question.getVoteType(member));
+		response.setBookmarked(question.isBookmarked(member));
 	}
 }

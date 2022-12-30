@@ -6,7 +6,9 @@ import { useEffect, useState } from "react";
 import "../css/Btn.css";
 import "../css/Questions.css";
 import QuestionItem from "./QuestionItem";
-import filterMenu from "./Menu";
+import filterMenu from "../component/Menu";
+import Nav from "../component/Nav";
+import Sidebar from "../component/Sidebar";
 
 const LIMIT = 15; //페이지네이션 값
 const BASE_URL = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/";
@@ -21,7 +23,7 @@ function Questions() {
   const token = localStorage.getItem("accessToken");
 
   const handleClick = () => {
-    navigate("/askquestions");
+    navigate("/questions");
   };
 
   const handleLoad = async (page) => {
@@ -45,6 +47,7 @@ function Questions() {
 
   return (
     <div className="qContent">
+      <Nav />
       <div className="fsHeadLine">
         <h1>All Questions</h1>
         <button className="btn" onClick={handleClick}>
@@ -98,6 +101,7 @@ function Questions() {
           Next
         </button>
       </div>
+      <Sidebar />
     </div>
   );
 }

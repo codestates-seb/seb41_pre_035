@@ -5,9 +5,13 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+    defer-datasource-initialization: true
   redis:
     host: localhost
     port: 6379
+  sql:
+    init:
+      mode: always
 
 server:
   port: 8080
