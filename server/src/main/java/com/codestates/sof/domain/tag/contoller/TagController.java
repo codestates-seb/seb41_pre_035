@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codestates.sof.domain.tag.dto.TagDto;
@@ -26,9 +27,21 @@ public class TagController {
 	private final TagMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<MultiResponseDto<TagDto.Response>> getAll(TagPageRequest pageRequest) {
-		Page<Tag> tags = tagService.findAll(pageRequest);
-		List<TagDto.Response> responses = tags.map(mapper::tagToResponse).toList();
-		return new ResponseEntity<>(new MultiResponseDto<>(responses, tags), HttpStatus.OK);
+	public ResponseEntity<?> getAll(TagPageRequest pageRequest) {
+		return getMultiResponseEntity(tagService.findAll(pageRequest));
+	}
+
+	@GetMapping("search")
+	public ResponseEntity<?> searchByQuery(@RequestParam(name = "q") String query, TagPageRequest pageRequest) {
+		return getMultiResponseEntity(tagService.search(query, pageRequest));
+	}
+
+	private ResponseEntity<?> getMultiResponseEntity(Page<Tag> page) {
+		if (page.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			List<TagDto.Response> responses = page.map(mapper::tagToResponse).toList();
+			return new ResponseEntity<>(new MultiResponseDto<>(responses, page), HttpStatus.OK);
+		}
 	}
 }
