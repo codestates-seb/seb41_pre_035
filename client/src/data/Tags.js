@@ -80,6 +80,78 @@ const Tags = [
     title: "linux",
     content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
   },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
+  {
+    title: "linux",
+    content: `NOTICE: All Linux questions must be related to programming; those that aren't will be closed. Use this tag only if your question relates to programming using Linux APIs or Linux-specific behavior, not just because you happen to run your code on Linux. If you need Linux support, you can try https://unix.stackexchange.com or the specific Linux distribution's Stack Exchange site like https://askubuntu.com or https://elementaryos.stackexchange.com/`,
+  },
 ];
 
 export default Tags;
