@@ -12,6 +12,8 @@ import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const BASE_URL = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/";
+
 function AskQuestions() {
   const [question, setQuestion] = useState("");
   const [title, setTitle] = useState("");
@@ -118,7 +120,7 @@ function AskQuestions() {
   const handleQuestionSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/questions", questionBody, {
+      .post(`${BASE_URL}questions`, questionBody, {
         headers: { "Content-Type": "application/json", Authorization: token },
       })
       .then((res) => {

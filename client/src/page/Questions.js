@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import "../css/Btn.css";
 import "../css/Questions.css";
 import QuestionItem from "./QuestionItem";
-import questionList from "../data/Questions"; //임시 데이터
 import filterMenu from "./Menu";
 
 const LIMIT = 15; //페이지네이션 값
@@ -33,7 +32,6 @@ function Questions() {
       .then((res) => {
         if (res.status === 200) {
           setQuestions(res.data.data);
-          console.log(res.data.data);
         }
       })
       .catch((err) => {
@@ -54,7 +52,7 @@ function Questions() {
         </button>
       </div>
       <div className="qTopBar">
-        <p>{questionList.length} questions</p>
+        <p>{questions.length} questions</p>
         <div className="filterBtns">
           <button className="sBtn" onClick={() => setOrder("NEWEST")}>
             Newest

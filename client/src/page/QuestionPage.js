@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../css/Btn.css";
 import "../css/QuestionPage.css";
-import questionList from "../data/Questions";
 import MDEditor from "@uiw/react-md-editor";
 import { userState } from "../recoil";
 import { useRecoilValue } from "recoil";
 import axios from "axios";
+
+const BASE_URL = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/";
 
 function QuestionPage() {
   const { questionId } = useParams();
@@ -29,13 +30,13 @@ function QuestionPage() {
 
   const handleLoad = async (questionId) => {
     await axios
-      .get(`http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/questions/${questionId}`, {
+      .get(`${BASE_URL}questions/${questionId}`, {
         headers: { "Content-Type": "application/json", Authorization: token },
       })
       .then((res) => {
-        if (res.status === 201) {
-          setQuestion(res);
-          console.log(res);
+        if (res.status === 200) {
+          setQuestion(res.data);
+          console.log(res.data);
         }
       })
       .catch((err) => {
@@ -59,7 +60,7 @@ function QuestionPage() {
   const handleVoteClick = (e) => {
     e.preventDefault();
     axios
-      .patch(`http://34.64.179.131:8080/questions/${questionId}/votes`, {
+      .patch(`${BASE_URL}questions/${questionId}/votes`, {
         headers: { "Content-Type": "application/json", Authorization: token },
       })
       .then((res) => {
@@ -75,7 +76,7 @@ function QuestionPage() {
   const handleAnswerSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/answers", AnswerBody, {
+      .post(`${BASE_URL}answers`, AnswerBody, {
         headers: { "Content-Type": "application/json", Authorization: token },
       })
       .then((res) => {
