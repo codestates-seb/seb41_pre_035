@@ -4,6 +4,8 @@ import "../css/tagsBoard.css";
 import Tags from "../data/Tags";
 
 const TagsBoard = () => {
+  const taglist = Tags;
+
   return (
     <div className="container">
       <Nav className="tagsBoardNav" />
@@ -15,7 +17,6 @@ const TagsBoard = () => {
             A tag is a keyword or label that categorizes your question with other, similar questions. <br /> Using the right tags makes it easier for others to find and answer your question.
           </div>
         </div>
-
         <div className="tagsBoardFilter">
           <form>
             <input type="text" placeholder="Filter by tag name" className="tagsBoardSearch" />
@@ -27,21 +28,22 @@ const TagsBoard = () => {
           </div>
         </div>
 
-        {Tags.map()}
-        <div className="tagsBoardContainer">
-          <div className="tagsContainer">
-            <div className="tagsName">javascript</div>
-            <p className="tagsText">
-              For questions about programming in ECMAScript (JavaScript/JS) and its different dialects/implementations (except for ActionScript). Keep in mind that JavaScript is NOT the same as Java!
-              Include all labels that are relevant to your question; e.g., [node.js], [jQuery], [JSON], [ReactJS], [angular], [ember.js], [vue.js], [typescript], [svelte], etc.
-            </p>
+        {/* ! 나중에 서버로 데이터 받아서 할 것 */}
+        <ul className="tagsBoardContainers">
+          {Tags.map((tag, idx) => (
+            <li key={idx} className="tagsBoardContainer">
+              <div className="tagsContainer">
+                <div className="tagsName">{tag.title}</div>
+                <p className="tagsText">{tag.content}</p>
 
-            <div className="tagsInfo">
-              <div className="tagsInfoNum">2462356 questions</div>
-              <div className="tagsInfoDate">563 asked today, 3129 this week</div>
-            </div>
-          </div>
-        </div>
+                <div className="tagsInfo">
+                  <div className="tagsInfoNum">2462356 questions</div>
+                  <div className="tagsInfoDate">563 asked today, 3129 this week</div>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <Footer />

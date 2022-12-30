@@ -7,18 +7,16 @@ import axios from "axios";
 const LogoutModal = () => {
   const setUser = useSetRecoilState(userState);
   const accessToken = localStorage.getItem("accessToken");
-  const [refreshToken, setRefreshToken, removeRefreshToken] = useCookies(["refreshToken"]);
-
-  console.log(accessToken);
-  console.log(refreshToken.refreshToken);
+  const [refreshToken, removeRefreshToken] = useCookies(["refreshToken"]);
+  const url = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080";
 
   const postLogoutData = () => {
     return axios
-      .post(`/auth/logout`, {
+      .post(`${url}/auth/logout`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: accessToken,
-          refresh: refreshToken.refreshToken,
+          refres: refreshToken.refreshToken,
         },
       })
       .then((res) => {
@@ -28,10 +26,11 @@ const LogoutModal = () => {
           removeRefreshToken("refreshToken");
           window.location.replace("/");
           console.log(res);
+          console.log("로그아웃에 성공했습니다.");
         }
       })
       .catch((err) => {
-        if (err.response.status === 409) {
+        if (err.response.status >= 400) {
           alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
         }
         console.log(err);

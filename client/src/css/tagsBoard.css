@@ -28,6 +28,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
+  width: 100%;
 }
 
 /* 필터링 검색 */
@@ -71,14 +72,14 @@
 }
 
 /* ---------------------tagsBoardContainer--------------------- */
-.tagsBoardContainer {
+.tagsBoardContainers {
   width: 100%;
   display: flex;
-  gap: 5px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 .tagsContainer {
-  width: 250px;
+  width: 280px;
   height: 180px;
   padding: 12px;
   border: var(--border);
