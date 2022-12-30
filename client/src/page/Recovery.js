@@ -6,6 +6,8 @@ import { useState } from "react";
 import axios from "axios";
 
 const Recovery = () => {
+  const url = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080";
+
   // * 복구 이메일을 받을 상태
   const [reEmail, reEmailBind, reEmailReset] = useInput("");
   const [recoveryIsSuccess, setRecoveryIsSuccess] = useState(false);
@@ -57,7 +59,7 @@ const Recovery = () => {
     });
 
     return axios
-      .post("/auth/recovery", Data, {
+      .post(`${url}/auth/password`, Data, {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
