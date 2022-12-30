@@ -2,10 +2,13 @@ package com.codestates.sof.domain.auth.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,5 +50,12 @@ public class AuthController {
 		authService.resetPassword(token);
 
 		return new ResponseEntity<>("Password reset Successfully. Please check your email", HttpStatus.OK);
+	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<Void> logout(HttpServletRequest request) {
+		authService.logout(request);
+
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
