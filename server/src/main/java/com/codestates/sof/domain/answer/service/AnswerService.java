@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.codestates.sof.domain.answer.entity.Answer;
 import com.codestates.sof.domain.answer.repository.AnswerRepository;
+import com.codestates.sof.domain.answer.support.AnswerSortingType;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.member.service.MemberService;
 import com.codestates.sof.domain.question.entity.Question;
@@ -58,9 +59,17 @@ public class AnswerService {
 		return answerRepository.save(findAnswer);
 	}
 
-	public Page<Answer> findAnswers(int page, int size) {
-		return answerRepository.findAll(PageRequest.of(page, size,
-			Sort.by("answerId").descending()));
+	public Page<Answer> findAnswers(int page, int size, AnswerSortingType sort) {
+		switch (sort) {
+			case HIGH_SCORE:
+				return answerRepository.findAll(PageRequest.of(page, size, Sort.by("voteCount").descending()));
+			case NEWEST:
+				return answerRepository.findAll(PageRequest.of(page, size, Sort.by("answerId").descending()));
+			case OLDEST:
+				return answerRepository.findAll(PageRequest.of(page, size, Sort.by("answerId").ascending()));
+			default:
+				throw new RuntimeException("Unexpected exception occurred.");
+		}
 	}
 
 	public void deleteAnswer(long answerId, Member member) {
