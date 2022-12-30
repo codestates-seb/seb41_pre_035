@@ -18,6 +18,7 @@ function AskQuestions() {
   const [result, setResult] = useState("");
   const [tag, setTag] = useState("");
   const [tagList, setTagList] = useState([]);
+  const qtagList = [];
   const [post, setPost] = useState(false);
   const [titleReview, setTitleReview] = useState(false);
   const [questionReview, setQuestionReview] = useState(false);
@@ -27,7 +28,6 @@ function AskQuestions() {
 
   const titleInput = useRef();
   const tagsInput = useRef();
-  const reviewBtn = useRef();
 
   const user = useRecoilValue(userState); //로그인 유저 정보
   const token = localStorage.getItem("accessToken");
@@ -53,13 +53,14 @@ function AskQuestions() {
       setResultReview(true);
       setNext([false, false, true, false]);
     } else {
+      setTitleReview(false);
+      setQuestionReview(false);
       setResultReview(false);
       setPost(true);
     }
   };
   const removeTag = (indexToRemove) => {
     setTagList([...tagList.filter((_, idx) => idx !== indexToRemove)]);
-    console.log(tagList);
   };
   const filterTags = TAGS.filter((el) => {
     return !tagList.includes(el.title) && el.title.replace(" ", "").toLocaleLowerCase().includes(tag.toLocaleLowerCase());
@@ -98,14 +99,20 @@ function AskQuestions() {
       setNext([false, false, false, true]);
       tagsInput.current.focus();
     } else if (idx === 3) {
-      reviewBtn.current.focus();
     }
   };
+
+  tagList.forEach((el, idx) => {
+    qtagList.push({
+      tagId: idx,
+      name: el,
+    });
+  });
   const questionBody = JSON.stringify({
     writerId: user.memberId,
     title: title,
     content: `${question}\n\n ${result}`,
-    tags: tagList,
+    tags: qtagList,
   });
 
   const handleQuestionSubmit = (e) => {
@@ -115,10 +122,9 @@ function AskQuestions() {
         headers: { "Content-Type": "application/json", Authorization: token },
       })
       .then((res) => {
-        console.log(res);
         if (res.status === 201) {
           alert("생성이 완료 되었습니다.");
-          console.log("success");
+          console.log(res);
           navigate("/questions");
         }
       })
@@ -267,7 +273,7 @@ function AskQuestions() {
       )}
       <div className="flexItem formSubmit">
         {!post && (
-          <button className="btn inlineBtn flexItem" ref={reviewBtn} onClick={handleReviewClick}>
+          <button className="btn inlineBtn flexItem" onClick={handleReviewClick}>
             Review your question
           </button>
         )}

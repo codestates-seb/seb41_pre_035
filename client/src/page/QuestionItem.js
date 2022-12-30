@@ -12,9 +12,9 @@ function QuestionItem({ questionItem }) {
   return (
     <div className="questionSummary">
       <div className="postSum qFlexItem">
-        <p>0 votes</p>
-        <p>0 answers</p>
-        <p>0 views</p>
+        <p>{questionItem.voteCount} votes</p>
+        <p>{questionItem.answerCount} answers</p>
+        <p>{questionItem.viewCount} views</p>
       </div>
       <div className="qFlexItem qPost">
         <p onClick={handleTitleClick} id="qPostTitle">
