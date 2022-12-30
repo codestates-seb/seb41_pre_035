@@ -15,5 +15,8 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 	List<Tag> findAllByNameIn(List<String> tagNames);
 
 	Page<Tag> findAllByOrderByNameAsc(Pageable pageable);
+	Page<Tag> findAllByNameLikeOrderByNameAsc(String query, Pageable pageable);
+
 	Page<Tag> findAllByOrderByTaggedCountDesc(Pageable pageable);
+	Page<Tag> findAllByNameLikeOrderByTaggedCountDesc(String query, Pageable pageable);
 }

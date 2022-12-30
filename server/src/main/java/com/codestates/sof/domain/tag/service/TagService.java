@@ -25,6 +25,10 @@ public class TagService {
 		return findExistsTagBy(tagName);
 	}
 
+	public List<Tag> findAllBy(List<String> tagNames) {
+		return tagRepository.findAllByNameIn(tagNames);
+	}
+
 	public Page<Tag> findAll(TagPageRequest pageRequest) {
 		if (pageRequest.getSortType() == TagSortingType.POPULAR)
 			return tagRepository.findAllByOrderByTaggedCountDesc(pageRequest.unsorted());
@@ -32,8 +36,11 @@ public class TagService {
 		return tagRepository.findAllByOrderByNameAsc(pageRequest.unsorted());
 	}
 
-	public List<Tag> findAllBy(List<String> tagNames) {
-		return tagRepository.findAllByNameIn(tagNames);
+	public Page<Tag> search(String query, TagPageRequest pageRequest) {
+		if (pageRequest.getSortType() == TagSortingType.POPULAR)
+			return tagRepository.findAllByNameLikeOrderByTaggedCountDesc(query, pageRequest.unsorted());
+
+		return tagRepository.findAllByNameLikeOrderByNameAsc(query, pageRequest.unsorted());
 	}
 
 	private Tag findExistsTagBy(String tagName) {
