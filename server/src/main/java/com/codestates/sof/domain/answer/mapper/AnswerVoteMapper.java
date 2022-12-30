@@ -6,11 +6,10 @@ import org.mapstruct.ReportingPolicy;
 
 import com.codestates.sof.domain.answer.dto.AnswerVoteDto;
 import com.codestates.sof.domain.answer.entity.AnswerVote;
-import com.codestates.sof.domain.member.mapper.MemberMapper;
 
 @Mapper(componentModel = "spring",
 	unmappedTargetPolicy = ReportingPolicy.IGNORE,
-	uses = AnswerMapper.class})
+	uses = AnswerMapper.class)
 public interface AnswerVoteMapper {
 
 	AnswerVote patchToAnswerVote(AnswerVoteDto.Patch requestBody);
