@@ -50,6 +50,30 @@ class TagControllerRestDocsTest {
 	TagMapper mapper;
 
 	@Test
+	void testForGet() throws Exception {
+		// given
+		given(service.findBy(anyString())).willReturn(TagStub.defaultTags().get(0));
+
+		// when
+		ResultActions actions = mvc.perform(get("/tags/{tag-name}", "java"));
+
+		// then
+		actions
+			.andExpect(status().isOk())
+			.andDo(
+				getDefaultDocument(
+					"tag/get",
+					pathParameters(parameterWithName("tag-name").description("검색할 태그명")),
+					responseFields().andWithPrefix("data.",
+						fieldWithPath("name").type(JsonFieldType.STRING).description("태그명"),
+						fieldWithPath("description").type(JsonFieldType.STRING).description("태그 설명"),
+						fieldWithPath("taggedCount").type(JsonFieldType.NUMBER).description("태그된 수")
+					)
+				)
+			);
+	}
+
+	@Test
 	void testForGetAll() throws Exception {
 		// given
 		given(service.findAll(any(TagPageRequest.class)))

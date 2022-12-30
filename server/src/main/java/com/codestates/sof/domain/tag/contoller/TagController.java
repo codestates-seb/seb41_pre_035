@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import com.codestates.sof.domain.tag.mapper.TagMapper;
 import com.codestates.sof.domain.tag.service.TagService;
 import com.codestates.sof.domain.tag.support.TagPageRequest;
 import com.codestates.sof.global.dto.MultiResponseDto;
+import com.codestates.sof.global.dto.SingleResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +27,11 @@ import lombok.RequiredArgsConstructor;
 public class TagController {
 	private final TagService tagService;
 	private final TagMapper mapper;
+
+	@GetMapping("/{tag-name}")
+	public ResponseEntity<?> get(@PathVariable("tag-name") String tagName) {
+		return new ResponseEntity<>(new SingleResponseDto<>(tagService.findBy(tagName)), HttpStatus.OK);
+	}
 
 	@GetMapping
 	public ResponseEntity<?> getAll(TagPageRequest pageRequest) {
