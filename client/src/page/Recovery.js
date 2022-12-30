@@ -47,24 +47,22 @@ const Recovery = () => {
     checkReEmailValid();
 
     if (checkReEmail() && checkReEmailValid()) {
-      console.log("서버에 데이터를 보내세요!");
       postRecovery();
     }
   };
 
-  // * 서버로 비밀번호 초기화 요청을 보내는 함수
+  // !! 서버로 비밀번호 초기화 요청을 보내는 함수 (get -> post로 바꿔주신다고 함)
   const postRecovery = () => {
     const Data = JSON.stringify({
       email: reEmail,
     });
 
     return axios
-      .post(`${url}/auth/password`, Data, {
+      .get(`${url}/auth/password`, Data, {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
         setRecoveryIsSuccess(true);
-        reEmailReset();
         console.log("비밀번호 초기화 요청에 성공했습니다.");
       })
       .catch((err) => {
