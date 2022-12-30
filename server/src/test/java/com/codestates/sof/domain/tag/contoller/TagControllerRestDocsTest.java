@@ -19,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -75,21 +76,59 @@ class TagControllerRestDocsTest {
 						parameterWithName("size").description("요청 태그 개수 (default:30)").optional(),
 						parameterWithName("sort").description("정렬 타입 [POPULAR | NAME | NEWEST]").optional()
 					),
-					responseFields(
-						fieldWithPath("data").type(JsonFieldType.ARRAY).description("질문 정보"),
-						fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보")
-					).andWithPrefix("data.[].",
-						fieldWithPath("tagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
-						fieldWithPath("name").type(JsonFieldType.STRING).description("태그명"),
-						fieldWithPath("description").type(JsonFieldType.STRING).description("태그 설명"),
-						fieldWithPath("taggedCount").type(JsonFieldType.NUMBER).description("태그된 수")
-					).andWithPrefix("pageInfo.",
-						fieldWithPath("page").type(JsonFieldType.NUMBER).description("요청한 페이지"),
-						fieldWithPath("size").type(JsonFieldType.NUMBER).description("요청한 개수"),
-						fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수"),
-						fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("총 개수")
-					)
+					getResponseFieldsSnippet()
 				)
 			);
+	}
+
+	@Test
+	void testForSearchByQuery() throws Exception {
+		// given
+		given(service.search(anyString(), any(TagPageRequest.class)))
+			.willReturn(new PageImpl<>(List.of(new Tag("tag1"), new Tag("tag2"))));
+		given(mapper.tagToResponse(any(Tag.class)))
+			.willReturn(TagStub.responses().get(0));
+
+		// when
+		ResultActions actions = mvc.perform(
+			get("/tags/search")
+				.param("q", "tag")
+				.param("page", "1")
+				.param("size", "20")
+				.param("sort", "POPULAR")
+		);
+
+		// then
+		actions
+			.andExpect(status().isOk())
+			.andDo(
+				getDefaultDocument(
+					"tag/search",
+					requestParameters(
+						parameterWithName("q").description("검색할 태그명"),
+						parameterWithName("page").description("요청 페이지 번호 (default: 1)").optional(),
+						parameterWithName("size").description("요청 태그 개수 (default:30)").optional(),
+						parameterWithName("sort").description("정렬 타입 [POPULAR | NAME | NEWEST]").optional()
+					),
+					getResponseFieldsSnippet()
+				)
+			);
+	}
+
+	private ResponseFieldsSnippet getResponseFieldsSnippet() {
+		return responseFields(
+			fieldWithPath("data").type(JsonFieldType.ARRAY).description("질문 정보"),
+			fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보")
+		).andWithPrefix("data.[].",
+			fieldWithPath("tagId").type(JsonFieldType.NUMBER).description("태그 식별자"),
+			fieldWithPath("name").type(JsonFieldType.STRING).description("태그명"),
+			fieldWithPath("description").type(JsonFieldType.STRING).description("태그 설명"),
+			fieldWithPath("taggedCount").type(JsonFieldType.NUMBER).description("태그된 수")
+		).andWithPrefix("pageInfo.",
+			fieldWithPath("page").type(JsonFieldType.NUMBER).description("요청한 페이지"),
+			fieldWithPath("size").type(JsonFieldType.NUMBER).description("요청한 개수"),
+			fieldWithPath("totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수"),
+			fieldWithPath("totalElements").type(JsonFieldType.NUMBER).description("총 개수")
+		);
 	}
 }

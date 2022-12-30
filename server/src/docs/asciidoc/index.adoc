@@ -168,6 +168,11 @@ include::{snippets}/question-comments/get-all/http-response.adoc[]
 include::{snippets}/question-comments/get-all/response-fields.adoc[]
 
 == 태그
+=== 공통 응답 필드
+
+.request-fields
+include::{snippets}/tag/get-all/response-fields.adoc[]
+
 === 태그 목록 조회
 .http-request
 include::{snippets}/tag/get-all/http-request.adoc[]
@@ -178,8 +183,15 @@ include::{snippets}/tag/get-all/request-parameters.adoc[]
 .http-response
 include::{snippets}/tag/get-all/http-response.adoc[]
 
-.request-fields
-include::{snippets}/tag/get-all/response-fields.adoc[]
+=== 태그 검색
+.http-request
+include::{snippets}/tag/search/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/tag/search/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/tag/search/http-response.adoc[]
 
 == Answer
 
