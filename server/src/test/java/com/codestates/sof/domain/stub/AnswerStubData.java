@@ -46,6 +46,7 @@ public class AnswerStubData {
 			response.setMemberId(1L);
 			response.setContent("답변");
 			response.setVoteCount(0);
+			response.setAccepted(false);
 			response.setIsItWriter(true);
 			response.setHasAlreadyVoted(false);
 			response.setCreatedAt(LocalDateTime.now());
@@ -85,6 +86,7 @@ public class AnswerStubData {
 			response1.setMemberId(1L);
 			response1.setContent("답변1");
 			response1.setVoteCount(0);
+			response1.setAccepted(false);
 			response1.setIsItWriter(true);
 			response1.setHasAlreadyVoted(false);
 			response1.setCreatedAt(LocalDateTime.now());
@@ -96,6 +98,7 @@ public class AnswerStubData {
 			response2.setMemberId(2L);
 			response2.setContent("답변2");
 			response2.setVoteCount(0);
+			response1.setAccepted(false);
 			response2.setIsItWriter(true);
 			response2.setHasAlreadyVoted(false);
 			response2.setCreatedAt(LocalDateTime.now());
