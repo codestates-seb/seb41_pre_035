@@ -180,7 +180,7 @@ class QuestionControllerRestDocsTest {
 
 		// when
 		ResultActions actions = mvc.perform(
-			get("/questions/tags/{tag-name}", "java")
+			get("/questions/tagged/{tag-name}", "java")
 				.param("page", "1")
 				.param("size", "5")
 				.param("sort", "POPULAR")
@@ -266,7 +266,7 @@ class QuestionControllerRestDocsTest {
 			);
 	}
 
-	private ResponseFieldsSnippet getSingleResponseSnippet() {
+	public static ResponseFieldsSnippet getSingleResponseSnippet() {
 		return responseFields(
 			fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터")
 		).andWithPrefix("data.",
@@ -276,7 +276,8 @@ class QuestionControllerRestDocsTest {
 			fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수"),
 			fieldWithPath("voteCount").type(JsonFieldType.NUMBER).description("총 투표수"),
 			fieldWithPath("voteType").type(JsonFieldType.STRING).description("투표여부 [UP | DOWN | NONE]"),
-			fieldWithPath("isItWriter").type(JsonFieldType.BOOLEAN).description("작성자여부"),
+			fieldWithPath("isItWriter").type(JsonFieldType.BOOLEAN).description("작성자 여부"),
+			fieldWithPath("isBookmarked").type(JsonFieldType.BOOLEAN).description("북마크 여부"),
 			fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일자"),
 			fieldWithPath("lastModifiedAt").type(JsonFieldType.STRING).description("마지막 수정일자"),
 			fieldWithPath("writer").type(JsonFieldType.OBJECT).description("질문자의 정보"),
@@ -305,7 +306,7 @@ class QuestionControllerRestDocsTest {
 		);
 	}
 
-	private ResponseFieldsSnippet getMultiResponseSnippet() {
+	public static ResponseFieldsSnippet getMultiResponseSnippet() {
 		return responseFields(
 			fieldWithPath("data").type(JsonFieldType.ARRAY).description("질문 정보"),
 			fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보")
