@@ -25,14 +25,14 @@ public class QuestionVoteService {
 			return delete(member, question);
 
 		QuestionVote vote = voteRepository.findByMemberAndQuestion(member, question)
-			.orElseGet(() -> voteRepository.save(new QuestionVote(question, member, voteType)));
+			.orElse(voteRepository.save(new QuestionVote(question, member, voteType)));
 
 		vote.modify(voteType);
 
 		return getVoteCount(question.getQuestionId());
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public int getVoteCount(long questionId) {
 		return voteRepository.getTypesByQuestion(questionId)
 			.stream()

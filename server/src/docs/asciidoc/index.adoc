@@ -87,24 +87,15 @@ include::{snippets}/question/get-all-by-tag/request-parameters.adoc[]
 .http-response
 include::{snippets}/question/get-all-by-tag/http-response.adoc[]
 
-== 질문 투표
-
-CAUTION: 동일한 타입으로 다시 투표할 경우 voteType이 None이어야 합니다.
-
+==== 질문 검색
 .http-request
-include::{snippets}/question-vote/patch/http-request.adoc[]
+include::{snippets}/question/search/http-request.adoc[]
 
-.path-parameters
-include::{snippets}/question-vote/patch/path-parameters.adoc[]
-
-.request-fields
-include::{snippets}/question-vote/patch/request-fields.adoc[]
+.request-parameters
+include::{snippets}/question/search/request-parameters.adoc[]
 
 .http-response
-include::{snippets}/question-vote/patch/http-response.adoc[]
-
-.response-fields
-include::{snippets}/question-vote/patch/response-fields.adoc[]
+include::{snippets}/question/search/http-response.adoc[]
 
 == 질문 댓글
 === 댓글 등록
@@ -167,6 +158,60 @@ include::{snippets}/question-comments/get-all/http-response.adoc[]
 
 .request-fields
 include::{snippets}/question-comments/get-all/response-fields.adoc[]
+
+== 질문 투표
+
+CAUTION: 동일한 타입으로 다시 투표할 경우 voteType이 None이어야 합니다.
+
+.http-request
+include::{snippets}/question-vote/patch/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/question-vote/patch/path-parameters.adoc[]
+
+.request-fields
+include::{snippets}/question-vote/patch/request-fields.adoc[]
+
+.http-response
+include::{snippets}/question-vote/patch/http-response.adoc[]
+
+.response-fields
+include::{snippets}/question-vote/patch/response-fields.adoc[]
+
+== 질문 북마크
+=== 북마킹 및 북마크 취소
+.http-request
+include::{snippets}/bookmark/post/http-request.adoc[]
+
+.http-response
+include::{snippets}/bookmark/post/http-response.adoc[]
+
+CAUTION: 북마킹이 취소되면 다음과 같은 HTTP STATUS를 반환합니다. (북마킹됨: CREATED, 취소됨: NO-CONTENT)
+
+.path-parameters
+include::{snippets}/bookmark/post/path-parameters.adoc[]
+
+.request-headers
+include::{snippets}/bookmark/post/request-headers.adoc[]
+
+.request-parameters
+include::{snippets}/bookmark/post/request-parameters.adoc[]
+
+=== 회원 북마크 조회
+.http-request
+include::{snippets}/bookmark/getAll/http-request.adoc[]
+
+.request-headers
+include::{snippets}/bookmark/getAll/request-headers.adoc[]
+
+.request-parameters
+include::{snippets}/bookmark/getAll/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/bookmark/getAll/http-response.adoc[]
+
+.response-fields
+include::{snippets}/bookmark/getAll/response-fields.adoc[]
 
 == 태그
 === 공통 응답 필드

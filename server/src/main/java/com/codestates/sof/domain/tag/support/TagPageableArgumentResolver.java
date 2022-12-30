@@ -21,7 +21,7 @@ public class TagPageableArgumentResolver extends PageableHandlerMethodargumentRe
 
 	private TagSortingType getSortingType(String sortString) {
 		try {
-			return TagSortingType.valueOf(sortString);
+			return TagSortingType.valueOf(sortString.toUpperCase());
 		} catch (Exception ignore) {
 			return TagSortingType.getDefaultSortingType();
 		}

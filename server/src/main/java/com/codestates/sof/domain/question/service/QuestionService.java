@@ -62,6 +62,19 @@ public class QuestionService {
 		}
 	}
 
+	public Page<Question> search(String query, QuestionPageRequest pageRequest) {
+		switch (pageRequest.getSortType()) {
+			case NEWEST:
+				return questionRepository.findAllByTitleOrContentLike(query, pageRequest.of());
+			case UNACCEPTED:
+				return questionRepository.findAllByHasAcceptedAnswerIsFalseAndTitleOrContent(query, pageRequest.of());
+			case UNANSWERED:
+				return questionRepository.findAllByAnswersIsEmptyAndTitleOrContentLike(query, pageRequest.of());
+			default:
+				throw new RuntimeException("Unexpected exception occurred.");
+		}
+	}
+
 	public Question findByIdWithoutIncreasingViewCount(Long questionId) {
 		return findExistsQuestion(questionId);
 	}

@@ -21,7 +21,7 @@ public class QuestionPageableArgumentResolver extends PageableHandlerMethodargum
 
 	private QuestionSortingType getSortingType(String sortString) {
 		try {
-			return QuestionSortingType.valueOf(sortString);
+			return QuestionSortingType.valueOf(sortString.toUpperCase());
 		} catch (Exception ignore) {
 			return QuestionSortingType.getDefaultSortingType();
 		}

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codestates.sof.domain.member.entity.Member;
@@ -41,6 +42,8 @@ import lombok.extern.slf4j.Slf4j;
 public class QuestionController {
 	private final QuestionService questionService;
 	private final QuestionMapper mapper;
+
+	// *** Command ***
 
 	@PostMapping
 	public ResponseEntity<SingleResponseDto<QuestionResponseDto.Response>> post(
@@ -87,26 +90,40 @@ public class QuestionController {
 		return ResponseEntity.ok(new SingleResponseDto<>(response));
 	}
 
+	// *** Query ***
+
 	@GetMapping
-	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAll(
+	public ResponseEntity<?> getAll(
 		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
 		QuestionPageRequest pageRequest
 	) {
-		Page<Question> page = questionService.findAll(pageRequest);
-		List<QuestionResponseDto.SimpleResponse> responses = mapper.questionsToResponses(page, member);
-
-		return new ResponseEntity<>(new MultiResponseDto<>(responses, page), HttpStatus.OK);
+		return getMultiResponseEntity(member, questionService.findAll(pageRequest));
 	}
 
-	@GetMapping("/tags/{tag-name}")
-	public ResponseEntity<MultiResponseDto<QuestionResponseDto.SimpleResponse>> getAllByTag(
+	@GetMapping("/tagged/{tag-name}")
+	public ResponseEntity<?> getAllByTag(
 		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
 		@PathVariable("tag-name") String tagName,
 		QuestionPageRequest pageRequest
 	) {
-		Page<Question> page = questionService.findAllByTag(tagName, pageRequest);
-		List<QuestionResponseDto.SimpleResponse> responses = mapper.questionsToResponses(page, member);
+		return getMultiResponseEntity(member, questionService.findAllByTag(tagName, pageRequest));
+	}
 
-		return new ResponseEntity<>(new MultiResponseDto<>(responses, page), HttpStatus.OK);
+	@GetMapping("search")
+	public ResponseEntity<?> searchByQuery(
+		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
+		@RequestParam(name = "q") String query,
+		QuestionPageRequest pageRequest
+	) {
+		return getMultiResponseEntity(member, questionService.search(query, pageRequest));
+	}
+
+	private ResponseEntity<?> getMultiResponseEntity(Member member, Page<Question> page) {
+		if (page.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			List<QuestionResponseDto.SimpleResponse> responses = mapper.questionsToResponses(page, member);
+			return new ResponseEntity<>(new MultiResponseDto<>(responses, page), HttpStatus.OK);
+		}
 	}
 }
