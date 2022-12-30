@@ -426,6 +426,10 @@ include::{snippets}/logout/http-request.adoc[]
 .http-response
 include::{snippets}/logout/http-response.adoc[]
 
+.response-fields
+include::{snippets}/logout/response-fields.adoc[]
+
+
 === 비밀번호 분실
 
 .curl-request
@@ -439,6 +443,10 @@ include::{snippets}/forget-password/request-fields.adoc[]
 
 .http-response
 include::{snippets}/forget-password/http-response.adoc[]
+
+.response-fields
+include::{snippets}/forget-password/response-fields.adoc[]
+
 
 == 회원
 
