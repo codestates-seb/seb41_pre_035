@@ -1,4 +1,4 @@
-package com.codestates.sof.domain.question.controller;
+package com.codestates.sof.domain.question.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 @AutoConfigureMockMvc
 @ActiveProfiles("local")
 @DisplayName("질문 댓글 기능 테스트")
-public class QuestionCommentContollerIntegrationTest {
+public class QuestionCommentServiceTest {
 	@Nested
 	@DisplayName("댓글 등록")
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)

@@ -84,6 +84,16 @@ class QuestionServiceTest {
 		}
 
 		@Test
+		void 회원이_질문을_작성한다() {
+
+		}
+
+		@Test
+		void 비회원이면_실패한다() {
+
+		}
+
+		@Test
 		void 질문을_작성하면_태그수가_1_증가한다() throws Exception {
 		}
 
