@@ -35,7 +35,7 @@ public class AuthController {
 		return authService.verifyAccount(token);
 	}
 
-	@GetMapping("/password")
+	@PostMapping("/password")
 	public ResponseEntity<?> forgetPassword(@RequestBody Map<String, String> map) {
 		String email = map.get("email");
 
