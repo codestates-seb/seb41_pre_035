@@ -42,7 +42,8 @@ public class QuestionResponseDto {
 		private String content;
 		private int viewCount;
 		private int voteCount;
-		private Boolean isItWriter;
+		private boolean isBookmarked;
+		private boolean isItWriter;
 		private VoteType voteType;
 		private LocalDateTime createdAt;
 		private LocalDateTime lastModifiedAt;

@@ -161,7 +161,7 @@ public class AuthControllerRestDocsTest {
 			post("/auth/logout"));
 
 		// then
-		actions.andExpect(status().isNoContent())
+		actions.andExpect(status().isAccepted())
 			.andDo(document("logout",
 				getRequestPreProcessor(),
 				getResponsePreProcessor()

@@ -1,7 +1,5 @@
 package com.codestates.sof.global.config;
 
-import static org.springframework.security.config.Customizer.*;
-
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -44,7 +42,8 @@ public class SecurityConfig {
 		httpSecurity.headers().frameOptions().sameOrigin()
 			.and()
 			.csrf().disable()
-			.cors(withDefaults())
+			.cors()
+			.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.formLogin().disable()
@@ -59,6 +58,8 @@ public class SecurityConfig {
 				.antMatchers("/docs/index.html").permitAll()
 				.antMatchers("/auth/**", "/h2/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/members").permitAll()
+				.antMatchers(HttpMethod.GET, "/tags", "/questions").permitAll()
+				.antMatchers(HttpMethod.GET, "/tags/**", "/questions/**").permitAll()
 				.anyRequest().authenticated());  // TODO : 도메인 권한 설정 무조건 필요합니다!
 
 		return httpSecurity.build();
@@ -74,8 +75,9 @@ public class SecurityConfig {
 		CorsConfiguration configuration = new CorsConfiguration();
 
 		// TODO : CORS 도메인 설정이 필요합니다.
-		configuration.setAllowedOrigins(List.of("*"));
-		configuration.setAllowedMethods(List.of("POST", "GET", "PATCH", "DELETE", "OPTIONS"));
+		configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://localhost:3000"));
+		configuration.setAllowedMethods(List.of("POST", "GET", "PATCH", "DELETE", "OPTIONS", "HEAD"));
+		configuration.setAllowedHeaders(List.of("*"));
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);

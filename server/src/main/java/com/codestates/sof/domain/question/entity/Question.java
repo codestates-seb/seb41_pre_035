@@ -70,6 +70,9 @@ public class Question extends BaseEntity {
 	@Getter(value = AccessLevel.NONE)
 	private boolean hasAlreadyVoted;
 
+	@Transient
+	private boolean isBookmarked;
+
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 	private List<Answer> answers = new ArrayList<>();
 
@@ -81,6 +84,9 @@ public class Question extends BaseEntity {
 
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<QuestionVote> votes = new ArrayList<>();
+
+	@OneToMany(mappedBy = "question")
+	private List<Bookmark> bookmarks = new ArrayList<>();
 
 	public Question(Member writer, String title, String content) {
 		this(writer, title, content, new ArrayList<>());
@@ -199,6 +205,10 @@ public class Question extends BaseEntity {
 
 	public void acceptAnswer() {
 		this.hasAcceptedAnswer = true;
+	}
+
+	public boolean isBookmarked(Member member) {
+		return bookmarks.stream().anyMatch(bookmark -> bookmark.getMember().getMemberId() == member.getMemberId());
 	}
 
 	@Override
