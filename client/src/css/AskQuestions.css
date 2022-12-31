@@ -1,14 +1,10 @@
 .qContent {
   padding: 80px 24px 24px;
-  margin-left: 180px;
-  margin-right: 200px;
+  max-width: 1900px;
 }
 
-.qContent > div {
-  margin-bottom: 10px;
-}
 .bigTitle {
-  height: 130px;
+  height: 100px;
   position: relative;
 }
 .postTitle {
@@ -34,7 +30,8 @@
 }
 
 .dWidth {
-  width: 830px;
+  width: 850px;
+  margin-bottom: 10px;
 }
 
 .bigTitle h1 {
@@ -53,6 +50,7 @@
   border: 1px solid hsl(206, 93%, 83.5%);
   background-color: #ebf4fb;
   border-radius: 1%;
+  margin-bottom: 10px;
 }
 
 .notice h2 {
@@ -81,10 +79,10 @@
 }
 
 .psAbsolute {
-  padding: 12px;
   width: 330px;
   height: auto;
   margin-left: 10px;
+  box-shadow: 2px 2px 2px 2px rgb(219, 218, 218);
 }
 .psAbsolute p {
   overflow-wrap: normal;
@@ -95,9 +93,14 @@
   float: left;
   margin: 10px 20px 20px 0px;
 }
+.fsBody {
+  border-bottom: 1px solid rgb(196, 195, 195);
+}
 
 .fsBody p {
+  padding: 12px;
   font-size: 14.3px;
+  margin-bottom: 7px;
 }
 
 .bgWhite {
@@ -116,10 +119,13 @@
   color: #c22e32;
 }
 
-.flexItem {
-  float: left;
-}
-
 .formSubmit {
   width: 900px;
+}
+.dFelx {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.dFelx > div {
 }

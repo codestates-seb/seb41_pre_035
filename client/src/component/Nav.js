@@ -15,7 +15,7 @@ const Nav = () => {
               <li>PUBLIC</li>
               <ul className="navSubMenu">
                 <li className="navMenuHover">
-                  <Link to="/questions">
+                  <Link to="/">
                     <i className="fa-solid fa-earth-americas"></i> Questions　　　　　
                   </Link>
                 </li>

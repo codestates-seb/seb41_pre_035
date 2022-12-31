@@ -1,3 +1,9 @@
+.qContent {
+  margin-left: 220px;
+  margin-right: 30px;
+  max-width: 950px;
+}
+
 .fsHeadLine {
   display: flex;
 }

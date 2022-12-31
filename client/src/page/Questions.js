@@ -46,63 +46,65 @@ function Questions() {
   }, []);
 
   return (
-    <div className="qContent">
+    <>
       <Nav />
-      <div className="fsHeadLine">
-        <h1>All Questions</h1>
-        <button className="btn" onClick={handleClick}>
-          Ask Quesitons
-        </button>
-      </div>
-      <div className="qTopBar">
-        <p>{questions.length} questions</p>
-        <div className="filterBtns">
-          <button className="sBtn" onClick={() => setOrder("NEWEST")}>
-            Newest
+      <div className="qContent">
+        <div className="fsHeadLine">
+          <h1>All Questions</h1>
+          <button className="btn" onClick={handleClick}>
+            Ask Quesitons
           </button>
-          <button className="sBtn" onClick={() => setOrder("ACTIVE")}>
-            Active
-          </button>
-          <button className="sBtn" onClick={() => setOrder("BOUNTIED")}>
-            Bountied
-          </button>
-          <button className="sBtn" onClick={() => setOrder("UNANSWERED")}>
-            Unanswered
-          </button>
-          <button className="sBtn">More</button>
         </div>
-        <button className="sBtn filterBtn" onClick={() => setFilterMenu(!filterMenu)}>
-          Filter
-        </button>
-      </div>
-      {filterMenu && <filterMenu />}
-      {questions.map((el, idx) => (
-        <li key={idx} className="qListItem">
-          <QuestionItem questionItem={el} />
-        </li>
-      ))}
-      <div className="pageNums">
-        <button className="pageBtn" onClick={() => setPage(1)}>
-          1
-        </button>
-        <button className="pageBtn" onClick={() => setPage(2)}>
-          2
-        </button>
-        <button className="pageBtn" onClick={() => setPage(3)}>
-          3
-        </button>
-        <button className="pageBtn" onClick={() => setPage(4)}>
-          4
-        </button>
-        <button className="pageBtn" onClick={() => setPage(5)}>
-          5
-        </button>
-        <button className="pageBtn" onClick={() => setPage(page + 1)}>
-          Next
-        </button>
+        <div className="qTopBar">
+          <p>{questions.length} questions</p>
+          <div className="filterBtns">
+            <button className="sBtn" onClick={() => setOrder("NEWEST")}>
+              Newest
+            </button>
+            <button className="sBtn" onClick={() => setOrder("ACTIVE")}>
+              Active
+            </button>
+            <button className="sBtn" onClick={() => setOrder("BOUNTIED")}>
+              Bountied
+            </button>
+            <button className="sBtn" onClick={() => setOrder("UNANSWERED")}>
+              Unanswered
+            </button>
+            <button className="sBtn">More</button>
+          </div>
+          <button className="sBtn filterBtn" onClick={() => setFilterMenu(!filterMenu)}>
+            Filter
+          </button>
+        </div>
+        {filterMenu && <filterMenu />}
+        {questions.map((el, idx) => (
+          <li key={idx} className="qListItem">
+            <QuestionItem questionItem={el} />
+          </li>
+        ))}
+        <div className="pageNums">
+          <button className="pageBtn" onClick={() => setPage(1)}>
+            1
+          </button>
+          <button className="pageBtn" onClick={() => setPage(2)}>
+            2
+          </button>
+          <button className="pageBtn" onClick={() => setPage(3)}>
+            3
+          </button>
+          <button className="pageBtn" onClick={() => setPage(4)}>
+            4
+          </button>
+          <button className="pageBtn" onClick={() => setPage(5)}>
+            5
+          </button>
+          <button className="pageBtn" onClick={() => setPage(page + 1)}>
+            Next
+          </button>
+        </div>
       </div>
       <Sidebar />
-    </div>
+    </>
   );
 }
 

@@ -35,8 +35,8 @@ function QuestionPage() {
       })
       .then((res) => {
         if (res.status === 200) {
-          setQuestion(res.data);
           console.log(res.data);
+          setQuestion(res.data);
         }
       })
       .catch((err) => {
