@@ -23,7 +23,7 @@ function Questions() {
   const token = localStorage.getItem("accessToken");
 
   const handleClick = () => {
-    navigate("/questions");
+    navigate("/askquestions");
   };
 
   const handleLoad = async (page) => {

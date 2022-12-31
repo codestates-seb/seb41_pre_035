@@ -26,7 +26,8 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Questions />} />
-        <Route path="/questions" element={<AskQuestions />} />
+        <Route path="/questions" element={<Questions />} />
+        <Route path="/askquestions" element={<AskQuestions />} />
         <Route path="/questions/:questionId" element={<QuestionPage />} />
         <Route path="/login" element={<Login setRefreshToken={setRefreshToken} />} />
         <Route path="/recovery" element={<Recovery />} />

@@ -119,6 +119,7 @@ function AskQuestions() {
 
   const handleQuestionSubmit = (e) => {
     e.preventDefault();
+    console.log(token);
     axios
       .post(`${BASE_URL}questions`, questionBody, {
         headers: { "Content-Type": "application/json", Authorization: token },
@@ -136,7 +137,7 @@ function AskQuestions() {
   };
 
   return (
-    <div className="qContent">
+    <div className="aqContent">
       <div className="bigTitle">
         <h1>Ask a public question</h1>
       </div>
