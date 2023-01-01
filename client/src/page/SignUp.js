@@ -137,7 +137,7 @@ const SignUp = () => {
         }
       })
       .catch((err) => {
-        if (err.response.status === 40901) {
+        if (err.response.status === 409) {
           alert("이미 등록된 계정입니다.");
           nickReset();
           emailReset();

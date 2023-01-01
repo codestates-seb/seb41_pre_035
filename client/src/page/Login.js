@@ -95,17 +95,11 @@ const Login = ({ setRefreshToken }) => {
         loginEmailReset();
         loginPasswordReset();
         navigate("/");
-        console.log(res);
-        console.log(res.headers);
         console.log("로그인에 성공했습니다.");
       })
       .catch((err) => {
-        console.log(err.response);
-        if (err.response.status === 401) {
-          setLoginError(true);
-        }
+        setLoginError(true);
         console.log(err);
-        console.log(err.response);
         console.log("로그인에 실패했습니다.");
       });
   };
