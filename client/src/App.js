@@ -1,6 +1,6 @@
 import { Route, Routes, useParams } from "react-router-dom";
-
 import Header from "./component/Header";
+import Nav from "./component/Nav";
 import HeaderMenumodal from "./component/HeaderMenumodal";
 import Login from "./page/Login";
 import Recovery from "./page/Recovery";
@@ -21,7 +21,7 @@ function App() {
     <div className="App">
       <Header />
       {/* <HeaderMenumodal /> */}
-
+      <Nav />
       <Routes>
         <Route path="/" element={<Questions />} />
         <Route path="/questions" element={<AskQuestions />} />

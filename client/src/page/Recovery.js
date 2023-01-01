@@ -39,7 +39,6 @@ const Recovery = () => {
   };
 
   // * 제출시 실행하는 이벤트 함수
-  // ! 버튼 클릭 시 서버로 요청가도록 해야 함
   const handleReEmailBtn = (e) => {
     e.preventDefault();
 
@@ -51,14 +50,14 @@ const Recovery = () => {
     }
   };
 
-  // !! 서버로 비밀번호 초기화 요청을 보내는 함수 (get -> post로 바꿔주신다고 함)
+  // * 서버로 비밀번호 초기화 요청을 보내는 함수
   const postRecovery = () => {
     const Data = JSON.stringify({
       email: reEmail,
     });
 
     return axios
-      .get(`${url}/auth/password`, Data, {
+      .post(`${url}/auth/password`, Data, {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
