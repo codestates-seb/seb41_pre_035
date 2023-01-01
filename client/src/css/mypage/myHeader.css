@@ -1,0 +1,36 @@
+.myHeader {
+  display: flex;
+}
+.myHeaderImg > img {
+  width: 130px;
+  height: 130px;
+  background-color: #eee;
+  border: solid 1px #d1d1d1;
+}
+.myHeaderInfo {
+  padding-left: 20px;
+  padding-top: 30px;
+}
+.myHeaderInfoName {
+  font-size: 30px;
+  padding-bottom: 15px;
+}
+.myHeaderInfoDate {
+  display: flex;
+}
+.myHeaderInfoDate > p {
+  padding: 5px;
+  font-size: 13px;
+  color: #898e93;
+}
+.myHeaderEditBtn {
+  background-color: #fff;
+  color: #6b747d;
+  border: solid 1px #898e93;
+  padding: 8px 10px;
+  font-size: 13px;
+  margin-left: 33vw;
+}
+i {
+  font-size: 14px;
+}

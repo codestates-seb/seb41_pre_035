@@ -1,0 +1,62 @@
+.editProfile {
+  margin-bottom: 50px;
+}
+.editProfileTitle {
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+.editProfileSubTitle {
+  font-size: 18px;
+  margin: 20px 0 10px 0;
+}
+.editProfileItem {
+  padding: 5px 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+.editProfileLinks {
+  border: solid 2px #eeeff0;
+  border-radius: 5px;
+}
+.editProfileLinksIn {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+}
+.editProfileInfo {
+  border: solid 2px #eeeff0;
+  border-radius: 5px;
+}
+.editProfileInfoIn {
+  padding: 20px;
+}
+.editProfileImg > img {
+  width: 130px;
+  height: 130px;
+}
+.editProfileBtns > button {
+  font-size: 13px;
+  padding: 9px 10px;
+  margin: 0 2px;
+}
+.editProfileSave {
+  background-color: #0a95ff;
+  color: #dbf0ff;
+  border: solid 1px #0a95ff;
+  border-radius: 3px;
+}
+.editProfileSave:hover {
+  background-color: #0074cc;
+  cursor: pointer;
+}
+.editProfileCancel {
+  background-color: #e1ecf4;
+  color: #335b99;
+  border: solid 1px #82acca;
+  border-radius: 3px;
+}
+.editProfileCancel:hover {
+  background-color: #a5c6de;
+  cursor: pointer;
+}

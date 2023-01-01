@@ -1,0 +1,16 @@
+.usersContainer {
+  margin: 80px 50px 50px 210px;
+  width: 70vw;
+}
+.usersTitle {
+  font-size: 30px;
+}
+.usersSearch > input {
+  padding: 5px 10px;
+  margin: 30px 0 40px 0;
+}
+.usersBoard {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

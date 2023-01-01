@@ -92,6 +92,7 @@ header {
 }
 .headerSignupBtn:hover {
   background-color: #0074cc;
+  cursor: pointer;
 }
 
 /* ---------------------Header (login O)--------------------- */
