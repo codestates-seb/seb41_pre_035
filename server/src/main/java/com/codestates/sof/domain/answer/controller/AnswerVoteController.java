@@ -14,11 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codestates.sof.domain.answer.dto.AnswerVoteDto;
-import com.codestates.sof.domain.answer.entity.AnswerVote;
-import com.codestates.sof.domain.answer.mapper.AnswerVoteMapper;
-import com.codestates.sof.domain.answer.service.AnswerVoteService;
+import com.codestates.sof.domain.answer.service.AnswerService;
 import com.codestates.sof.domain.auth.dto.MemberDetails;
-import com.codestates.sof.global.dto.SingleResponseDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,12 +24,10 @@ import lombok.extern.slf4j.Slf4j;
 @Validated
 @Slf4j
 public class AnswerVoteController {
-	private final AnswerVoteService answerVoteService;
-	private final AnswerVoteMapper voteMapper;
+	private final AnswerService answerService;
 
-	public AnswerVoteController(AnswerVoteService answerVoteService, AnswerVoteMapper voteMapper) {
-		this.answerVoteService = answerVoteService;
-		this.voteMapper = voteMapper;
+	public AnswerVoteController(AnswerService answerService) {
+		this.answerService = answerService;
 	}
 
 	@PatchMapping
@@ -40,12 +35,8 @@ public class AnswerVoteController {
 		@RequestBody @Valid AnswerVoteDto.Patch requestBody,
 		@AuthenticationPrincipal MemberDetails memberDetails) {
 
-		AnswerVote answerVote =
-			answerVoteService.updateAnswerVote(
-				voteMapper.patchToAnswerVote(requestBody), memberDetails, answerId);
+		answerService.updateAnswerVote(requestBody, memberDetails, answerId);
 
-		AnswerVoteDto.Response response = voteMapper.answerVoteToResponse(answerVote);
-
-		return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
