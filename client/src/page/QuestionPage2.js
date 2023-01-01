@@ -9,10 +9,8 @@ import { userState } from "../recoil";
 import { useRecoilValue } from "recoil";
 import axios from "axios";
 import { formatDate } from "./QuestionItem";
-import questionList from "../data/QuestionList";
 import Nav from "../component/Nav";
 import Sidebar from "../component/Sidebar";
-const question = questionList.data;
 
 const BASE_URL = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/";
 const LIMIT = 15;
@@ -27,15 +25,51 @@ function QuestionPage() {
   const navigate = useNavigate();
   const [answer, setAnswer] = useState("");
   const [pop, setPop] = useState(true);
-  const [share, setShare] = useState(false);
-  const [follow, setFollow] = useState(false);
-  const [comment, setComment] = useState(false);
+  const [question, setQuestion] = useState([]);
+  const [comments, setComments] = useState([]);
 
   const user = useRecoilValue(userState); //로그인 유저 정보
   const token = localStorage.getItem("accessToken");
 
   const handleClick = () => {
     navigate("/askquestions");
+  };
+
+  useEffect(() => {
+    handleLoad(questionId);
+    handleLoadComments(questionId);
+  }, []);
+
+  const handleLoad = async (questionId) => {
+    await axios
+      .get(`${BASE_URL}questions/${questionId}`, {
+        headers: { "Content-Type": "application/json", Authorization: token },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res.data);
+          setQuestion(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
+  const handleLoadComments = async (questionId) => {
+    await axios
+      .get(`${BASE_URL}questions/${questionId}?page=1&size=${LIMIT}`, {
+        headers: { "Content-Type": "application/json", Authorization: token },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res.data);
+          setComments(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
 
   const AnswerBody = JSON.stringify({
@@ -83,15 +117,12 @@ function QuestionPage() {
         console.log(err.response);
       });
   };
-  const handleEdit = () => {
-    navigate(`/questions/${questionId}/edit`);
-  };
 
   return (
     <>
       <Nav />
       <div className="qContent">
-        <div className="fsHeadLine">
+        <div className="qHeader">
           <h1>{question.title}</h1>
           <button className="btn" onClick={handleClick}>
             Ask Quesitons
@@ -113,36 +144,17 @@ function QuestionPage() {
             <p>{question.content}</p>
           </div>
         </div>
-        <div className="qEdit">
-          <p onClick={() => setShare(!share)}>Share</p>
-          <p onClick={handleEdit}>Edit</p>
-          {follow ? <p onClick={() => setFollow(!follow)}>Following</p> : <p onClick={() => setFollow(!follow)}>Follow</p>}
+
+        <div className="qComments">
+          {comments.map((el) => (
+            <div className="=qComment">
+              <p>{el.content}</p>
+              <p>
+                {el.memberName} {formatDate(el.lastModifiedAt, el.createdAt)} ago
+              </p>
+            </div>
+          ))}
         </div>
-        {share && (
-          <div className="sharePopup">
-            <p>Share a link to this question (Includes your user id)</p>
-            <input value={`${BASE_URL}questions/${questionId}`}></input>
-            <p>Copy link</p>
-          </div>
-        )}
-        <p className="cadd" onClick={() => setComment(!comment)}>
-          Add a comment
-        </p>
-        {comment && (
-          <div className="addcomments questionBorder">
-            <input className="titleInput"></input>
-          </div>
-        )}
-        {/*<div className="qComments">
-        {comments.map((el) => (
-          <div className="=qComment">
-            <p>{el.content}</p>
-            <p>
-              {el.memberName} {formatDate(el.lastModifiedAt, el.createdAt)} ago
-            </p>
-          </div>
-        ))}
-        </div>*/}
         <div className="qanswers">
           {question.answers.map((el) => (
             <div className="qanswer">
@@ -160,7 +172,6 @@ function QuestionPage() {
             </div>
           ))}
         </div>
-        <p>Know someone who can answer? Share a link to this question via email, Twitter, or Facebook.</p>
         <div className="yourAnswer">
           <h2>Your Answer</h2>
           <MDEditor value={answer} onChange={setAnswer} />
@@ -195,4 +206,4 @@ function QuestionPage() {
   );
 }
 
-export { QuestionPage, qformatDate };
+export default QuestionPage;

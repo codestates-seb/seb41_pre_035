@@ -5,17 +5,17 @@ import "../css/Tags.css";
 function formatDate(value1, value2) {
   const date1 = new Date(value1); //최근 수정한 날짜
   const date2 = new Date(value2); //생성한 날짜
-  if (date1.getFullYear() < date2.getFullYear()) return date2.getFullYear() - date1.getFullYear();
-  else if (date1.getMonth() < date2.getMonth()) return date2.getMonth() - date1.getMonth();
-  else if (date1.getDate() < date2.getDate()) return date2.getDate() - date1.getDate();
-  else if (date1.getTime() < date2.getTime()) return date2.getTime() - date1.getTime();
-  else if (date1.getSeconds() < date2.getSeconds()) return date2.getSeconds() - date1.getSeconds();
+  if (date1.getFullYear() < date2.getFullYear()) return `${date2.getFullYear() - date1.getFullYear()} years`;
+  else if (date1.getMonth() < date2.getMonth()) return `${date2.getMonth() - date1.getMonth()} months`;
+  else if (date1.getDate() < date2.getDate()) return `${date2.getDate() - date1.getDate()} days`;
+  else if (date1.getTime() < date2.getTime()) return `${date2.getTime() - date1.getTime()} hours`;
+  else if (date1.getMinutes() < date2.getMinutes()) return `${date2.getMinutes() - date1.getMinutes()} minutes`;
+  else if (date1.getSeconds() < date2.getSeconds()) return `${date2.getSeconds() - date1.getSeconds()} seconds`;
   else return 0;
 }
 
 function QuestionItem({ questionItem }) {
   const navigate = useNavigate();
-
   const handleTitleClick = () => {
     navigate(`/questions/${questionItem.questionId}`);
   };
@@ -41,7 +41,7 @@ function QuestionItem({ questionItem }) {
             ))}
           </div>
           <p>
-            {questionItem.writerName} modified {formatDate(questionItem.lastModifiedAt, questionItem.createdAt)} min ago
+            {questionItem.writerName} modified {formatDate(questionItem.lastModifiedAt, questionItem.createdAt)} ago
           </p>
         </div>
       </div>
@@ -49,4 +49,4 @@ function QuestionItem({ questionItem }) {
   );
 }
 
-export default QuestionItem;
+export { QuestionItem, formatDate };

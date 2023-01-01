@@ -1,7 +1,7 @@
 import "../css/Btn.css";
 import "../css/Questions.css";
 
-export default function filterMenu() {
+export default function FilterMenu() {
   return (
     <div className="filterMenu">
       <div className="menuOptions">

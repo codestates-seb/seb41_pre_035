@@ -11,8 +11,10 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "./recoil";
 import Questions from "./page/Questions";
+import QuestionEditPage from "./page/QuestionEditPage";
 import AskQuestions from "./page/AskQuestions";
-import QuestionPage from "./page/QuestionPage";
+import { QuestionPage } from "./page/QuestionPage";
+import QuestionPage2 from "./page/QuestionPage2";
 import TagsBoard from "./page/TagsBoard";
 import { useCookies } from "react-cookie";
 
@@ -29,6 +31,7 @@ function App() {
         <Route path="/questions" element={<Questions />} />
         <Route path="/askquestions" element={<AskQuestions />} />
         <Route path="/questions/:questionId" element={<QuestionPage />} />
+        <Route path="/questions/:questionId/edit" element={<QuestionEditPage />} />
         <Route path="/login" element={<Login setRefreshToken={setRefreshToken} />} />
         <Route path="/recovery" element={<Recovery />} />
         <Route path="/signup" element={<SignUp />} />

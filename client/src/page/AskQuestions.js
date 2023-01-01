@@ -231,7 +231,7 @@ function AskQuestions() {
         <div className="tagsOverlay dWidth flexItem questionBorder">
           <p>Tags</p>
           <p>Add up to 5 tags to describe what your question is about. Start typing to see suggestions.</p>
-          <div className="flexTagItem questionBorder">
+          <div className="flexTagItem tagBorder">
             <ul className="tagList">
               {tagList.map((el, idx) => (
                 <li key={idx} className="tag">
@@ -247,7 +247,7 @@ function AskQuestions() {
             <input className="tagInput" type="text" value={tag} ref={tagsInput} onChange={handleTitleTag}></input>
           </div>
           {tag && (
-            <div className="tagsAutoComplete questionBorder">
+            <div className="tagsAutoComplete tagBorder">
               {filterTags.map((el, idx) => (
                 <li key={idx} className="tag">
                   <span className="tagTitle" onClick={() => handleTagClick(el.title)}>
@@ -258,7 +258,6 @@ function AskQuestions() {
               ))}
             </div>
           )}
-
           {tagMax && <p className="warnReview">The maximum number of tags allowed is 5.</p>}
           <button className="btn" onClick={() => handleNextClick(3)}>
             Next

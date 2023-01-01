@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../css/Btn.css";
 import "../css/Questions.css";
-import QuestionItem from "./QuestionItem";
-import filterMenu from "../component/Menu";
+import { QuestionItem } from "./QuestionItem";
+import FilterMenu from "../component/Menu";
 import Nav from "../component/Nav";
 import Sidebar from "../component/Sidebar";
 
@@ -76,7 +76,7 @@ function Questions() {
             Filter
           </button>
         </div>
-        {filterMenu && <filterMenu />}
+        {filterMenu && <FilterMenu />}
         {questions.map((el, idx) => (
           <li key={idx} className="qListItem">
             <QuestionItem questionItem={el} />

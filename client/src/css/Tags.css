@@ -58,7 +58,7 @@
 .sTag {
   font-size: 12px;
   height: 22px;
-  cursor: default;
+  cursor: pointer;
 }
 .tagClose {
   display: block;
@@ -89,4 +89,10 @@
   font-size: 12px;
   margin: 2px 0px 6px;
   line-height: 15px;
+}
+
+.tagBorder {
+  border: 1px solid rgb(196, 195, 195);
+  border-radius: 1%;
+  width: 700px;
 }

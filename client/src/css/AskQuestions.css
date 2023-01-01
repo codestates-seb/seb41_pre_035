@@ -27,8 +27,8 @@
 
 .titleInput {
   padding: 7.8px 9.1px;
-  width: 634px;
-  border: 1px solid;
+  width: 700px;
+  border: 1px solid rgb(196, 195, 195);
   border-radius: 1%;
 }
 
@@ -128,7 +128,4 @@
 .dFelx {
   display: flex;
   flex-flow: row wrap;
-}
-
-.dFelx > div {
 }
