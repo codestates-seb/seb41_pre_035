@@ -410,9 +410,6 @@ include::{snippets}/patch-answer-vote/request-fields.adoc[]
 .http-response
 include::{snippets}/patch-answer-vote/http-response.adoc[]
 
-.response-fields
-include::{snippets}/patch-answer-vote/response-fields.adoc[]
-
 == 인증
 
 === 사용자 로그인
