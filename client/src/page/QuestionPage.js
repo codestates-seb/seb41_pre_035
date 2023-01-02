@@ -30,9 +30,16 @@ function QuestionPage() {
   const [share, setShare] = useState(false);
   const [follow, setFollow] = useState(false);
   const [comment, setComment] = useState(false);
+  const user = useRecoilValue(userState); //로그인 유저 정보
 
   const handleClick = () => {
-    navigate("/askquestions");
+    if (user === null) {
+      //로그인 되지 않은 경우
+      alert("로그인을 먼저 진행해주세요");
+    } else {
+      //로그인 된 경우
+      navigate("/askquestions");
+    }
   };
 
   const handleClear = () => {
