@@ -77,7 +77,11 @@ public class SecurityConfig {
 		CorsConfiguration configuration = new CorsConfiguration();
 
 		// TODO : CORS 도메인 설정이 필요합니다.
-		configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://localhost:3000"));
+		configuration.setAllowedOrigins(List.of(
+			"http://localhost:3000",
+			"https://localhost:3000",
+			"http://seb41-pre-035.s3-website.ap-northeast-2.amazonaws.com/",
+			"https://seb41-pre-035.s3-website.ap-northeast-2.amazonaws.com/"));
 		configuration.setAllowedMethods(List.of("POST", "GET", "PATCH", "DELETE", "OPTIONS", "HEAD"));
 		configuration.setAllowedHeaders(List.of("*"));
 		configuration.setExposedHeaders(List.of("Authorization", "Refresh"));  // https://ahndding.tistory.com/4
