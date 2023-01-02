@@ -116,8 +116,12 @@ public class QuestionController {
 	}
 
 	private Member getPrincipal() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return principal.getClass().isAssignableFrom(MemberDetails.class) ? (Member)principal : null;
+		try {
+			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			return principal.getClass().isAssignableFrom(MemberDetails.class) ? (Member)principal : null;
+		} catch (Exception ignore) {
+			return null;
+		}
 	}
 
 	private ResponseEntity<?> getMultiResponseEntity(Page<Question> page) {
