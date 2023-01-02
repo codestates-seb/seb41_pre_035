@@ -1,6 +1,0 @@
-aws:
-  paramstore:
-    enabled: true
-    prefix: /spring-boot-aws
-    name: seb41_pre_035 # 리소스 이름을 작성합니다.
-    profileSeparator: _
