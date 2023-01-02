@@ -21,7 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -136,7 +136,7 @@ class QuestionCommentContollerRestDocsTest {
 	void testForGetAll() throws Exception {
 		// given
 		QuestionComment temporalEntity = new QuestionComment(null, null, null);
-		Page<QuestionComment> page = new PageImpl<>(List.of(temporalEntity, temporalEntity), Pageable.ofSize(5), 10);
+		Page<QuestionComment> page = new PageImpl<>(List.of(temporalEntity, temporalEntity), PageRequest.of(1, 10), 10);
 		given(service.findAll(anyLong(), anyInt(), anyInt())).willReturn(page);
 		given(mapper.commentToSimpleResponse(any(QuestionComment.class))).willReturn(
 			QuestionCommentStub.getSimpleResponse());

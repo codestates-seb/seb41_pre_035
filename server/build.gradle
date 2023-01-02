@@ -1,9 +1,8 @@
 plugins {
-    id 'java'
-    id 'war'
-    id 'org.springframework.boot' version '2.7.6'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id "org.asciidoctor.jvm.convert" version "3.3.2"
+	id 'java'
+	id 'org.springframework.boot' version '2.7.6'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.codestates'
@@ -26,6 +25,7 @@ ext {
 }
 
 dependencies {
+	implementation group: 'io.awspring.cloud', name: 'spring-cloud-starter-aws-parameter-store-config'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -42,12 +42,12 @@ dependencies {
 	implementation 'org.apache.commons:commons-lang3'
 
 	// 인증 관련
-	 implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 //	 implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	 implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	 runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	 runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
-	 testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
@@ -68,25 +68,31 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-tasks.named('asciidoctor') {
-	configurations "asciidoctorExtensions"
-	inputs.dir snippetsDir
-	dependsOn test
-}
-
-task copyDocument(type: Copy) {
-	dependsOn asciidoctor
-	from file("${asciidoctor.outputDir}")
-	into file("src/main/resources/static/docs")
-}
-
-build {
-	dependsOn copyDocument
-}
-
-bootJar {
-	dependsOn copyDocument
-	from("${asciidoctor.outputDir}") {
-		into 'static/docs'
+dependencyManagement { // 블록 추가
+	imports {
+		mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:2.3.3"
 	}
 }
+
+//tasks.named('asciidoctor') {
+//	configurations "asciidoctorExtensions"
+//	inputs.dir snippetsDir
+//	dependsOn test
+//}
+
+//task copyDocument(type: Copy) {
+//	dependsOn asciidoctor
+//	from file("${asciidoctor.outputDir}")
+//	into file("src/main/resources/static/docs")
+//}
+
+//build {
+//	dependsOn copyDocument
+//}
+
+//bootJar {
+////	dependsOn copyDocument
+////	from("${asciidoctor.outputDir}") {
+////		into 'static/docs'
+//	}
+//}

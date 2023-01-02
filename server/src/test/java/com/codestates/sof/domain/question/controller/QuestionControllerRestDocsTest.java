@@ -21,7 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -138,7 +138,7 @@ class QuestionControllerRestDocsTest {
 	@Test
 	void testForGetAll() throws Exception {
 		// given
-		Page<Question> page = new PageImpl<>(List.of(question), Pageable.ofSize(5), 10);
+		Page<Question> page = new PageImpl<>(List.of(question), PageRequest.of(1, 10), 10);
 		given(service.findAll(any(QuestionPageRequest.class))).willReturn(page);
 		given(mapper.questionsToResponses(any(), any())).willReturn(List.of(simpleResponse));
 
@@ -174,7 +174,7 @@ class QuestionControllerRestDocsTest {
 	@Test
 	void testForGetAllByTags() throws Exception {
 		// given
-		Page<Question> page = new PageImpl<>(List.of(question), Pageable.ofSize(5), 10);
+		Page<Question> page = new PageImpl<>(List.of(question), PageRequest.of(1, 10), 10);
 		given(service.findAllByTag(anyString(), any(QuestionPageRequest.class))).willReturn(page);
 		given(mapper.questionsToResponses(any(), any())).willReturn(List.of(simpleResponse));
 
@@ -210,7 +210,7 @@ class QuestionControllerRestDocsTest {
 	@Test
 	void testForGetAllByQuery() throws Exception {
 		// given
-		Page<Question> page = new PageImpl<>(List.of(question), Pageable.ofSize(5), 10);
+		Page<Question> page = new PageImpl<>(List.of(question), PageRequest.of(1, 10), 10);
 		given(service.search(anyString(), any(QuestionPageRequest.class))).willReturn(page);
 		given(mapper.questionsToResponses(any(), any())).willReturn(List.of(simpleResponse));
 

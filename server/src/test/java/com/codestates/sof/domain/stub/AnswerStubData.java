@@ -171,22 +171,9 @@ public class AnswerStubData {
 
 		public static AnswerVoteDto.Patch getAnswerVotePatchDto() {
 			AnswerVoteDto.Patch patch = new AnswerVoteDto.Patch();
-			patch.setMemberId(1L);
 			patch.setVoteType(VoteType.UP);
 
 			return patch;
-		}
-
-		public static AnswerVoteDto.Response getAnswerVoteResponseDto() {
-			AnswerVoteDto.Response response = new AnswerVoteDto.Response();
-			response.setAnswerVoteId(1L);
-			response.setMemberId(1L);
-			response.setAnswerId(1L);
-			response.setVoteType(VoteType.UP);
-			response.setCreatedAt(LocalDateTime.now());
-			response.setLastModifiedAt(LocalDateTime.now());
-
-			return response;
 		}
 	}
 }
