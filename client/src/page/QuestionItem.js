@@ -19,7 +19,9 @@ function QuestionItem({ questionItem }) {
   const handleTitleClick = () => {
     navigate(`/questions/${questionItem.questionId}`);
   };
-
+  const handleTagClick = () => {
+    navigate(`/tags`);
+  };
   return (
     <div className="questionSummary">
       <div className="postSum qFlexItem">
@@ -34,15 +36,19 @@ function QuestionItem({ questionItem }) {
           </p>
           <p id="qPostCon">{questionItem.content}</p>
           <div className="tags">
-            {questionItem.tags.map((el, idx) => (
-              <li key={idx} className="tag">
-                <p className="tagTitle sTag">{el}</p>
+            {questionItem.tags.map((el) => (
+              <li key={el.tagId} className="tag">
+                <p className="tagTitle sTag" onClick={handleTagClick}>
+                  {el.name}
+                </p>
               </li>
             ))}
           </div>
-          <p>
-            {questionItem.writerName} modified {formatDate(questionItem.lastModifiedAt, questionItem.createdAt)} ago
-          </p>
+          <div className="modifiedDate">
+            <p>
+              {questionItem.writerName} modified {formatDate(questionItem.lastModifiedAt, questionItem.createdAt)} ago
+            </p>
+          </div>
         </div>
       </div>
     </div>

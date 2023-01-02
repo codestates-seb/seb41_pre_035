@@ -9,10 +9,9 @@ import { userState } from "../recoil";
 import { useRecoilValue } from "recoil";
 import axios from "axios";
 import { formatDate } from "./QuestionItem";
-import questionList from "../data/QuestionList";
+import questionData from "../data/Question";
 import Nav from "../component/Nav";
 import Sidebar from "../component/Sidebar";
-const question = questionList.data;
 
 const BASE_URL = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/";
 const LIMIT = 15;
@@ -24,6 +23,7 @@ function qformatDate(value) {
 
 function QuestionPage() {
   const { questionId } = useParams();
+  const question = questionData.data;
   const navigate = useNavigate();
   const [answer, setAnswer] = useState("");
   const [pop, setPop] = useState(true);
@@ -43,7 +43,9 @@ function QuestionPage() {
       alert("Cancel");
     }
   };
-
+  const handleTagClick = () => {
+    navigate(`/tags`);
+  };
   const handleEdit = () => {
     navigate(`/questions/${questionId}/edit`);
   };
@@ -72,12 +74,25 @@ function QuestionPage() {
           </div>
           <div className="postBody">
             <p>{question.content}</p>
+            <div className="tags">
+              {question.tags.map((el) => (
+                <li key={el.tagId} className="tag">
+                  <p onClick={handleTagClick} className="tagTitle sTag">
+                    {el.name}
+                  </p>
+                </li>
+              ))}
+            </div>
           </div>
         </div>
         <div className="qEdit">
           <p onClick={() => setShare(!share)}>Share</p>
           <p onClick={handleEdit}>Edit</p>
           {follow ? <p onClick={() => setFollow(!follow)}>Following</p> : <p onClick={() => setFollow(!follow)}>Follow</p>}
+          <div className="qMember">
+            <p>{question.writer.name}</p>
+            <p>{question.writer.email}</p>
+          </div>
         </div>
         {share && (
           <div className="sharePopup">
@@ -105,6 +120,7 @@ function QuestionPage() {
         ))}
         </div>*/}
         <div className="qanswers">
+          <h1>{question.answers.length} Answers</h1>
           {question.answers.map((el) => (
             <div className="qanswer">
               <div className="postLayout">
