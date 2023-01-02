@@ -24,10 +24,10 @@ public class EmailConfig {
 	@Value("${mail.smtp.port}")
 	private int port;
 
-	@Value("${mail.smtp.username}")
+	@Value("${EMAIL_USERNAME}")
 	private String username;
 
-	@Value("${mail.smtp.password}")
+	@Value("${EMAIL_PASSWORD}")
 	private String password;
 
 	@Value("${mail.smtp.auth}")
