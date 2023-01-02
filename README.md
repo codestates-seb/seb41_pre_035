@@ -75,16 +75,19 @@ java -jar -D"spring.profiles.active=local" ./build/libs/sof-0.0.1-SNAPSHOT.jar
 ### Back-end
 
 - Java
-- spring boot
-- spring security
-- spring data jpa
+- Spring boot
+- Spring security
+- Spring data jpa
 - Gradle
 - AWS EC2
+- Redis
 
 <br />
 <br />
 
 # 💙 **Documents**
+
+### [Project Wiki](https://github.com/codestates-seb/seb41_pre_035/wiki)
 
 ### [사용자 요구사항 정의서](https://docs.google.com/spreadsheets/d/1fHxvdWXrm-yhrpoC34_woi4y9siFwqJcNedgsgvXNB4/edit#gid=318180876)
 
