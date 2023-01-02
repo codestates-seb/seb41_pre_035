@@ -29,10 +29,12 @@
   box-shadow: 0 0 5px rgb(195, 195, 195);
   margin-bottom: 20px;
   width: 300px;
+  height: 95px;
 }
 .sideWatchedTags {
   box-shadow: 0 0 5px rgb(195, 195, 195);
   width: 300px;
+  height: 220px;
 }
 .sideFiltertagTitle {
   background-color: #f8f9f9;
@@ -41,10 +43,31 @@
   font-size: 15px;
 }
 .sideFiterContents {
-  height: 100px;
+  /* height: 100px; */
   padding: 15px;
 }
 .sideTagContents {
   height: 100px;
   padding: 15px;
+}
+.sideFiterContents {
+  color: #1d9fff;
+  cursor: pointer;
+}
+.sideTagContents {
+  text-align: center;
+  color: #89829f;
+}
+.sideTagContents > i {
+  font-size: 40px;
+  color: #6fc8ff;
+  padding: 5px 0 20px 0;
+}
+.sideTagContents > button {
+  margin-top: 20px;
+  padding: 8px;
+  color: #3292d7;
+  background-color: #e1ecf4;
+  border: solid 1px #90b6d0;
+  cursor: pointer;
 }

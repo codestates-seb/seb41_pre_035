@@ -40,7 +40,7 @@ function App() {
     <div className="App">
       <Header />
       {/* <HeaderMenumodal /> */}
-      {user ? <Nav /> : null}
+      {/* {user ? <Nav /> : null} */}
       <Routes>
         <Route path="/" element={<Questions />} />
         <Route path="/questions" element={<Questions />} />

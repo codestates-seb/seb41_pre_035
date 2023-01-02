@@ -10,11 +10,11 @@ import Footer from "../component/Footer";
 const User = () => {
   return (
     <div className="userContainer">
-      <Nav />
+      <Nav className="navPostion" />
       <MyHeader />
       <MyNav />
       <TabProfile />
-      <Footer />
+      {/* <Footer className="footerPostion" /> */}
     </div>
   );
 };

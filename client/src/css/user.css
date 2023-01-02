@@ -1,3 +1,7 @@
 .userContainer {
   margin: 80px 50px 50px 210px;
 }
+.footerPostion {
+  position: relative;
+  left: 0;
+}
