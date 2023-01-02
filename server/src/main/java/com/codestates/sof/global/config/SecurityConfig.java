@@ -54,7 +54,7 @@ public class SecurityConfig {
 			.apply(new CustomFilterConfigure())
 			.and()
 			.userDetailsService(detailsService)
-			.authorizeHttpRequests(a -> a
+			.authorizeRequests(a -> a
 				.antMatchers("/docs/index.html").permitAll()
 				.antMatchers("/auth/**", "/h2/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/members").permitAll()
