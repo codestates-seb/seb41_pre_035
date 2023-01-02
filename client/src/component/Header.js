@@ -6,8 +6,9 @@ import { userState } from "../recoil";
 import LogoutModal from "./LogoutModal";
 import Logo from "./Logo";
 import "../css/header.css";
+import { Link } from "react-router-dom";
 
-const Header = ({ removeRefreshToken }) => {
+const Header = ({ refreshToken, removeRefreshToken }) => {
   const navigate = useNavigate();
   const user = useRecoilValue(userState);
   const [on, setOn] = useState(false);
@@ -42,17 +43,19 @@ const Header = ({ removeRefreshToken }) => {
       {/* 유저 정보가 있다면 아이콘 메뉴로 / 유저 정보가 없다면 로그인 회원가입 버튼으로 */}
       {user ? (
         <div className="headerLink">
-          <div className="headerUserProfile">
-            <img src="/img/user.png" alt="" />
-            <p>1</p>
-          </div>
+          <Link to="/user/:userId">
+            <div className="headerUserProfile">
+              <img src={process.env.PUBLIC_URL + "/img/user.png"} alt="" />
+              <p>1</p>
+            </div>
+          </Link>
           <div className="headerUserInfo">
             <i className="fa-solid fa-inbox"></i>
             <i className="fa-solid fa-trophy"></i>
             <i className="fa-solid fa-circle-question"></i>
             <i className="fa-solid fa-snowflake"></i>
             <i className="fa-solid fa-right-from-bracket" onClick={() => setOn(!on)}></i>
-            {on ? <LogoutModal removeRefreshToken={removeRefreshToken} /> : null}
+            {on ? <LogoutModal /> : null}
           </div>
         </div>
       ) : (

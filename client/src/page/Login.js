@@ -13,6 +13,7 @@ import { useSetRecoilState } from "recoil";
 import { userState } from "../recoil";
 
 const Login = ({ setRefreshToken }) => {
+  const url = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080";
   const navigate = useNavigate();
 
   // * recoil 아톰 변경
@@ -80,7 +81,7 @@ const Login = ({ setRefreshToken }) => {
     });
 
     return axios
-      .post("/auth/login", loginData, {
+      .post(`${url}/auth/login`, loginData, {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
@@ -95,13 +96,10 @@ const Login = ({ setRefreshToken }) => {
         loginPasswordReset();
         navigate("/");
         console.log("로그인에 성공했습니다.");
-        console.log(res);
       })
       .catch((err) => {
-        console.log(err.response);
-        if (err.response.status === 401) {
-          setLoginError(true);
-        }
+        setLoginError(true);
+        console.log(err);
         console.log("로그인에 실패했습니다.");
       });
   };

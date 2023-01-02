@@ -14,6 +14,7 @@ import { emailState } from "../recoil";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const url = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080";
 
   // recoil
   const setEmail = useSetRecoilState(emailState);
@@ -121,7 +122,7 @@ const SignUp = () => {
     });
 
     return axios
-      .post("/members", signupData, {
+      .post(`${url}/members`, signupData, {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
@@ -131,6 +132,8 @@ const SignUp = () => {
           passwordReset();
           setEmail(email);
           navigate("/signupnotice");
+          console.log(res);
+          console.log("회원가입에 성공했습니다.");
         }
       })
       .catch((err) => {
@@ -141,6 +144,7 @@ const SignUp = () => {
           passwordReset();
         }
         console.log(err);
+        console.log(err.response);
         console.log("회원가입에 실패했습니다.");
       });
   };

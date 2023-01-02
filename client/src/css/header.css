@@ -51,10 +51,15 @@ header {
 /* 검색창 */
 .headerSearchInput {
   width: 40vw;
-  padding: 8px;
+  padding: 8px 8px 8px 30px;
 
   border: var(--border);
   border-radius: 4px;
+
+  background-image: url("../../public/img/search.svg");
+  background-position: 5px center;
+  background-size: 20px;
+  background-repeat: no-repeat;
 }
 .headerSearchInput:focus {
   border: var(--border-blue);
@@ -87,6 +92,7 @@ header {
 }
 .headerSignupBtn:hover {
   background-color: #0074cc;
+  cursor: pointer;
 }
 
 /* ---------------------Header (login O)--------------------- */

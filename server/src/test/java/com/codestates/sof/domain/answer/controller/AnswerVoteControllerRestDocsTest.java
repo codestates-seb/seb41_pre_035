@@ -1,6 +1,5 @@
 package com.codestates.sof.domain.answer.controller;
 
-import static com.codestates.sof.domain.answer.controller.AnswerFieldDescriptor.*;
 import static com.codestates.sof.domain.stub.AnswerStubData.MockAnswerVote.*;
 import static com.codestates.sof.global.utils.AsciiUtils.*;
 import static org.mockito.BDDMockito.*;
@@ -24,9 +23,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.codestates.sof.domain.answer.dto.AnswerVoteDto;
-import com.codestates.sof.domain.answer.entity.AnswerVote;
-import com.codestates.sof.domain.answer.mapper.AnswerVoteMapper;
-import com.codestates.sof.domain.answer.service.AnswerVoteService;
+import com.codestates.sof.domain.answer.entity.Answer;
+import com.codestates.sof.domain.answer.service.AnswerService;
 import com.google.gson.Gson;
 
 @AutoConfigureMockMvc(addFilters = false)
@@ -42,10 +40,7 @@ public class AnswerVoteControllerRestDocsTest {
 	private Gson gson;
 
 	@MockBean
-	private AnswerVoteService answerVoteService;
-
-	@MockBean
-	private AnswerVoteMapper voteMapper;
+	private AnswerService answerService;
 
 	@Test
 	public void patchAnswerVoteTest() throws Exception {
@@ -54,17 +49,13 @@ public class AnswerVoteControllerRestDocsTest {
 		AnswerVoteDto.Patch patch = getAnswerVotePatchDto();
 		String content = gson.toJson(patch);
 
-		AnswerVoteDto.Response response = getAnswerVoteResponseDto();
-
-		given(voteMapper.patchToAnswerVote(any(AnswerVoteDto.Patch.class))).willReturn(new AnswerVote());
-		given(answerVoteService.updateAnswerVote(any(AnswerVote.class), any(), anyLong())).willReturn(new AnswerVote());
-		given(voteMapper.answerVoteToResponse(any(AnswerVote.class))).willReturn(response);
+		given(answerService.updateAnswerVote(any(AnswerVoteDto.Patch.class), any(), anyLong())).willReturn(
+			new Answer());
 
 		// when
 		ResultActions actions =
 			mockMvc.perform(
 				patch("/answers/{answer-id}/votes", answerId)
-					.accept(MediaType.APPLICATION_JSON)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(content)
 			);
@@ -72,8 +63,6 @@ public class AnswerVoteControllerRestDocsTest {
 		// then
 		actions
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.data.memberId").value(patch.getMemberId()))
-			.andExpect(jsonPath("$.data.voteType").value(patch.getVoteType().name()))
 			.andDo(document("patch-answer-vote",
 					getRequestPreProcessor(),
 					getResponsePreProcessor(),
@@ -81,12 +70,8 @@ public class AnswerVoteControllerRestDocsTest {
 						parameterWithName("answer-id").description("답변 id")
 					),
 					requestFields(
-						fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("작성자 id"),
 						fieldWithPath("voteType").type(JsonFieldType.STRING).description("투표 타입 [UP, DOWN, NONE]")
-					),
-					responseFields(
-						fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터")
-					).andWithPrefix("data.", answerVoteResponseFields)
+					)
 				)
 			);
 	}

@@ -1,19 +1,18 @@
-.qContent {
-  padding: 80px 24px 24px;
-  margin-left: 180px;
-  margin-right: 200px;
+.aqContent {
+  max-width: 1500px;
+  margin-top: 100px;
+  margin-left: 210px;
+  margin-right: 0px;
 }
 
-.qContent > div {
-  margin-bottom: 10px;
-}
 .bigTitle {
-  height: 130px;
+  height: 100px;
   position: relative;
 }
 .postTitle {
   padding: 24px;
 }
+
 .postTitle p:nth-child(1) {
   font-size: 15px;
   font-weight: bold;
@@ -28,13 +27,14 @@
 
 .titleInput {
   padding: 7.8px 9.1px;
-  width: 634px;
-  border: 1px solid;
+  width: 700px;
+  border: 1px solid rgb(196, 195, 195);
   border-radius: 1%;
 }
 
 .dWidth {
-  width: 800px;
+  width: 850px;
+  margin-bottom: 10px;
 }
 
 .bigTitle h1 {
@@ -53,6 +53,7 @@
   border: 1px solid hsl(206, 93%, 83.5%);
   background-color: #ebf4fb;
   border-radius: 1%;
+  margin-bottom: 10px;
 }
 
 .notice h2 {
@@ -81,10 +82,10 @@
 }
 
 .psAbsolute {
-  padding: 12px;
-  width: 300px;
+  width: 350px;
   height: auto;
   margin-left: 10px;
+  box-shadow: 0 0 5px rgb(195, 195, 195);
 }
 .psAbsolute p {
   overflow-wrap: normal;
@@ -95,9 +96,14 @@
   float: left;
   margin: 10px 20px 20px 0px;
 }
+.fsBody {
+  border-bottom: 1px solid rgb(196, 195, 195);
+}
 
 .fsBody p {
+  padding: 12px;
   font-size: 14.3px;
+  margin-bottom: 7px;
 }
 
 .bgWhite {
@@ -116,10 +122,10 @@
   color: #c22e32;
 }
 
-.flexItem {
-  float: left;
-}
-
 .formSubmit {
   width: 900px;
+}
+.dFelx {
+  display: flex;
+  flex-flow: row wrap;
 }

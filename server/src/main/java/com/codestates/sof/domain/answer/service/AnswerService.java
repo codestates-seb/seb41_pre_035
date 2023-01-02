@@ -10,8 +10,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codestates.sof.domain.answer.dto.AnswerVoteDto;
 import com.codestates.sof.domain.answer.entity.Answer;
+import com.codestates.sof.domain.answer.entity.AnswerVote;
 import com.codestates.sof.domain.answer.repository.AnswerRepository;
+import com.codestates.sof.domain.answer.repository.AnswerVoteRepository;
+import com.codestates.sof.domain.answer.support.AnswerSortingType;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.member.service.MemberService;
 import com.codestates.sof.domain.question.entity.Question;
@@ -23,12 +27,14 @@ import com.codestates.sof.global.error.exception.BusinessLogicException;
 @Service
 public class AnswerService {
 	private final AnswerRepository answerRepository;
+	private final AnswerVoteRepository answerVoteRepository;
 	private final MemberService memberService;
 	private final QuestionService questionService;
 
-	public AnswerService(AnswerRepository answerRepository, MemberService memberService,
-		QuestionService questionService) {
+	public AnswerService(AnswerRepository answerRepository, AnswerVoteRepository answerVoteRepository,
+		MemberService memberService, QuestionService questionService) {
 		this.answerRepository = answerRepository;
+		this.answerVoteRepository = answerVoteRepository;
 		this.memberService = memberService;
 		this.questionService = questionService;
 	}
@@ -58,9 +64,17 @@ public class AnswerService {
 		return answerRepository.save(findAnswer);
 	}
 
-	public Page<Answer> findAnswers(int page, int size) {
-		return answerRepository.findAll(PageRequest.of(page, size,
-			Sort.by("answerId").descending()));
+	public Page<Answer> findAnswers(int page, int size, AnswerSortingType sort) {
+		switch (sort) {
+			case HIGH_SCORE:
+				return answerRepository.findAll(PageRequest.of(page, size, Sort.by("voteCount").descending()));
+			case NEWEST:
+				return answerRepository.findAll(PageRequest.of(page, size, Sort.by("answerId").descending()));
+			case OLDEST:
+				return answerRepository.findAll(PageRequest.of(page, size, Sort.by("answerId").ascending()));
+			default:
+				throw new RuntimeException("Unexpected exception occurred.");
+		}
 	}
 
 	public void deleteAnswer(long answerId, Member member) {
@@ -68,6 +82,21 @@ public class AnswerService {
 		verifyExistMember(findAnswer, member.getMemberId());
 
 		answerRepository.delete(findAnswer);
+	}
+
+	@Transactional
+	public Answer updateAnswerVote(AnswerVoteDto.Patch patch, Member member, long answerId) {
+		Answer answer = findVerifiedAnswer(answerId);
+
+		Optional<AnswerVote> optionalVote = answerVoteRepository.findByMemberAndAnswer(member, answer);
+
+		AnswerVote vote = optionalVote.orElseGet(
+			() -> answerVoteRepository.save(new AnswerVote(answer, member, patch.getVoteType())));
+
+		vote.modify(patch.getVoteType());
+		answer.setVoteCount(getAnswerVoteCount(answer));
+
+		return answerRepository.save(answer);
 	}
 
 	public int getAnswerVoteCount(Answer answer) {
