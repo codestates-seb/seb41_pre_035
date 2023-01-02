@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 cd /home/ubuntu/build
-sudo nohup java -jar -Dspring.profiles.active=server sof-0.0.1-SNAPSHOT.jar > /dev/null 2> /dev/null < /dev/null &
+If [ ! -d ../logs ] ; then
+ sudo mkdir ../logs
+fI
+sudo nohup java -jar -Dspring.profiles.active=server sof-0.0.1-SNAPSHOT.jar >> ../logs 2>> ../logs << ../logs &
