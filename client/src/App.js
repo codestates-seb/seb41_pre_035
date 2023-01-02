@@ -20,12 +20,13 @@ import { useCookies } from "react-cookie";
 
 function App() {
   const [refreshToken, setRefreshToken, removeRefreshToken] = useCookies(["refreshToken"]);
+  const user = useRecoilValue(userState);
 
   return (
     <div className="App">
       <Header />
       {/* <HeaderMenumodal /> */}
-      <Nav />
+      {user ? <Nav /> : null}
       <Routes>
         <Route path="/" element={<Questions />} />
         <Route path="/questions" element={<Questions />} />
