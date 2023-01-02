@@ -2,28 +2,29 @@ import React, { useState, useEffect } from "react";
 import "../css/users.css";
 import Useritem from "../component/Useritem";
 import axios from "axios";
+import Nav from "../component/Nav";
 
 const Users = () => {
-  const [search, setSearch] = useState();
-  const [usersInfo, setusersInfo] = useState();
+  const [search, setSearch] = useState("");
+  const [usersInfo, setUsersInfo] = useState("");
 
   const searchUser = (e) => {
     const url = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080";
     const token = localStorage.getItem("accessToken");
 
-    if (e.key === "Enter") {
-      axios
-        .get(`${url}/members?page=1&size=15`, {
-          headers: {
-            Accept: "application/json",
-            Authorization: token,
-          },
-        })
-        .then((res) => {
-          let membersArr = res.data.data;
-          console.log(membersArr);
-        });
-    }
+    // if (e.key === "Enter") {
+    //   axios
+    //     .get(`${url}/members?page=1&size=15`, {
+    //       headers: {
+    //         Accept: "application/json",
+    //         Authorization: token,
+    //       },
+    //     })
+    //     .then((res) => {
+    //       let membersArr = res.data.data;
+    //       console.log(membersArr);
+    //     });
+    // }
   };
 
   useEffect(() => {
@@ -39,7 +40,8 @@ const Users = () => {
       })
       .then((res) => {
         let membersArr = res.data.data;
-        setusersInfo(membersArr);
+        console.log(membersArr);
+        setUsersInfo(membersArr);
       })
       .catch((err) => {
         console.log(err.response);
@@ -48,13 +50,14 @@ const Users = () => {
 
   return (
     <div className="usersContainer">
+      <Nav />
       <h2 className="usersTitle">Users</h2>
       <div className="usersSearch">
         <input type="search" className="searchBar" placeholder="Filter by user" onChange={(e) => setSearch(e.target.value)} value={search} onKeyDown={searchUser} />
       </div>
       <div className="usersBoard">
-        {/* {usersInfo.map((res) => {
-          return <Useritem data={res} />;
+        {/* {usersInfo.map((el, i) => {
+          return <div>{el[i].name}</div>;
         })} */}
         <Useritem />
         <Useritem />
