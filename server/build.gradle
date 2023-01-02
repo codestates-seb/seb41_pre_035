@@ -25,6 +25,7 @@ ext {
 }
 
 dependencies {
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config' // 추가
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -65,6 +66,12 @@ dependencies {
 tasks.named('test') {
 	outputs.dir snippetsDir
 	useJUnitPlatform()
+}
+
+dependencyManagement { // 블록 추가
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-starter-parent:Hoxton.SR12"
+	}
 }
 
 //tasks.named('asciidoctor') {
