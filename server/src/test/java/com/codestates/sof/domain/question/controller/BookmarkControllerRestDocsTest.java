@@ -55,7 +55,7 @@ class BookmarkControllerRestDocsTest {
 		// when
 		ResultActions actions = mvc.perform(
 			post("/questions/{question-id}/bookmarks", 1L)
-				.param("inUndo", "false")
+				.param("isUndo", "false")
 				.header("Authorization", "Required JWT access token")
 		);
 
@@ -66,7 +66,7 @@ class BookmarkControllerRestDocsTest {
 				getDefaultDocument(
 					"bookmark/post",
 					requestHeaders(headerWithName("Authorization").description("Jwt Access Token")),
-					requestParameters(parameterWithName("inUndo").description("취소여부 [true, false]").optional()),
+					requestParameters(parameterWithName("isUndo").description("취소여부 [true, false]").optional()),
 					pathParameters(parameterWithName("question-id").description("질문 식별자"))
 				)
 			);
