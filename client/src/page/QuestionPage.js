@@ -31,18 +31,10 @@ function QuestionPage() {
   const [follow, setFollow] = useState(false);
   const [comment, setComment] = useState(false);
 
-  const user = useRecoilValue(userState); //로그인 유저 정보
-  const token = localStorage.getItem("accessToken");
-
   const handleClick = () => {
     navigate("/askquestions");
   };
 
-  const AnswerBody = JSON.stringify({
-    questionId: questionId,
-    memberId: user.memberId,
-    content: answer,
-  });
   const handleClear = () => {
     if (window.confirm("Discard question")) {
       setAnswer("");
@@ -51,38 +43,7 @@ function QuestionPage() {
       alert("Cancel");
     }
   };
-  const handleVoteClick = (e) => {
-    e.preventDefault();
-    axios
-      .patch(`${BASE_URL}questions/${questionId}/votes`, {
-        headers: { "Content-Type": "application/json", Authorization: token },
-      })
-      .then((res) => {
-        if (res.status === 201) {
-          console.log(res);
-          alert("투표가 완료 되었습니다.");
-        }
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  };
-  const handleAnswerSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post(`${BASE_URL}answers`, AnswerBody, {
-        headers: { "Content-Type": "application/json", Authorization: token },
-      })
-      .then((res) => {
-        if (res.status === 201) {
-          console.log(res);
-          alert("답변 등록이 완료 되었습니다.");
-        }
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  };
+
   const handleEdit = () => {
     navigate(`/questions/${questionId}/edit`);
   };
@@ -180,9 +141,7 @@ function QuestionPage() {
             </div>
           )}
           <MDEditor.Markdown source={answer} style={{ whiteSpace: "pre-wrap" }} />
-          <button className="btn flexItem" onClick={handleAnswerSubmit}>
-            Post Your Answer
-          </button>
+          <button className="btn flexItem">Post Your Answer</button>
           {answer && (
             <button className="btn redBtn flexItem" onClick={handleClear}>
               Discard draft

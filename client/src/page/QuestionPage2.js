@@ -72,7 +72,7 @@ function QuestionPage() {
       });
   };
 
-  const AnswerBody = JSON.stringify({
+  /*const AnswerBody = JSON.stringify({
     questionId: questionId,
     memberId: user.memberId,
     content: answer,
@@ -116,7 +116,7 @@ function QuestionPage() {
       .catch((err) => {
         console.log(err.response);
       });
-  };
+  };*/
 
   return (
     <>

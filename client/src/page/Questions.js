@@ -9,6 +9,8 @@ import { QuestionItem } from "./QuestionItem";
 import FilterMenu from "../component/Menu";
 import Nav from "../component/Nav";
 import Sidebar from "../component/Sidebar";
+import { userState } from "../recoil";
+import { useRecoilValue } from "recoil";
 
 const LIMIT = 15; //페이지네이션 값
 const BASE_URL = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/";
@@ -21,9 +23,16 @@ function Questions() {
   const [page, setPage] = useState(1); //페이지 번호 : 1부터 시작
 
   const token = localStorage.getItem("accessToken");
+  const user = useRecoilValue(userState); //로그인 유저 정보
 
   const handleClick = () => {
-    navigate("/askquestions");
+    if (user === null) {
+      //로그인 되지 않은 경우
+      alert("로그인을 먼저 진행해주세요");
+    } else {
+      //로그인 된 경우
+      navigate("/askquestions");
+    }
   };
 
   const handleLoad = async (page) => {
