@@ -24,6 +24,22 @@
 
 ## 서버 열기
 
+### Requirements
+
+- Redis (6379 포트에서 실행중이여야 합니다.)
+
+- Java >= 11
+
+### Command
+
+```
+cd ./server
+./gradlew clean build
+java -jar -D"spring.profiles.active=local" ./build/libs/sof-0.0.1-SNAPSHOT.jar
+```
+
+<br />
+
 ## 클라이언트열기
 
 ### npm install -g serve
