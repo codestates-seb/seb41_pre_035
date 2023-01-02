@@ -7,7 +7,12 @@ import "../css/Tags.css";
 import "../css/Editer.css";
 import "../css/Btn.css";
 import TAGS from "../data/Tags";
-const axios = require("axios");
+import { userState } from "../recoil";
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const BASE_URL = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/";
 
 function AskQuestions() {
   const [question, setQuestion] = useState("");
@@ -15,6 +20,7 @@ function AskQuestions() {
   const [result, setResult] = useState("");
   const [tag, setTag] = useState("");
   const [tagList, setTagList] = useState([]);
+  const qtagList = [];
   const [post, setPost] = useState(false);
   const [titleReview, setTitleReview] = useState(false);
   const [questionReview, setQuestionReview] = useState(false);
@@ -24,7 +30,10 @@ function AskQuestions() {
 
   const titleInput = useRef();
   const tagsInput = useRef();
-  const reviewBtn = useRef();
+
+  const user = useRecoilValue(userState); //로그인 유저 정보
+  const token = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
 
   const handleTitleInput = (e) => {
     setTitle(e.target.value);
@@ -46,13 +55,14 @@ function AskQuestions() {
       setResultReview(true);
       setNext([false, false, true, false]);
     } else {
+      setTitleReview(false);
+      setQuestionReview(false);
       setResultReview(false);
       setPost(true);
     }
   };
   const removeTag = (indexToRemove) => {
     setTagList([...tagList.filter((_, idx) => idx !== indexToRemove)]);
-    console.log(tagList);
   };
   const filterTags = TAGS.filter((el) => {
     return !tagList.includes(el.title) && el.title.replace(" ", "").toLocaleLowerCase().includes(tag.toLocaleLowerCase());
@@ -91,30 +101,43 @@ function AskQuestions() {
       setNext([false, false, false, true]);
       tagsInput.current.focus();
     } else if (idx === 3) {
-      reviewBtn.current.focus();
     }
   };
-  const questionBody = JSON.stringify({
-    memberId: 0,
-    title: title,
-    body: `${question}\n\n ${result}`,
-    tags: tagList,
+
+  tagList.forEach((el, idx) => {
+    qtagList.push({
+      tagId: idx,
+      name: el,
+    });
   });
+  const questionBody = JSON.stringify({
+    writerId: user.memberId,
+    title: title,
+    content: `${question}\n\n ${result}`,
+    tags: qtagList,
+  });
+
   const handleQuestionSubmit = (e) => {
     e.preventDefault();
+    console.log(token);
     axios
-      .post("http://34.64.179.131:8080/questions", questionBody, {
-        "Accept-Language": "ko",
-        "Content-Type": "application/json",
+      .post(`${BASE_URL}questions`, questionBody, {
+        headers: { "Content-Type": "application/json", Authorization: token },
       })
       .then((res) => {
-        if (res.ok) {
+        if (res.status === 201) {
           alert("생성이 완료 되었습니다.");
+          console.log(res);
+          navigate("/questions");
         }
+      })
+      .catch((err) => {
+        console.log(err.response);
       });
   };
+
   return (
-    <div className="qContent">
+    <div className="aqContent">
       <div className="bigTitle">
         <h1>Ask a public question</h1>
       </div>
@@ -131,130 +154,132 @@ function AskQuestions() {
           <li>Review your question and post it to the site.</li>
         </ul>
       </div>
-      <div className="postTitle dWidth flexItem questionBorder">
-        <p>Title</p>
-        <p>Be specific and imagine you're asking a question to another person.</p>
-        <input
-          className="titleInput"
-          type="text"
-          ref={titleInput}
-          placeholder="e.g. Is there an R function for finding the index of and element in a vector?"
-          value={title}
-          onChange={handleTitleInput}
-        ></input>
-        {titleReview && <p className="warnReview">You should write at least 15 characters.</p>}
-        <button className="btn" onClick={() => handleNextClick(0)}>
-          Next
-        </button>
-      </div>
-      {next[0] && (
-        <div className="psAbsolute flexItem questionBorder">
-          <div className="fsBody ">
-            <p>Writing a good title</p>
-          </div>
-          <div className="bgWhite">
-            <i className="pencilIcon fa-regular fa-pen-to-square"></i>
-            <p>Your title should summarize the problem.</p>
-            <p>You might find that you have a better idea of your title after writing out the rest of the question.</p>
-          </div>
+      <div className="dFlex">
+        <div className="postTitle dWidth flexItem questionBorder">
+          <p>Title</p>
+          <p>Be specific and imagine you're asking a question to another person.</p>
+          <input
+            className="titleInput"
+            type="text"
+            ref={titleInput}
+            placeholder="e.g. Is there an R function for finding the index of and element in a vector?"
+            value={title}
+            onChange={handleTitleInput}
+          ></input>
+          {titleReview && <p className="warnReview">You should write at least 15 characters.</p>}
+          <button className="btn" onClick={() => handleNextClick(0)}>
+            Next
+          </button>
         </div>
-      )}
-      <div className="editer dWidth flexItem questionBorder">
-        <p>What are the details of your problem?</p>
-        <p>Introduce the problem and expand on what you put in the title. Minimum 20 characters.</p>
-        <MDEditor value={question} onChange={setQuestion} />
-        <MDEditor.Markdown source={question} style={{ whiteSpace: "pre-wrap" }} />
-        {questionReview && <p className="warnReview">You should write at least 20 characters.</p>}
-        <button className="btn" onClick={() => handleNextClick(1)}>
-          Next
-        </button>
-      </div>
-      {next[1] && (
-        <div className="psAbsolute flexItem questionBorder">
-          <div className="fsBody ">
-            <p>Introduce the problem</p>
-          </div>
-          <div className="bgWhite">
-            <i className="pencilIcon fa-regular fa-pen-to-square"></i>
-            <p>Explain how you encountered the problem you’re trying to solve, and any difficulties that have prevented you from solving it yourself.</p>
-          </div>
-        </div>
-      )}
-      <div className="editer dWidth flexItem questionBorder">
-        <p>What did you try and what were you expecting?</p>
-        <p>Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters.</p>
-        <MDEditor value={result} onChange={setResult} />
-        <MDEditor.Markdown source={result} style={{ whiteSpace: "pre-wrap" }} />
-        {resultReview && <p className="warnReview">You should write at least 20 characters.</p>}
-        <button className="btn" onClick={() => handleNextClick(2)}>
-          Next
-        </button>
-      </div>
-      {next[2] && (
-        <div className="psAbsolute flexItem questionBorder">
-          <div className="fsBody">
-            <p>Expand on the problem</p>
-          </div>
-          <div className="bgWhite">
-            <i className="pencilIcon fa-regular fa-pen-to-square"></i>
-            <p>Show what you’ve tried, tell us what happened, and why it didn’t meet your needs.</p>
-            <p>Not all questions benefit from including code, but if your problem is better understood with code you’ve written, you should include a minimal, reproducible example.</p>
-            <p>Please make sure to post code and errors as text directly to the question (and not as images), and format them appropriately.</p>
-          </div>
-        </div>
-      )}
-      <div className="tagsOverlay dWidth flexItem questionBorder">
-        <p>Tags</p>
-        <p>Add up to 5 tags to describe what your question is about. Start typing to see suggestions.</p>
-        <div className="flexTagItem questionBorder">
-          <ul className="tagList">
-            {tagList.map((el, idx) => (
-              <li key={idx} className="tag">
-                <span className="tagTitle">
-                  {el}
-                  <span className="tagClose" onClick={() => removeTag(idx)}>
-                    x
-                  </span>
-                </span>
-              </li>
-            ))}
-          </ul>
-          <input className="tagInput" type="text" value={tag} ref={tagsInput} onChange={handleTitleTag}></input>
-        </div>
-        {tag && (
-          <div className="tagsAutoComplete questionBorder">
-            {filterTags.map((el, idx) => (
-              <li key={idx} className="tag">
-                <span className="tagTitle" onClick={() => handleTagClick(el.title)}>
-                  {el.title}
-                </span>
-                <p>{el.content}</p>
-              </li>
-            ))}
+        {next[0] && (
+          <div className="psAbsolute flexItem questionBorder">
+            <div className="fsBody ">
+              <p>Writing a good title</p>
+            </div>
+            <div className="bgWhite">
+              <i className="pencilIcon fa-regular fa-pen-to-square"></i>
+              <p>Your title should summarize the problem.</p>
+              <p>You might find that you have a better idea of your title after writing out the rest of the question.</p>
+            </div>
           </div>
         )}
 
-        {tagMax && <p className="warnReview">The maximum number of tags allowed is 5.</p>}
-        <button className="btn" onClick={() => handleNextClick(3)}>
-          Next
-        </button>
-      </div>
-      {next[3] && (
-        <div className="psAbsolute flexItem questionBorder">
-          <div className="fsBody">
-            <p>Adding tags</p>
-          </div>
-          <div className="bgWhite">
-            <i className="pencilIcon fa-regular fa-pen-to-square"></i>
-            <p>Tags help ensure that your question will get attention from the right people.</p>
-            <p>Tag things in more than one way so people can find them more easily. Add tags for product lines, projects, teams, and the specific technologies or languages used.</p>
-            <p>Learn more about tagging</p>
-          </div>
+        <div className="editer dWidth flexItem questionBorder">
+          <p>What are the details of your problem?</p>
+          <p>Introduce the problem and expand on what you put in the title. Minimum 20 characters.</p>
+          <MDEditor value={question} onChange={setQuestion} />
+          <MDEditor.Markdown source={question} style={{ whiteSpace: "pre-wrap" }} />
+          {questionReview && <p className="warnReview">You should write at least 20 characters.</p>}
+          <button className="btn" onClick={() => handleNextClick(1)}>
+            Next
+          </button>
         </div>
-      )}
+        {next[1] && (
+          <div className="psAbsolute flexItem questionBorder">
+            <div className="fsBody ">
+              <p>Introduce the problem</p>
+            </div>
+            <div className="bgWhite">
+              <i className="pencilIcon fa-regular fa-pen-to-square"></i>
+              <p>Explain how you encountered the problem you’re trying to solve, and any difficulties that have prevented you from solving it yourself.</p>
+            </div>
+          </div>
+        )}
+        <div className="editer dWidth flexItem questionBorder">
+          <p>What did you try and what were you expecting?</p>
+          <p>Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters.</p>
+          <MDEditor value={result} onChange={setResult} />
+          <MDEditor.Markdown source={result} style={{ whiteSpace: "pre-wrap" }} />
+          {resultReview && <p className="warnReview">You should write at least 20 characters.</p>}
+          <button className="btn" onClick={() => handleNextClick(2)}>
+            Next
+          </button>
+        </div>
+        {next[2] && (
+          <div className="psAbsolute flexItem questionBorder">
+            <div className="fsBody">
+              <p>Expand on the problem</p>
+            </div>
+            <div className="bgWhite">
+              <i className="pencilIcon fa-regular fa-pen-to-square"></i>
+              <p>Show what you’ve tried, tell us what happened, and why it didn’t meet your needs.</p>
+              <p>Not all questions benefit from including code, but if your problem is better understood with code you’ve written, you should include a minimal, reproducible example.</p>
+              <p>Please make sure to post code and errors as text directly to the question (and not as images), and format them appropriately.</p>
+            </div>
+          </div>
+        )}
+        <div className="tagsOverlay dWidth flexItem questionBorder">
+          <p>Tags</p>
+          <p>Add up to 5 tags to describe what your question is about. Start typing to see suggestions.</p>
+          <div className="flexTagItem tagBorder">
+            <ul className="tagList">
+              {tagList.map((el, idx) => (
+                <li key={idx} className="tag">
+                  <span className="tagTitle">
+                    {el}
+                    <span className="tagClose" onClick={() => removeTag(idx)}>
+                      x
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <input className="tagInput" type="text" value={tag} ref={tagsInput} onChange={handleTitleTag}></input>
+          </div>
+          {tag && (
+            <div className="tagsAutoComplete tagBorder">
+              {filterTags.map((el, idx) => (
+                <li key={idx} className="tag">
+                  <span className="tagTitle" onClick={() => handleTagClick(el.title)}>
+                    {el.title}
+                  </span>
+                  <p>{el.content}</p>
+                </li>
+              ))}
+            </div>
+          )}
+          {tagMax && <p className="warnReview">The maximum number of tags allowed is 5.</p>}
+          <button className="btn" onClick={() => handleNextClick(3)}>
+            Next
+          </button>
+        </div>
+        {next[3] && (
+          <div className="psAbsolute flexItem questionBorder">
+            <div className="fsBody">
+              <p>Adding tags</p>
+            </div>
+            <div className="bgWhite">
+              <i className="pencilIcon fa-regular fa-pen-to-square"></i>
+              <p>Tags help ensure that your question will get attention from the right people.</p>
+              <p>Tag things in more than one way so people can find them more easily. Add tags for product lines, projects, teams, and the specific technologies or languages used.</p>
+              <p>Learn more about tagging</p>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="flexItem formSubmit">
         {!post && (
-          <button className="btn inlineBtn flexItem" ref={reviewBtn} onClick={handleReviewClick}>
+          <button className="btn inlineBtn flexItem" onClick={handleReviewClick}>
             Review your question
           </button>
         )}

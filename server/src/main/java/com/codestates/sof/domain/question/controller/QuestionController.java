@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codestates.sof.domain.auth.dto.MemberDetails;
 import com.codestates.sof.domain.member.entity.Member;
 import com.codestates.sof.domain.question.dto.QuestionRequestDto;
 import com.codestates.sof.domain.question.dto.QuestionResponseDto;
@@ -31,9 +33,6 @@ import com.codestates.sof.global.dto.SingleResponseDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-// TODO(얘기 필요): Response Dto는 Find 메서드에서만 반환하고, 나머지는 Http Status만 주기
-// - GET ALL: 전체 조회시 Simple Response Dto로 응답
 
 @Slf4j
 @RestController
@@ -82,9 +81,9 @@ public class QuestionController {
 
 	@GetMapping("/{question-id}")
 	public ResponseEntity<SingleResponseDto<QuestionResponseDto.Response>> get(
-		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
 		@PathVariable("question-id") @Positive Long questionId
 	) {
+		Member member = getPrincipal();
 		Question question = questionService.findById(questionId);
 		QuestionResponseDto.Response response = mapper.questionToResponse(question);
 		mapper.setPropertiesToResponse(member, question, response);
@@ -93,38 +92,39 @@ public class QuestionController {
 	}
 
 	// *** Query ***
-
 	@GetMapping
 	public ResponseEntity<?> getAll(
-		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
 		QuestionPageRequest pageRequest
 	) {
-		return getMultiResponseEntity(member, questionService.findAll(pageRequest));
+		return getMultiResponseEntity(questionService.findAll(pageRequest));
 	}
 
 	@GetMapping("/tagged/{tag-name}")
 	public ResponseEntity<?> getAllByTag(
-		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
 		@PathVariable("tag-name") String tagName,
 		QuestionPageRequest pageRequest
 	) {
-		return getMultiResponseEntity(member, questionService.findAllByTag(tagName, pageRequest));
+		return getMultiResponseEntity(questionService.findAllByTag(tagName, pageRequest));
 	}
 
 	@GetMapping("search")
 	public ResponseEntity<?> searchByQuery(
-		@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member,
 		@RequestParam(name = "q") String query,
 		QuestionPageRequest pageRequest
 	) {
-		return getMultiResponseEntity(member, questionService.search(query, pageRequest));
+		return getMultiResponseEntity(questionService.search(query, pageRequest));
 	}
 
-	private ResponseEntity<?> getMultiResponseEntity(Member member, Page<Question> page) {
+	private Member getPrincipal() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return principal.getClass().isAssignableFrom(MemberDetails.class) ? (Member)principal : null;
+	}
+
+	private ResponseEntity<?> getMultiResponseEntity(Page<Question> page) {
 		if (page.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
-			List<QuestionResponseDto.SimpleResponse> responses = mapper.questionsToResponses(page, member);
+			List<QuestionResponseDto.SimpleResponse> responses = mapper.questionsToResponses(page, getPrincipal());
 			return new ResponseEntity<>(new MultiResponseDto<>(responses, page), HttpStatus.OK);
 		}
 	}

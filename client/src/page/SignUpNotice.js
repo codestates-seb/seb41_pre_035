@@ -9,7 +9,6 @@ const SignUpNotice = () => {
     <div className="signUpNotice">
       <div className="signUpNoticeWrapper">
         <i className="fa-solid fa-check fa-2x"></i>
-
         <div className="signUpNoticeNotice">
           <div className="recoverySuccessTitle">Registration email sent to {email} Open this email to finish signup.</div>
           <div className="recoverySuccessDescription">

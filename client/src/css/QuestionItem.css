@@ -1,6 +1,5 @@
 .questionSummary {
   border-top: 1px solid rgb(196, 195, 195);
-  margin-right: 160px;
   padding: 16px;
   height: fit-content;
   display: flex;
@@ -39,4 +38,8 @@
 .postSum p {
   font-size: 13px;
   margin: 0px 16px 20px 0px;
+}
+
+.qbtm {
+  display: flex;
 }
