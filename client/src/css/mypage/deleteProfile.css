@@ -1,0 +1,27 @@
+.deleteProfileTitle {
+  font-size: 25px;
+}
+.deleteProfile > p {
+  line-height: 125%;
+  margin: 15px 0;
+  font-size: 15px;
+}
+.deleteProfileCheck {
+  display: flex;
+}
+.deleteProfileCheck > div {
+  margin-left: 5px;
+}
+.deleteProfileBtn {
+  font-size: 13px;
+  padding: 10px 10px;
+  margin: 30px 2px;
+  background-color: #d0393e;
+  color: #ffffff;
+  border: solid 1px #d0393e;
+  border-radius: 3px;
+}
+.deleteProfileBtn:hover {
+  background-color: #bd2b30;
+  cursor: pointer;
+}

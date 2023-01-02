@@ -1,0 +1,39 @@
+.tabSavesContainer {
+  display: flex;
+}
+
+.tabSavesLeft {
+  font-size: 14px;
+}
+.tabSavesMenus > ul > li {
+  font-size: 13px;
+  padding: 10px 130px 10px 15px;
+}
+.tabSavesMenus > ul > li:hover {
+  color: #fff;
+  background-color: #f48225;
+  border-radius: 20px;
+}
+.tabSavesMylistAdd {
+  padding: 10px 130px 10px 15px;
+  margin: 15px 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tabSavesRight {
+  margin-left: 20px;
+}
+
+.tabSavesTitle {
+  font-size: 22px;
+}
+
+.tabSavesSubTitle {
+  font-size: 18px;
+  margin: 15px 0;
+}
+.tabSavesList {
+  border: solid 2px #eeeff0;
+  border-radius: 5px;
+}
