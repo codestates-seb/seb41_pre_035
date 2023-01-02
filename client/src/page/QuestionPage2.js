@@ -145,7 +145,7 @@ function QuestionPage() {
           </div>
         </div>
 
-        <div className="qComments">
+        {/*<div className="qComments">
           {comments.map((el) => (
             <div className="=qComment">
               <p>{el.content}</p>
@@ -199,7 +199,7 @@ function QuestionPage() {
               Discard draft
             </button>
           )}
-        </div>
+        </div>*/}
       </div>
       <Sidebar />
     </>
