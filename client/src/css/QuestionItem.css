@@ -9,6 +9,11 @@
   list-style-type: none;
 }
 
+.modifiedDate {
+  font-size: 12px;
+  color: rgb(98, 98, 98);
+}
+
 .qPost {
   width: 800px;
   float: left;

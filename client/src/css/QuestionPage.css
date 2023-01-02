@@ -2,6 +2,11 @@
   display: flex;
   border-bottom: 1px solid rgb(196, 195, 195);
 }
+
+.qanswers h1 {
+  margin: 20px;
+  font-size: 19px;
+}
 .qwriter p {
   margin-right: 20px;
   color: rgb(98, 98, 98);
@@ -20,6 +25,7 @@
   width: 340px;
   height: 120px;
   padding: 12px;
+  margin-top: -60px;
 }
 .addcomments {
   box-shadow: 0 0 5px rgb(195, 195, 195);
@@ -45,7 +51,7 @@
 }
 
 .qEdit {
-  display: flex;
+  display: flex !important;
   margin-left: 70px;
 }
 
@@ -75,8 +81,16 @@
 .postBody p {
   font-size: 15px;
   line-height: 18px;
+  margin-bottom: 20px;
 }
-
+.qMember {
+  background-color: #e1ecf4;
+  width: 200px;
+  height: 67px;
+  border-radius: 1%;
+  padding: 10px;
+  margin-left: 600px;
+}
 .qSideBar {
   display: flex;
   flex-direction: column;

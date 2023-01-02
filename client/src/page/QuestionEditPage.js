@@ -10,13 +10,13 @@ import { userState } from "../recoil";
 import { useRecoilValue } from "recoil";
 import axios from "axios";
 import { formatDate } from "./QuestionItem";
-import questionList from "../data/QuestionList";
+import questionData from "../data/Question";
 import Nav from "../component/Nav";
 import Sidebar from "../component/Sidebar";
 import { qformatDate } from "./QuestionPage";
 import TAGS from "../data/Tags";
 
-const question = questionList.data;
+const question = questionData.data;
 
 const BASE_URL = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/";
 const LIMIT = 15;

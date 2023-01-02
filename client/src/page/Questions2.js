@@ -11,14 +11,18 @@ import Nav from "../component/Nav";
 import Sidebar from "../component/Sidebar";
 import { userState } from "../recoil";
 import { useRecoilValue } from "recoil";
-import questionList from "../data/QuestionList";
+
+const LIMIT = 15; //페이지네이션 값
+const BASE_URL = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/";
 
 function Questions() {
   const navigate = useNavigate();
   const [filterMenu, setFilterMenu] = useState(false);
-  const questions = questionList.data;
+  const [questions, setQuestions] = useState([]);
   const [order, setOrder] = useState("NEWEST");
   const [page, setPage] = useState(1); //페이지 번호 : 1부터 시작
+
+  const token = localStorage.getItem("accessToken");
   const user = useRecoilValue(userState); //로그인 유저 정보
 
   const handleClick = () => {
@@ -30,6 +34,26 @@ function Questions() {
       navigate("/askquestions");
     }
   };
+
+  const handleLoad = async (page) => {
+    await axios
+      .get(`${BASE_URL}questions?page=${page}&size=${LIMIT}&sort=${order}`, {
+        headers: { "Content-Type": "application/json", Authorization: token },
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          setQuestions(res.data.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
+  useEffect(() => {
+    handleLoad(page);
+  }, []);
 
   return (
     <>

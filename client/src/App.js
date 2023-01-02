@@ -11,11 +11,12 @@ import Login from "./page/Login";
 import Recovery from "./page/Recovery";
 import SignUp from "./page/SignUp";
 import SignUpNotice from "./page/SignUpNotice";
-import Questions from "./page/Questions";
+import Questions from "./page/Questions"; //임시 데이터 ver
+import Questions2 from "./page/Questions2"; //api 요청 ver
 import QuestionEditPage from "./page/QuestionEditPage";
 import AskQuestions from "./page/AskQuestions";
-import { QuestionPage } from "./page/QuestionPage";
-import QuestionPage2 from "./page/QuestionPage2";
+import { QuestionPage } from "./page/QuestionPage"; //임시 데이터 ver
+import QuestionPage2 from "./page/QuestionPage2"; //api 요청 ver
 import User from "./page/User";
 import Users from "./page/Users";
 import UserProfile from "./page/UserProfile";

@@ -9,10 +9,9 @@ import { userState } from "../recoil";
 import { useRecoilValue } from "recoil";
 import axios from "axios";
 import { formatDate } from "./QuestionItem";
-import questionList from "../data/QuestionList";
+import questionData from "../data/Question";
 import Nav from "../component/Nav";
 import Sidebar from "../component/Sidebar";
-const question = questionList.data;
 
 const BASE_URL = "http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com:8080/";
 const LIMIT = 15;
@@ -24,25 +23,25 @@ function qformatDate(value) {
 
 function QuestionPage() {
   const { questionId } = useParams();
+  const question = questionData.data;
   const navigate = useNavigate();
   const [answer, setAnswer] = useState("");
   const [pop, setPop] = useState(true);
   const [share, setShare] = useState(false);
   const [follow, setFollow] = useState(false);
   const [comment, setComment] = useState(false);
-
   const user = useRecoilValue(userState); //로그인 유저 정보
-  const token = localStorage.getItem("accessToken");
 
   const handleClick = () => {
-    navigate("/askquestions");
+    if (user === null) {
+      //로그인 되지 않은 경우
+      alert("로그인을 먼저 진행해주세요");
+    } else {
+      //로그인 된 경우
+      navigate("/askquestions");
+    }
   };
 
-  const AnswerBody = JSON.stringify({
-    questionId: questionId,
-    memberId: user.memberId,
-    content: answer,
-  });
   const handleClear = () => {
     if (window.confirm("Discard question")) {
       setAnswer("");
@@ -51,37 +50,8 @@ function QuestionPage() {
       alert("Cancel");
     }
   };
-  const handleVoteClick = (e) => {
-    e.preventDefault();
-    axios
-      .patch(`${BASE_URL}questions/${questionId}/votes`, {
-        headers: { "Content-Type": "application/json", Authorization: token },
-      })
-      .then((res) => {
-        if (res.status === 201) {
-          console.log(res);
-          alert("투표가 완료 되었습니다.");
-        }
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  };
-  const handleAnswerSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post(`${BASE_URL}answers`, AnswerBody, {
-        headers: { "Content-Type": "application/json", Authorization: token },
-      })
-      .then((res) => {
-        if (res.status === 201) {
-          console.log(res);
-          alert("답변 등록이 완료 되었습니다.");
-        }
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
+  const handleTagClick = () => {
+    navigate(`/tags`);
   };
   const handleEdit = () => {
     navigate(`/questions/${questionId}/edit`);
@@ -111,12 +81,25 @@ function QuestionPage() {
           </div>
           <div className="postBody">
             <p>{question.content}</p>
+            <div className="tags">
+              {question.tags.map((el) => (
+                <li key={el.tagId} className="tag">
+                  <p onClick={handleTagClick} className="tagTitle sTag">
+                    {el.name}
+                  </p>
+                </li>
+              ))}
+            </div>
           </div>
         </div>
         <div className="qEdit">
           <p onClick={() => setShare(!share)}>Share</p>
           <p onClick={handleEdit}>Edit</p>
           {follow ? <p onClick={() => setFollow(!follow)}>Following</p> : <p onClick={() => setFollow(!follow)}>Follow</p>}
+          <div className="qMember">
+            <p>{question.writer.name}</p>
+            <p>{question.writer.email}</p>
+          </div>
         </div>
         {share && (
           <div className="sharePopup">
@@ -144,6 +127,7 @@ function QuestionPage() {
         ))}
         </div>*/}
         <div className="qanswers">
+          <h1>{question.answers.length} Answers</h1>
           {question.answers.map((el) => (
             <div className="qanswer">
               <div className="postLayout">
@@ -180,9 +164,7 @@ function QuestionPage() {
             </div>
           )}
           <MDEditor.Markdown source={answer} style={{ whiteSpace: "pre-wrap" }} />
-          <button className="btn flexItem" onClick={handleAnswerSubmit}>
-            Post Your Answer
-          </button>
+          <button className="btn flexItem">Post Your Answer</button>
           {answer && (
             <button className="btn redBtn flexItem" onClick={handleClear}>
               Discard draft
