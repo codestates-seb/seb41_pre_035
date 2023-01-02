@@ -1,23 +1,25 @@
+.qContent {
+  margin-top: 80px;
+  margin-left: 210px;
+  margin-right: 370px;
+  max-width: 1000px;
+  position: relative;
+}
+
 .fsHeadLine {
   display: flex;
 }
 
 .fsHeadLine h1 {
   font-size: 27px;
-  margin: 10px 800px 12px 0px;
-}
-
-.fsHeadLine btn {
-  margin: 0px 0px 12px 0px;
+  margin: 10px 0px 12px 0px;
+  flex-grow: 1;
 }
 
 .qTopBar {
   margin: 0px 0px 12px;
   display: flex;
-}
-
-.qTopBar p {
-  margin-right: 500px;
+  justify-content: space-between;
 }
 
 .qListItem {
@@ -28,7 +30,7 @@
   background-color: rgb(235, 235, 235);
   border: 1px solid rgb(164, 163, 163);
   border-radius: 1%;
-  margin-right: 160px;
+  margin-bottom: 20px;
   padding: 20px;
 }
 

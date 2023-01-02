@@ -23,6 +23,10 @@
   background-color: rgb(194, 195, 195);
 }
 
+.filterBtns {
+  display: flex;
+}
+
 .sBtn {
   display: table;
   background-color: #ffffff;
