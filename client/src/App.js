@@ -22,9 +22,6 @@ import UserSaves from "./page/UserSaves";
 import UserSetting from "./page/UserSetting";
 
 import { useCookies } from "react-cookie";
-import { useRecoilValue } from "recoil";
-import { userState } from "./recoil";
-import { useEffect, useState } from "react";
 import Users from "./page/Users";
 import TabProfile from "./component/mypage/TabProfile";
 import EditProfile from "./component/mypage/EditProfile";
