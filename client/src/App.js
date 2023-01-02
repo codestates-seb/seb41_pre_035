@@ -1,45 +1,45 @@
-import { Route, Routes, useParams } from "react-router-dom";
+// * component
 import Header from "./component/Header";
 import Nav from "./component/Nav";
-import HeaderMenumodal from "./component/HeaderMenumodal";
+import TabProfile from "./component/mypage/TabProfile";
+import EditProfile from "./component/mypage/EditProfile";
+import DeleteProfile from "./component/mypage/DeleteProfile";
+// import HeaderMenumodal from "./component/HeaderMenumodal";
+
+// * page
 import Login from "./page/Login";
 import Recovery from "./page/Recovery";
 import SignUp from "./page/SignUp";
 import SignUpNotice from "./page/SignUpNotice";
-
-import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { userState } from "./recoil";
 import Questions from "./page/Questions";
 import QuestionEditPage from "./page/QuestionEditPage";
 import AskQuestions from "./page/AskQuestions";
 import { QuestionPage } from "./page/QuestionPage";
 import QuestionPage2 from "./page/QuestionPage2";
-import TagsBoard from "./page/TagsBoard";
 import User from "./page/User";
+import Users from "./page/Users";
 import UserProfile from "./page/UserProfile";
 import UserSaves from "./page/UserSaves";
 import UserSetting from "./page/UserSetting";
-
-import { useCookies } from "react-cookie";
-import { useRecoilValue } from "recoil";
-import { userState } from "./recoil";
-import { useEffect, useState } from "react";
-import Users from "./page/Users";
-import TabProfile from "./component/mypage/TabProfile";
-import EditProfile from "./component/mypage/EditProfile";
-import DeleteProfile from "./component/mypage/DeleteProfile";
 import UserSettingEdit from "./page/UserSettingEdit";
 import UserSettingDelete from "./page/UserSettingDelete";
+import TagsBoard from "./page/TagsBoard";
+
+// * module
+import { Route, Routes } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { userState } from "./recoil";
+import { useCookies } from "react-cookie";
 
 function App() {
   const [refreshToken, setRefreshToken, removeRefreshToken] = useCookies(["refreshToken"]);
+  const user = useRecoilValue(userState);
 
   return (
     <div className="App">
       <Header />
       {/* <HeaderMenumodal /> */}
-      <Nav />
+      {user ? <Nav /> : null}
       <Routes>
         <Route path="/" element={<Questions />} />
         <Route path="/questions" element={<Questions />} />
