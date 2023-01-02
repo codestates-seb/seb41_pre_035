@@ -1,0 +1,12 @@
+.qContent > div {
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.modifiedDate {
+  float: right;
+}

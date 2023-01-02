@@ -1,0 +1,62 @@
+.tabProfileContainer {
+  display: flex;
+}
+.tabProfileTitle {
+  font-size: 22px;
+  margin: 0px 0 10px 0px;
+}
+.tabProfileRight {
+  width: 70vw;
+  margin-left: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.tabProfileStatusBoxIn {
+  display: grid;
+  grid-template-columns: 90px 90px;
+  grid-template-rows: 40px 40px;
+  border: solid 2px #eeeff0;
+  border-radius: 5px;
+  padding: 10px;
+}
+.tabProfileStatusItem {
+  font-size: 12px;
+  color: #878787;
+  margin-top: 3px;
+}
+.tabProfileAnswers {
+  border: solid 2px #eeeff0;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+.tabProfileQuestions {
+  border: solid 2px #eeeff0;
+  border-radius: 5px;
+}
+.tabProfileQAin {
+  width: 400px;
+  height: 200px;
+}
+.tabProfileQAitem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: solid 1px gray;
+}
+.tabProfileQAvote {
+  font-size: 13px;
+  color: #fff;
+  background-color: #5eba7d;
+  padding: 5px;
+  border-radius: 3px;
+}
+.tabProfileQAtitle {
+  font-size: 14px;
+  color: #2070c1;
+  cursor: pointer;
+}
+.tabProfileQAdate {
+  font-size: 11px;
+  color: #7d7fa6;
+}

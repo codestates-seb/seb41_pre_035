@@ -1,0 +1,26 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: "jdbc:h2:mem:sof_server;MODE=MYSQL"
+    username: admin
+    password:
+  config:
+    import: 'aws-parameterstore:'
+
+aws:
+  paramstore:
+    enabled: true
+    prefix: /spring-boot-aws
+    name: seb41_pre_035 # 리소스 이름을 작성합니다.
+    profileSeparator: _
+
+server:
+  domain: http://ec2-54-180-55-239.ap-northeast-2.compute.amazonaws.com
+
+logging:
+  level:
+    root: WARN

@@ -1,0 +1,34 @@
+footer {
+  padding: 50px;
+  font-size: 12px;
+  width: 100%;
+  height: 200px;
+  background-color: #232629;
+  color: #9199a1;
+  position: relative;
+  bottom: 0;
+  margin-top: 100%;
+  display: flex;
+}
+.footerLogo {
+  margin: 0 20px;
+}
+.footerMenus {
+  display: flex;
+}
+.footerMenu {
+  margin: 0 30px;
+  width: 130px;
+}
+.footerMenu > h2 {
+  font-size: 14px;
+  font-weight: 900;
+  padding-bottom: 10px;
+}
+.footerMenu > p {
+  padding: 5px 0;
+}
+
+.footerLicense {
+  padding: 0 20px;
+}

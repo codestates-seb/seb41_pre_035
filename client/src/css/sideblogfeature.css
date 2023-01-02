@@ -1,0 +1,44 @@
+.sidebarContainer {
+  position: absolute;
+  top: 60px;
+  right: 40px;
+  font-size: 12px;
+  width: 320px;
+  height: 1000px;
+  background-color: #fff;
+}
+.sideBlogFeature {
+  box-shadow: 0 0 5px rgb(195, 195, 195);
+  margin: 20px 0px;
+  width: 300px;
+}
+.sideBlogFeatureTitle {
+  background-color: #fbf3d5;
+  border: solid 1px #f5ebc8;
+  font-weight: 700;
+  height: 50px;
+  padding: 15px;
+  font-size: 13px;
+}
+.sideblogFeatureContents {
+  background-color: #fdf7e2;
+  height: 105px;
+  padding: 15px;
+  line-height: 120%;
+}
+.sideblogFeatureContents > li {
+  padding: 5px 2px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+}
+.sideblogFeatureContents > li > i {
+  font-size: 12px;
+  padding: 3px 10px 0 0;
+}
+.sideblogFeatureContents > li > .fa-message {
+  color: #46a2d9;
+}
+.sideblogFeatureContents > li > .fa-stack-overflow {
+  color: #000;
+}

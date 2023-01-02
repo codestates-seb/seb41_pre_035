@@ -1,0 +1,146 @@
+/* ---------------------Header (login X)--------------------- */
+header {
+  width: 100%;
+  height: 50px;
+
+  background-color: #f8f9f9;
+  border-top: solid 3px #f48225;
+  box-shadow: 0 3px 5px #e6e6e6;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  z-index: 1;
+  position: fixed;
+  top: 0px;
+}
+
+/* 로고 */
+.headerLogo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 47px;
+}
+.headerLogo:hover {
+  background-color: #e3e6e8;
+  cursor: pointer;
+}
+
+/* about, products for teams 부분 */
+.headerMenu {
+  display: flex;
+  justify-content: space-between;
+}
+.headerMenuM {
+  width: 200px;
+}
+.headerMenuText {
+  color: #525960;
+  font-size: 14px;
+  padding: 8px;
+}
+.headerMenuText:hover {
+  background-color: #e3e6e8;
+  border-radius: 20px;
+}
+
+/* 검색창 */
+.headerSearchInput {
+  width: 40vw;
+  padding: 8px 8px 8px 30px;
+
+  border: var(--border);
+  border-radius: 4px;
+
+  background-image: url("../../public/img/search.svg");
+  background-position: 5px center;
+  background-size: 20px;
+  background-repeat: no-repeat;
+}
+.headerSearchInput:focus {
+  border: var(--border-blue);
+  outline: var(--outline-blue);
+}
+
+/* 로그인 회원가입 버튼 부분 */
+.headerBtns {
+  display: flex;
+  gap: 4px;
+}
+.headerBtns > button {
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.headerLoginBtn {
+  background-color: #e4eef6;
+  color: #4d81a7;
+  border: 1px solid #81adcc;
+}
+.headerLoginBtn:hover {
+  background-color: #b3d3ea;
+}
+.headerSignupBtn {
+  color: #dbf0ff;
+  background-color: #0a95ff;
+  border: none;
+}
+.headerSignupBtn:hover {
+  background-color: #0074cc;
+  cursor: pointer;
+}
+
+/* ---------------------Header (login O)--------------------- */
+.headerLink {
+  display: flex;
+  justify-content: center;
+}
+.headerUserProfile {
+  display: flex;
+  cursor: pointer;
+  padding: 9px 10px;
+}
+.headerUserProfile:hover {
+  background-color: #e3e6e8;
+  cursor: pointer;
+}
+.headerUserProfile > img {
+  width: 25px;
+  height: 25px;
+  border-radius: 10px;
+  padding-top: 3px;
+}
+.headerUserProfile > p {
+  padding: 8px 3px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.headerUserInfo {
+  color: #525960;
+  position: relative;
+}
+.headerUserInfo > i {
+  font-size: 20px;
+  padding: 14px 10px;
+}
+.headerUserInfo > i:hover {
+  background-color: #e3e6e8;
+  cursor: pointer;
+}
+
+/* ---------------------Modal--------------------- */
+.menumodal {
+  position: fixed;
+  left: 0px;
+  width: 190px;
+  height: 400px;
+  box-shadow: 0 0 5px rgb(201, 201, 201);
+}
+.fa-bars {
+  cursor: pointer;
+}

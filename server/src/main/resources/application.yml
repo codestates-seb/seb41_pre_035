@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: sof_server
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    defer-datasource-initialization: true
+  redis:
+    host: localhost
+    port: 6379
+  sql:
+    init:
+      mode: always
+
+server:
+  port: 8080
+  servlet:
+    encoding:
+      force-response: true
+
+mail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    auth: true
+    starttls:
+      enable: true
+
+jwt:
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 1440

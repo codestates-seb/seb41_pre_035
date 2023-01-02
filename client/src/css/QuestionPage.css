@@ -1,0 +1,154 @@
+.qwriter {
+  display: flex;
+  border-bottom: 1px solid rgb(196, 195, 195);
+}
+
+.qanswers h1 {
+  margin: 20px;
+  font-size: 19px;
+}
+.qwriter p {
+  margin-right: 20px;
+  color: rgb(98, 98, 98);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.addcomments {
+  width: 850px;
+  height: 200px;
+  padding: 20px;
+}
+.sharePopup {
+  border: 1px solid rgb(196, 195, 195);
+  border-radius: 1%;
+  box-shadow: 0 0 5px rgb(195, 195, 195);
+  width: 340px;
+  height: 120px;
+  padding: 12px;
+  margin-top: -60px;
+}
+.addcomments {
+  box-shadow: 0 0 5px rgb(195, 195, 195);
+}
+.cadd {
+  cursor: pointer;
+  margin-left: 70px;
+  color: rgb(98, 98, 98);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.sharePopup p {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.sharePopup input {
+  width: 310px;
+  height: 30px;
+  border: 1px solid rgb(196, 195, 195);
+  border-radius: 1%;
+  margin-bottom: 10px;
+}
+
+.qEdit {
+  display: flex !important;
+  margin-left: 70px;
+}
+
+.qEdit p {
+  margin-right: 10px;
+  font-size: 12px;
+  color: rgb(98, 98, 98);
+  cursor: pointer;
+}
+
+.qHeader h1 {
+  font-size: 27px;
+  font-weight: 580;
+  margin-right: 820px;
+}
+.postLayout {
+  display: flex;
+  padding: 20px;
+}
+.answers h2 {
+  font-size: 19px;
+  margin: 20px 0px;
+}
+.answer {
+  border-bottom: 1px solid rgb(196, 195, 195);
+}
+.postBody p {
+  font-size: 15px;
+  line-height: 18px;
+  margin-bottom: 20px;
+}
+.qMember {
+  background-color: #e1ecf4;
+  width: 200px;
+  height: 67px;
+  border-radius: 1%;
+  padding: 10px;
+  margin-left: 600px;
+}
+.qSideBar {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.qSideBar p {
+  margin-left: 10px;
+}
+.qbookMark {
+  margin-left: 8px;
+  margin-top: 10px;
+  color: rgb(196, 195, 195);
+}
+.voteCount {
+  font-size: 50px;
+  color: rgb(196, 195, 195);
+  cursor: pointer;
+}
+
+.yourAnswer h2 {
+  font-size: 17px;
+  margin: 20px 0px;
+}
+
+.qPopup {
+  background-color: #fdf7e2;
+  border: 1px solid #f7e7ad;
+  border-radius: 1%;
+  padding: 16px;
+  margin-top: 10px;
+  display: flex;
+}
+
+#popupClose {
+  font-weight: 600;
+  font-size: 20px;
+  background-color: #fdf7e2;
+  border: none;
+  cursor: pointer;
+  height: 40px;
+}
+
+#popupClose:hover {
+  background-color: #fefcf4;
+}
+.popupText {
+  margin-right: 390px;
+}
+.popupText p {
+  font-size: 13px;
+}
+
+.popupText li {
+  font-size: 13px;
+  margin: 10px 30px;
+}
+
+.flexItem {
+  float: left;
+}

@@ -1,0 +1,14 @@
+.myNav {
+  display: flex;
+  font-size: 14px;
+  color: #62708f;
+}
+.myNav > p {
+  margin: 20px 0;
+  padding: 8px 10px;
+}
+.myNav > p:hover {
+  color: #fff;
+  background-color: #f48225;
+  border-radius: 20px;
+}
