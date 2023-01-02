@@ -45,14 +45,18 @@ public interface QuestionMapper {
 	default List<QuestionResponseDto.SimpleResponse> questionsToResponses(Page<Question> questions, Member member) {
 		return questions.map(question -> {
 			QuestionResponseDto.SimpleResponse response = questionToSimpleResponse(question);
-			response.setHasAlreadyVoted(question.getVoteType(member) != VoteType.NONE);
+			Optional.ofNullable(member)
+				.ifPresent(presentMember -> response.setHasAlreadyVoted(question.getVoteType(presentMember) != VoteType.NONE));
 			return response;
 		}).toList();
 	}
 
 	default void setPropertiesToResponse(Member member, Question question, QuestionResponseDto.Response response) {
-		response.setIsItWriter(question.isWrittenBy(member));
-		response.setVoteType(question.getVoteType(member));
-		response.setBookmarked(question.isBookmarked(member));
+		Optional.ofNullable(member)
+				.ifPresent(presentMember -> {
+					response.setIsItWriter(question.isWrittenBy(presentMember));
+					response.setVoteType(question.getVoteType(presentMember));
+					response.setBookmarked(question.isBookmarked(presentMember));
+				});
 	}
 }

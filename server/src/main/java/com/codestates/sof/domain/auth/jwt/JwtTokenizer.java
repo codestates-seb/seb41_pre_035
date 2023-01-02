@@ -20,7 +20,7 @@ import lombok.Getter;
 @Component
 public class JwtTokenizer {
 	@Getter
-	@Value("${JWT_SECRET_KEY}")
+	@Value("${JWT_SECRET_KEY:test16235116521431621113212311633}")
 	private String secretKey;
 
 	@Getter

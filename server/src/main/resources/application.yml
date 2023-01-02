@@ -18,18 +18,15 @@ server:
   servlet:
     encoding:
       force-response: true
-# java -jar -Dspring.profiles.active=server sof-0.0.1-SNAPSHOT.jar
+
 mail:
   smtp:
     host: smtp.gmail.com
     port: 587
-#    username: {EMAIL_USERNAME}
-#    password: {EMAIL_PASSWORD}
     auth: true
     starttls:
       enable: true
 
 jwt:
-#  secret-key: {JWT_SECRET_KEY}
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 1440

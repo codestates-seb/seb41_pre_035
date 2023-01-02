@@ -74,25 +74,29 @@ dependencyManagement { // 블록 추가
 	}
 }
 
-//tasks.named('asciidoctor') {
-//	configurations "asciidoctorExtensions"
-//	inputs.dir snippetsDir
-//	dependsOn test
-//}
+tasks.named('asciidoctor') {
+	configurations "asciidoctorExtensions"
+	inputs.dir snippetsDir
+	dependsOn test
+}
 
-//task copyDocument(type: Copy) {
-//	dependsOn asciidoctor
-//	from file("${asciidoctor.outputDir}")
-//	into file("src/main/resources/static/docs")
-//}
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from file("${asciidoctor.outputDir}")
+	into file("src/main/resources/static/docs")
+}
 
-//build {
-//	dependsOn copyDocument
-//}
+build {
+	dependsOn copyDocument
+}
 
-//bootJar {
-////	dependsOn copyDocument
-////	from("${asciidoctor.outputDir}") {
-////		into 'static/docs'
-//	}
-//}
+jar {
+	enabled = false
+}
+
+bootJar {
+	dependsOn copyDocument
+	from("${asciidoctor.outputDir}") {
+		into 'static/docs'
+	}
+}
